@@ -3,6 +3,7 @@ using hackateam.Models;
 using hackateam.Services;
 using hackateam.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace hackateam.Controllers;
 
@@ -39,10 +40,11 @@ public class UserController : Controller
         return await Task.FromResult(Ok(new UserResponseDto(user)));
     }
 
-    [HttpDelete("{id:length(24)}")]
-    public async Task<ActionResult<UserResponseDto>> Delete(string id)
+    [Authorize]
+    [HttpDelete]
+    public async Task<ActionResult<UserResponseDto>> Delete()
     {
-        var user = await _userService.Get(user => user.Id == id);
+        var id = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         await _userService.Remove(user => user.Id == id);
         return await Task.FromResult(NoContent());
     }
