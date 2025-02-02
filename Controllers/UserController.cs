@@ -3,6 +3,7 @@ using hackateam.Services;
 using hackateam.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using hackateam.Models;
 
 namespace hackateam.Controllers;
 
@@ -18,7 +19,7 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    [Authorize]
+    [Authorize(Roles = Role)]
     public async Task<ActionResult<List<UserResponseDto>>> Get()
     {
         var users = await _userService.GetAll();
@@ -32,6 +33,7 @@ public class UserController : Controller
     }
 
     [HttpPatch("{id:length(24)}")]
+    [Authorize]
     public async Task<ActionResult<UserResponseDto>> Update(string id, UpdateUserDto updateUserDto)
     {
         var user = await _userService.Get(user => user.Id == id);
