@@ -62,9 +62,20 @@ public class UserService
         }
     }
 
-    public async Task<User> Update(Expression<Func<User, bool>> filter, User userIn)
+    public async Task<User> Update(Expression<Func<User, bool>> filter, UpdateUserDto updateUserDto)
     {
-        var user = await _users.FindOneAndReplaceAsync<User>(filter, userIn, new FindOneAndReplaceOptions<User, User>
+        var updateDefinitionBuilder = Builders<User>.Update;
+        var updateDefinitions = new List<UpdateDefinition<User>>();
+        foreach (var property in updateUserDto.GetType().GetProperties())
+        {
+            if (property.GetValue(updateUserDto) != null)
+            {
+                var updateDefinition = updateDefinitionBuilder.Set(property.Name, property.GetValue(updateUserDto));
+                updateDefinitions.Add(updateDefinition);
+            }
+        }
+        var update = updateDefinitionBuilder.Combine(updateDefinitions);
+        var user = await _users.FindOneAndUpdateAsync<User>(filter, update, new FindOneAndUpdateOptions<User>
         {
             ReturnDocument = ReturnDocument.After
         });

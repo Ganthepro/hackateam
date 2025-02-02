@@ -35,12 +35,7 @@ public class UserController : Controller
     public async Task<ActionResult<UserResponseDto>> Update(string id, UpdateUserDto updateUserDto)
     {
         var user = await _userService.Get(user => user.Id == id);
-        user = await _userService.Update(user => user.Id == id, new User
-        {
-            FullName = updateUserDto.FullName,
-            Header = updateUserDto.Header,
-            Tel = updateUserDto.Tel,
-        });
+        user = await _userService.Update(user => user.Id == id, updateUserDto);
         return await Task.FromResult(Ok(new UserResponseDto(user)));
     }
 
