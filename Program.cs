@@ -1,7 +1,20 @@
+using hackateam.Models;
+using hackateam.Services;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<DatabaseSettings>(
+    builder.Configuration.GetSection("Database"));
+builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<AuthService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<HttpResponseExceptionFilter>();
+});
+
 
 var app = builder.Build();
 

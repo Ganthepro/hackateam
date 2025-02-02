@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using hackateam.Models;
+using hackateam.Services;
 
 namespace hackateam.Controllers;
 
@@ -9,16 +10,18 @@ namespace hackateam.Controllers;
 public class UserController : Controller
 {
     private readonly ILogger<UserController> _logger;
+    private readonly UserService _userService;
 
-    public UserController(ILogger<UserController> logger)
+    public UserController(ILogger<UserController> logger, UserService userService)
     {
         _logger = logger;
+        _userService = userService; 
     }
 
     [HttpGet]
-    public async Task<ActionResult<string>> Get()
+    public async Task<List<User>> Get()
     {
-        return await Task.FromResult(Ok("hello world"));
+        return await _userService.GetAll();
     }
 
     public IActionResult Index()
