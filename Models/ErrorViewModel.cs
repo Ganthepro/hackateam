@@ -1,4 +1,4 @@
-namespace hackateam_api.Models;
+namespace hackateam.Models;
 
 public class ErrorViewModel
 {

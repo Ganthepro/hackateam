@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>hackateam_api</RootNamespace>
+    <RootNamespace>hackateam</RootNamespace>
   </PropertyGroup>
 
 </Project>
