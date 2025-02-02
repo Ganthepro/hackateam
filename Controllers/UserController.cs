@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using hackateam.Models;
 using hackateam.Services;
 using hackateam.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
