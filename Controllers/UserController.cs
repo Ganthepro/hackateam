@@ -3,7 +3,6 @@ using hackateam.Services;
 using hackateam.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-using hackateam.Models;
 
 namespace hackateam.Controllers;
 
