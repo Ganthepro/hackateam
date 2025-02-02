@@ -55,6 +55,8 @@ builder.Services.AddCors(options =>
                 .AllowAnyMethod();
         });
 });
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 
@@ -70,6 +72,13 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hackathon API v1");
+    c.RoutePrefix = "swagger";  // Serve the Swagger UI at /swagger
+    // c.RoutePrefix = string.Empty;  // Serve the Swagger UI at /swagger
+});
 
 app.UseCors(myAllowSpecificOrigins);
 

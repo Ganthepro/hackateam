@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using hackateam.Models;
 using hackateam.Services;
@@ -20,20 +19,20 @@ public class UserController : Controller
 
     [HttpGet]
     [Authorize]
-    public async Task<List<UserResponseDto>> Get()
+    public async Task<ActionResult<List<UserResponseDto>>> Get()
     {
         var users = await _userService.GetAll();
-        return users.Select(user => new UserResponseDto(user)).ToList();
+        return await Task.FromResult(users.Select(user => new UserResponseDto(user)).ToList());
     }
 
     [HttpGet("{id:length(24)}")]
-    public async Task<UserResponseDto> Get(string id)
+    public async Task<ActionResult<UserResponseDto>> Get(string id)
     {
-        return new UserResponseDto(await _userService.Get(user => user.Id == id));
+        return await Task.FromResult(Ok(new UserResponseDto(await _userService.Get(user => user.Id == id))));
     }
 
     [HttpPatch("{id:length(24)}")]
-    public async Task<UserResponseDto> Update(string id, UpdateUserDto updateUserDto)
+    public async Task<ActionResult<UserResponseDto>> Update(string id, UpdateUserDto updateUserDto)
     {
         var user = await _userService.Get(user => user.Id == id);
         user = await _userService.Update(user => user.Id == id, new User
@@ -42,22 +41,14 @@ public class UserController : Controller
             Header = updateUserDto.Header,
             Tel = updateUserDto.Tel,
         });
-        return new UserResponseDto(user);
+        return await Task.FromResult(Ok(new UserResponseDto(user)));
     }
 
-    public IActionResult Index()
+    [HttpDelete("{id:length(24)}")]
+    public async Task<ActionResult<UserResponseDto>> Delete(string id)
     {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        var user = await _userService.Get(user => user.Id == id);
+        await _userService.Remove(user => user.Id == id);
+        return await Task.FromResult(NoContent());
     }
 }

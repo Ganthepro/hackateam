@@ -1,6 +1,4 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using hackateam.Models;
 using hackateam.Dtos.Auth;
 using hackateam.Services;
 
@@ -17,6 +15,7 @@ public class AuthController : Controller
         _authService = authService;
     }
 
+    // 🔹 GET: Auth/login (Get All Hackathons)
     [HttpPost("login")]
     public async Task<ActionResult<AuthResponseDto>> Login(LoginDto loginDto)
     {
@@ -27,21 +26,5 @@ public class AuthController : Controller
     public async Task<ActionResult<AuthResponseDto>> Register(RegisterDto registerDto)
     {
         return await Task.FromResult(Ok(await _authService.Register(registerDto)));
-    }
-
-    public IActionResult Index()
-    {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
