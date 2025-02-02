@@ -27,22 +27,13 @@ public class AuthController : Controller
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<string>> Login(LoginDto loginDto)
+    public async Task<ActionResult<AuthResponseDto>> Login(LoginDto loginDto)
     {
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Email, loginDto.Email!),
-        };
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["SecretKey"]!));
-        var credential = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        if (credential == null) throw new ArgumentNullException(nameof(credential));
-        var token = new JwtSecurityToken(claims: claims, expires: DateTime.UtcNow.AddDays(7),
-            signingCredentials: credential);
-        return await Task.FromResult(Ok(new JwtSecurityTokenHandler().WriteToken(token)));
+        return await Task.FromResult(Ok(await _authService.Login(loginDto)));
     }
 
     [HttpPost("register")]
-    public async Task<ActionResult<UserResponseDto>> Register(RegisterDto registerDto)
+    public async Task<ActionResult<AuthResponseDto>> Register(RegisterDto registerDto)
     {
         return await Task.FromResult(Ok(await _authService.Register(registerDto)));
     }

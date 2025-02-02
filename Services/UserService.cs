@@ -27,15 +27,19 @@ public class UserService
     public async Task<List<User>> GetAll() =>
         await _users.Find(user => true).ToListAsync();
 
-    public async Task<User> Get(string id)
+    public async Task<User> Get(Expression<Func<User, bool>> filter)
     {
-        var user = await _users.Find(user => user.Id == id).FirstOrDefaultAsync();
+        var user = await _users.Find(filter).FirstOrDefaultAsync();
         if (user == null)
         {
             throw new HttpResponseException((int)HttpStatusCode.NotFound, "User not found");
         }
         return user;
     }
+
+    public async Task<User> GetByEmail(string email) =>
+        await _users.Find(user => user.Email == email).FirstOrDefaultAsync();
+
 
     public async Task<User> Create(CreateUserDto createUserDto)
     {

@@ -1,11 +1,10 @@
-using hackateam.Models;
-using hackateam.Services;
 using hackateam.Dtos.Auth;
-using System.CodeDom.Compiler;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
+using hackateam.Shared;
 
 namespace hackateam.Services;
 
@@ -20,11 +19,29 @@ public class AuthService
         _configuration = configuration;
     }
 
-    public async Task<AuthResponseDto> Register(RegisterDto registerDto) {
-        var user = await _userService.Create(registerDto);
+    public async Task<AuthResponseDto> Login(LoginDto loginDto)
+    {
+        var user = await _userService.Get(user => user.Email == loginDto.Email);
+        var isValidPassword = BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password);
+        if (!isValidPassword)
+        {
+            throw new HttpResponseException((int)HttpStatusCode.Unauthorized, "Invalid password");
+        }
         var jwtPayloadDto = new JwtPayloadDto { Id = user.Id! };
         var token = await GeneratedJwtToken(jwtPayloadDto);
         return new AuthResponseDto(new Dtos.User.UserResponseDto(user), token);
+    }
+
+    public async Task<AuthResponseDto> Register(RegisterDto registerDto) {
+        var user = await _userService.GetByEmail(registerDto.Email!);
+        if (user != null) {
+            throw new HttpResponseException((int)HttpStatusCode.Conflict, "Email already exists");
+        }
+        registerDto.Password = BCrypt.Net.BCrypt.HashPassword(registerDto.Password);
+        var createdUser = await _userService.Create(registerDto);
+        var jwtPayloadDto = new JwtPayloadDto { Id = createdUser.Id! };
+        var token = await GeneratedJwtToken(jwtPayloadDto);
+        return new AuthResponseDto(new Dtos.User.UserResponseDto(createdUser), token);
     }
 
     private Task<string> GeneratedJwtToken(JwtPayloadDto jwtPayloadDto) {
