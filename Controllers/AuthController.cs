@@ -1,13 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using hackateam.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using hackateam.Dtos.Auth;
 using hackateam.Services;
-using hackateam.Dtos.User;
 
 namespace hackateam.Controllers;
 
@@ -15,14 +10,10 @@ namespace hackateam.Controllers;
 [Route("[controller]")]
 public class AuthController : Controller
 {
-    private readonly ILogger<AuthController> _logger;
-    private readonly IConfiguration Configuration;
     private readonly AuthService _authService;
 
-    public AuthController(ILogger<AuthController> logger, IConfiguration configuration, AuthService authService)
+    public AuthController(AuthService authService)
     {
-        _logger = logger;
-        Configuration = configuration;
         _authService = authService;
     }
 
