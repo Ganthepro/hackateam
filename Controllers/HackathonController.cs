@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
-using hackateam.Models;
 using hackateam.Services;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using hackateam.Dtos.Hackathon;
+using Microsoft.AspNetCore.Authorization;
 
 namespace hackateam.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class HackathonController : ControllerBase
 {
     private readonly HackathonService _hackathonService;
@@ -17,61 +17,50 @@ public class HackathonController : ControllerBase
         _hackathonService = hackathonService;
     }
 
-    // GET: api/hackathon
     [HttpGet]
-    public async Task<ActionResult<List<Hackathon>>> Get()
+    public async Task<ActionResult<List<HackathonResponseDto>>> Get()
     {
-        var hackathons = await _hackathonService.GetAllAsync();
-        return Ok(hackathons);
+        var hackathons = await _hackathonService.GetAll();
+        return await Task.FromResult(hackathons.Select(hackathon => new HackathonResponseDto(hackathon)).ToList());
     }
 
-    // GET: api/hackathon/{id}
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Hackathon>> Get(string id)
+    [HttpGet("{id:length(24)}")]
+    public async Task<ActionResult<HackathonResponseDto>> Get(string id)
     {
-        var hackathon = await _hackathonService.GetByIdAsync(id);
+        return await Task.FromResult(Ok(new HackathonResponseDto(await _hackathonService.Get(project => project.Id == id))));
+    }
 
+    [HttpPost]
+    public async Task<ActionResult<HackathonResponseDto>> Create(CreateHackathonDto createHackathonDto)
+    {
+        var hackathon = await _hackathonService.Create(createHackathonDto);
+        return await Task.FromResult(CreatedAtAction(nameof(Get), new { id = hackathon.Id }, new HackathonResponseDto(hackathon)));
+    }
+
+    [HttpPatch("{id:length(24)}")]
+    public async Task<ActionResult<HackathonResponseDto>> Update(string id, UpdateHackathonDto updateHackathonDto)
+    {
+
+        var hackathon = await _hackathonService.Get(hackathon => hackathon.Id == id);
         if (hackathon == null)
         {
-            return NotFound();
+            return await Task.FromResult(NotFound(Constants.HackathonMessage.NOT_FOUND));
         }
 
-        return Ok(hackathon);
+        hackathon = await _hackathonService.Update(hackathon => hackathon.Id == id, updateHackathonDto);
+        return await Task.FromResult(Ok(new HackathonResponseDto(hackathon)));
     }
 
-    // POST: api/hackathon
-    [HttpPost]
-    public async Task<ActionResult> Create(Hackathon hackathon)
-    {
-        await _hackathonService.CreateAsync(hackathon);
-        return CreatedAtAction(nameof(Get), new { id = hackathon.Id }, hackathon);
-    }
-
-    // PUT: api/hackathon/{id}
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(string id, Hackathon hackathon)
-    {
-        var existingHackathon = await _hackathonService.GetByIdAsync(id);
-        if (existingHackathon == null)
-        {
-            return NotFound();
-        }
-
-        await _hackathonService.UpdateAsync(id, hackathon);
-        return NoContent();
-    }
-
-    // DELETE: api/hackathon/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
-        var hackathon = await _hackathonService.GetByIdAsync(id);
-        if (hackathon == null)
+        var deletedHackathon = await _hackathonService.Delete(id);
+
+        if (deletedHackathon == null)
         {
-            return NotFound();
+            return NotFound(Constants.HackathonMessage.NOT_FOUND);
         }
 
-        await _hackathonService.DeleteAsync(id);
         return NoContent();
     }
 }
