@@ -7,10 +7,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/global.css">
-    <link rel="stylesheet" href="../styles/home.css">
+    <link rel="stylesheet" href="../styles/universal/global.css">
+    <link rel="stylesheet" href="../styles/universal/navbar.css">
+    <link rel="stylesheet" href="../styles/universal/footer.css">
+    <link rel="stylesheet" href="../styles/specific/home.css">
 </head>
 <body>
+    <!-- navbar need navbar.css -->
     <nav class="navbar">
         <div class="nav-title">Hackateam</div>
         <div class="nav-links" id="nav-links">
@@ -23,22 +26,35 @@
         <img src="../../pictures/nav-doc.svg" alt="nav-icon"
         class="nav-icon" id="nav-icon" onclick="controlNavbar()">
     </nav>
-
-    <script>
-        function controlNavbar() {
-            const navLinks = document.getElementById('nav-links');
-            navLinks.classList.toggle('active');
-        }
-    
-        window.addEventListener('resize', () => {
-            const navLinks = document.getElementById('nav-links');
-            const navIcon = document.getElementById('nav-icon');
-            
-            if (window.innerWidth > 600) {
-                navLinks.classList.remove('active');
-            }
-        });
-    </script>
-    
+    <div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+    </div>
+    <!-- footer need footer.css -->
+    <footer>
+        <a href="#"class="contract-link">
+            <img src="../../pictures/github-icon.svg" alt="github-icon"
+            class="social-icon" id="github-icon">
+            <p>github</p>
+        </a>
+        <a href="#" class="contract-link">
+            <img src="../../pictures/linkedin-icon.svg" alt="linkedin-icon"
+            class="social-icon" id="linkedin-icon">
+            <p>linkedin</p>
+        </a>
+        <a href="#" class="contract-link">
+            <img src="../../pictures/facebook-icon.svg" alt="facebook-icon"
+            class="social-icon" id="facebook-icon">
+            <p>facebook</p>
+        </a>
+        <a href="#" class="contract-link">
+            <img src="../../pictures/instagram-icon.svg" alt="instagram-icon"
+            class="social-icon" id="instagram-icon">
+            <p>instagram</p>
+        </a>
+    </footer>
+    <script src="../scripts/home.js"></script>
 </body>
 </html>

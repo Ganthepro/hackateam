@@ -1,0 +1,65 @@
+footer{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 32px;
+    background-color: #444F5A80;
+    color: #EEEEEE;
+}
+
+.contract-link{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.contract-link p{
+    color: #EEEEEE;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.contract-link img{
+    width: 36px;
+    height: 36px;
+}
+
+@media (max-width: 480px) {
+    .contract-link{
+        gap: 4px;
+    }
+
+    .contract-link p{
+        font-size: 12px;
+    }
+
+    .contract-link img{
+        width: 18px;
+        height: 18px;
+    }
+    
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .contract-link{
+        gap: 6px;
+    }
+
+    .contract-link p{
+        font-size: 14px;
+    }
+
+    .contract-link img{
+        width: 24px;
+        height: 24px;
+    }
+    
+}
+
+@media (min-width: 769px) and (max-width: 1279px) {
+    .contract-link img{
+        width: 30px;
+        height: 30px;
+    }
+}
