@@ -32,7 +32,7 @@ public class ProjectService
         var project = await _projects.Find(filter).FirstOrDefaultAsync();
         if (project == null)
         {
-            throw new HttpResponseException((int)HttpStatusCode.NotFound, "Project not found");
+            throw new HttpResponseException((int)HttpStatusCode.NotFound, Constants.ProjectMessage.NOT_FOUND);
         }
         return project;
     }
@@ -53,7 +53,7 @@ public class ProjectService
         }
         catch
         {
-            throw new HttpResponseException((int)HttpStatusCode.BadRequest, "Project already exists");
+            throw new HttpResponseException((int)HttpStatusCode.BadRequest, Constants.ProjectMessage.ALREADY_EXISTS);
         }
     }
 
@@ -72,7 +72,7 @@ public class ProjectService
         var project = await _projects.FindOneAndUpdateAsync(filter, update, new FindOneAndUpdateOptions<Project> { ReturnDocument = ReturnDocument.After });
         if (project == null)
         {
-            throw new HttpResponseException((int)HttpStatusCode.NotFound, "Project not found");
+            throw new HttpResponseException((int)HttpStatusCode.NotFound, Constants.ProjectMessage.NOT_FOUND);
         }
         return project;
     }
@@ -82,7 +82,7 @@ public class ProjectService
         var project = await _projects.Find(filter).FirstOrDefaultAsync();
         if (project == null)
         {
-            throw new HttpResponseException((int)HttpStatusCode.NotFound, "Project not found");
+            throw new HttpResponseException((int)HttpStatusCode.NotFound, Constants.ProjectMessage.NOT_FOUND);
         }
         await _projects.DeleteOneAsync(filter);
     }

@@ -13,11 +13,13 @@ public class ProjectController : Controller
 {
     private readonly ProjectService _projectService;
     private readonly SkillService _skillService;
+    private readonly UserService _userService;
 
-    public ProjectController(ProjectService projectService, SkillService skillService)
+    public ProjectController(ProjectService projectService, SkillService skillService, UserService userService)
     {
         _projectService = projectService;
         _skillService = skillService;
+        _userService = userService;
     }
 
     [HttpGet]
@@ -42,7 +44,7 @@ public class ProjectController : Controller
         var skill = await _skillService.Get(skill => skill.Id == createProjectDto.SkillId);
         if (skill == null)
         {
-            return await Task.FromResult(NotFound("Skill not found"));
+            return await Task.FromResult(NotFound(Constants.SkillMessage.NOT_FOUND));
         }
 
         var project = await _projectService.Create(id!, createProjectDto);
@@ -57,11 +59,17 @@ public class ProjectController : Controller
             var skill = await _skillService.Get(skill => skill.Id == updateProjectDto.SkillId);
             if (skill == null)
             {
-                return await Task.FromResult(NotFound("Skill not found"));
+                return await Task.FromResult(NotFound(Constants.SkillMessage.NOT_FOUND));
             }
         }
-
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var project = await _projectService.Get(project => project.Id == id);
+
+        if (project.UserId != userId)
+        {
+            return await Task.FromResult(Forbid());
+        }
+
         project = await _projectService.Update(project => project.Id == id, updateProjectDto);
         return await Task.FromResult(Ok(new ProjectResponseDto(project)));
     }
@@ -70,7 +78,13 @@ public class ProjectController : Controller
     [HttpDelete("{id:length(24)}")]
     public async Task<ActionResult<ProjectResponseDto>> Delete(string id)
     {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var project = await _projectService.Get(project => project.Id == id);
+
+        if (project.UserId != userId)
+        {
+            return await Task.FromResult(Forbid());
+        }
         await _projectService.Remove(project => project.Id == id);
         return await Task.FromResult(Ok(new ProjectResponseDto(project)));
     }
