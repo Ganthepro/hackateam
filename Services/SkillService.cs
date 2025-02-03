@@ -32,7 +32,7 @@ public class SkillService
         var skill = await _skills.Find(filter).FirstOrDefaultAsync();
         if (skill == null)
         {
-            throw new HttpResponseException((int)HttpStatusCode.NotFound, "Skill not found");
+            throw new HttpResponseException((int)HttpStatusCode.NotFound, Constants.SkillMessage.NOT_FOUND);
         }
         return skill;
     }
@@ -50,7 +50,7 @@ public class SkillService
         }
         catch
         {
-            throw new HttpResponseException((int)HttpStatusCode.BadRequest, "Skill already exists");
+            throw new HttpResponseException((int)HttpStatusCode.BadRequest, Constants.SkillMessage.ALREADY_EXISTS);
         }
     }
 
@@ -72,7 +72,7 @@ public class SkillService
         });
         if (skill == null)
         {
-            throw new HttpResponseException((int)HttpStatusCode.NotFound, "Skill not found");
+            throw new HttpResponseException((int)HttpStatusCode.NotFound, Constants.SkillMessage.NOT_FOUND);
         }
         return skill;
     }
@@ -82,7 +82,7 @@ public class SkillService
         var skill = await _skills.FindOneAndDeleteAsync(filter);
         if (skill == null)
         {
-            throw new HttpResponseException((int)HttpStatusCode.NotFound, "Skill not found");
+            throw new HttpResponseException((int)HttpStatusCode.NotFound, Constants.SkillMessage.NOT_FOUND);
         }
         return skill;
     }
