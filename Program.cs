@@ -60,6 +60,14 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Hackateam API",
+        Version = "v1",
+        Description = "API Documentation for Hackateam API",
+    });
+
+    options.UseAllOfToExtendReferenceSchemas();
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",

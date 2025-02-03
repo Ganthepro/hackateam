@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using hackateam.Services;
 using hackateam.Dtos.Skill;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 
 namespace hackateam.Controllers;
 
