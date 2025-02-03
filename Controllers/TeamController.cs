@@ -20,14 +20,14 @@ public class TeamController : Controller
     [HttpGet]
     public async Task<ActionResult<List<TeamResponseDto>>> Get()
     {
-        var skills = await _teamService.GetAll();
-        return await Task.FromResult(skills.Select(team => new TeamResponseDto(team)).ToList());
+        var teams = await _teamService.GetAll();
+        return await Task.FromResult(teams.Select(team => new TeamResponseDto(team)).ToList());
     }
 
     [HttpGet("{id:length(24)}")]
     public async Task<ActionResult<TeamResponseDto>> Get(string id)
     {
-        return await Task.FromResult(Ok(new TeamResponseDto(await _teamService.Get(skill => skill.Id == id))));
+        return await Task.FromResult(Ok(new TeamResponseDto(await _teamService.Get(team => team.Id == id))));
     }
 
     [HttpPost]
