@@ -12,6 +12,8 @@ builder.Services.Configure<DatabaseSettings>(
     builder.Configuration.GetSection("Database"));
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<AuthService>();
+builder.Services.AddSingleton<SkillService>();
+builder.Services.AddSingleton<ProjectService>();
 builder.Services.AddSingleton<HackathonService>();
 
 // Add services to the container.
@@ -60,6 +62,14 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Hackateam API",
+        Version = "v1",
+        Description = "API Documentation for Hackateam API",
+    });
+
+    options.UseAllOfToExtendReferenceSchemas();
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
