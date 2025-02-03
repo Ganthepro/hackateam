@@ -13,13 +13,10 @@ public class ProjectController : Controller
 {
     private readonly ProjectService _projectService;
     private readonly SkillService _skillService;
-    private readonly UserService _userService;
-
     public ProjectController(ProjectService projectService, SkillService skillService, UserService userService)
     {
         _projectService = projectService;
         _skillService = skillService;
-        _userService = userService;
     }
 
     [HttpGet]
