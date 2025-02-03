@@ -7,7 +7,6 @@ namespace hackateam.Dtos.Project
     public class CreateProjectDto
     {
         [Required]
-        
         public string? Title { get; set; }
 
         [Required]
