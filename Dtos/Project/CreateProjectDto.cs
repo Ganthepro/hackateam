@@ -9,12 +9,10 @@ namespace hackateam.Dtos.Project
         [Required]
         
         public string? Title { get; set; }
-        
+
         [Required]
         public string? Description { get; set; }
 
-        [Required]
-        public string? UserId { get; set; }
 
         [Required]
         public string? SkillId { get; set; }

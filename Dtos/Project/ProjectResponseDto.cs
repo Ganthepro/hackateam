@@ -8,6 +8,7 @@ namespace hackateam.Dtos.Project
             Title = project.Title;
             Description = project.Description;
             UserId = project.UserId;
+            SkillId = project.SkillId;
         }
 
         public string? Id { get; set; }

@@ -13,6 +13,7 @@ builder.Services.Configure<DatabaseSettings>(
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<AuthService>();
 builder.Services.AddSingleton<SkillService>();
+builder.Services.AddSingleton<ProjectService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

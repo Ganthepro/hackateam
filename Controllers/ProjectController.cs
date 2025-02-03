@@ -12,10 +12,12 @@ namespace hackateam.Controllers;
 public class ProjectController : Controller
 {
     private readonly ProjectService _projectService;
+    private readonly SkillService _skillService;
 
-    public ProjectController(ProjectService projectService)
+    public ProjectController(ProjectService projectService, SkillService skillService)
     {
         _projectService = projectService;
+        _skillService = skillService;
     }
 
     [HttpGet]
@@ -32,19 +34,33 @@ public class ProjectController : Controller
     }
 
     [HttpPost]
-    
+
     public async Task<ActionResult<ProjectResponseDto>> Create(CreateProjectDto createProjectDto)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        createProjectDto.UserId = id;
-        var project = await _projectService.Create(createProjectDto);
+        var skill = await _skillService.Get(skill => skill.Id == createProjectDto.SkillId);
+        if (skill == null)
+        {
+            return await Task.FromResult(NotFound("Skill not found"));
+        }
+
+        var project = await _projectService.Create(id!, createProjectDto);
         return await Task.FromResult(CreatedAtAction(nameof(Get), new { id = project.Id }, new ProjectResponseDto(project)));
     }
 
     [HttpPatch("{id:length(24)}")]
     public async Task<ActionResult<ProjectResponseDto>> Update(string id, UpdateProjectDto updateProjectDto)
     {
+        if (updateProjectDto.SkillId != null)
+        {
+            var skill = await _skillService.Get(skill => skill.Id == updateProjectDto.SkillId);
+            if (skill == null)
+            {
+                return await Task.FromResult(NotFound("Skill not found"));
+            }
+        }
+
         var project = await _projectService.Get(project => project.Id == id);
         project = await _projectService.Update(project => project.Id == id, updateProjectDto);
         return await Task.FromResult(Ok(new ProjectResponseDto(project)));
