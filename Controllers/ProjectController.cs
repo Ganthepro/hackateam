@@ -74,7 +74,6 @@ public class ProjectController : Controller
         return await Task.FromResult(Ok(new ProjectResponseDto(project)));
     }
 
-    [Authorize]
     [HttpDelete("{id:length(24)}")]
     public async Task<ActionResult<ProjectResponseDto>> Delete(string id)
     {
