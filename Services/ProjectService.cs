@@ -37,7 +37,7 @@ public class ProjectService
         return project;
     }
 
-    public async Task<Project> Create(CreateProjectDto createProjectDto)
+    public async Task<Project> Create(string userId,CreateProjectDto createProjectDto)
     {
         try
         {
@@ -45,7 +45,7 @@ public class ProjectService
             {
                 Title = createProjectDto.Title,
                 Description = createProjectDto.Description,
-                UserId = createProjectDto.UserId,
+                UserId = userId,
                 SkillId = createProjectDto.SkillId
             };
             await _projects.InsertOneAsync(project);
