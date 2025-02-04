@@ -21,5 +21,8 @@ namespace hackateam.Models
         [BsonRequired]
         [BsonRepresentation(BsonType.ObjectId)]
         public string? SkillId { get; set; }
+
+        [BsonRequired]
+        public DateTime? CreatedAt { get; set; }
     }
 }
