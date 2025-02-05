@@ -25,7 +25,7 @@ public class Submission
     public string? UserId { get; set; }
 
     [BsonRequired]
-    [BsonRepresentation(BsonType.ObjectId)]
+    // [BsonRepresentation(BsonType.ObjectId)]
     public string? RequirementId { get; set; }
 
     public string? SOP { get; set; }
@@ -33,6 +33,4 @@ public class Submission
     [BsonRequired]
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
-
-    
 }

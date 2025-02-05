@@ -5,7 +5,6 @@ using hackateam.Shared;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System.Linq.Expressions;
-using MongoDB.Bson;
 
 namespace hackateam.Services;
 
@@ -33,13 +32,13 @@ public class SubmissionService
         return submission;
     }
 
-    public async Task<Submission> Create(CreateSubmissionDto createSubmissionDto)
+    public async Task<Submission> Create(string id, CreateSubmissionDto createSubmissionDto)
     {
         try
         {
             var submission = new Submission
             {
-                UserId = createSubmissionDto.UserId!,
+                UserId = id!,
                 RequirementId = createSubmissionDto.RequirementId!,
                 SOP = createSubmissionDto.SOP,
             };
