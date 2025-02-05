@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using hackateam_api.Models;
+using hackateam.Models;
 
-namespace hackateam_api.Controllers;
+namespace hackateam.Controllers;
 
 public class HomeController : Controller
 {
