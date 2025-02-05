@@ -16,6 +16,8 @@ builder.Services.AddSingleton<SkillService>();
 builder.Services.AddSingleton<ProjectService>();
 builder.Services.AddSingleton<NotificationService>();
 builder.Services.AddSingleton<SubmissionService>();
+builder.Services.AddSingleton<TeamService>();
+builder.Services.AddSingleton<RequirementService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
