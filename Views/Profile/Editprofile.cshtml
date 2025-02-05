@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Editprofile</title>
-  </head>
-  <body>
-    <section>
-      <h1>EDIT PROFILE</h1>
-      <form id="editprofile">
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<section>
+    <h1>EDIT PROFILE</h1>
+    <form id="editprofile">
         <label for="fullname">Fullname</label>
         <input type="text" id="fullname" name="fullname" />
 
@@ -25,11 +21,9 @@
         <input type="email" id="email" name="email" />
 
         <button type="submit">Edit</button>
-      </form>
-    </section>
-    <footer>
-      <a href="profile.html">Go To Profile</a>
-      <a href="editproject.html">Add New Project</a>
-    </footer>
-  </body>
-</html>
+    </form>
+</section>
+<footer>
+    <a href="index">Go To Profile</a>
+    <a href="editproject">Add New Project</a>
+</footer>
