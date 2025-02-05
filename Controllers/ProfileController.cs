@@ -18,12 +18,12 @@ public class ProfileController : Controller
         return View();
     }
 
-    public IActionResult Editprofile()
+    public IActionResult EditProfile()
     {
         return View();
     }
 
-    public IActionResult Editproject()
+    public IActionResult EditProject()
     {
         return View();
     }
