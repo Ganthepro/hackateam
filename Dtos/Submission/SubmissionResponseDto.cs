@@ -1,15 +1,16 @@
+using hackateam.Dtos.Requirement;
 using hackateam.Dtos.User;
 
 namespace hackateam.Dtos.Submission
 {
     public class SubmissionResponseDto
     {
-        public SubmissionResponseDto(hackateam.Models.Submission submission, hackateam.Models.User user = null!)
+        public SubmissionResponseDto(hackateam.Models.Submission submission, hackateam.Models.User user = null!, hackateam.Models.Requirement requirement = null!)
         {
             Id = submission.Id;
             Status = submission.SubmissionStatus.ToString();
             SOP = submission.SOP;
-            Requirement = submission.RequirementId;
+            Requirement = requirement != null ? new RequirementResponseDto(requirement) : submission.RequirementId;
             User = user != null ? new UserResponseDto(user) : submission.UserId;
             CreatedAt = submission.CreatedAt;
         }
@@ -20,7 +21,7 @@ namespace hackateam.Dtos.Submission
 
         public string? SOP { get; set; }
 
-        public string? Requirement { get; set; }
+        public object? Requirement { get; set; }
 
         public object? User { get; set; }
 
