@@ -25,7 +25,7 @@ public class Submission
     public string? UserId { get; set; }
 
     [BsonRequired]
-    // [BsonRepresentation(BsonType.ObjectId)]
+    [BsonRepresentation(BsonType.ObjectId)]
     public string? RequirementId { get; set; }
 
     public string? SOP { get; set; }
