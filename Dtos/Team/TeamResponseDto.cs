@@ -9,7 +9,6 @@ namespace hackateam.Dtos.Team
             Id = team.Id;
             Name = team.Name;
             LeadId = team.LeadId;
-            CrewId = team.CrewId;
             Status = team.Status;
             HackathonId = team.HackathonId;
             CreatedAt = team.CreatedAt;
@@ -20,7 +19,6 @@ namespace hackateam.Dtos.Team
         public string? Id { get; set; }
         public string Name { get; set; }
         public string LeadId { get; set; }
-        public List<string> CrewId { get; set; }
         public TeamStatus Status { get; set; }
         public string HackathonId { get; set; }
         public DateTime CreatedAt { get; set; }

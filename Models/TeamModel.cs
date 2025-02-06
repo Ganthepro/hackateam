@@ -32,10 +32,6 @@ namespace hackateam.Models
         public string LeadId { get; set; }
 
         [BsonRequired]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public List<string> CrewId { get; set; }
-
-        [BsonRequired]
         [BsonRepresentation(BsonType.String)]
         public TeamStatus Status { get; set; }
 
