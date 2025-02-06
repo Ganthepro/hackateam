@@ -22,5 +22,9 @@ namespace hackateam.Models
         [BsonRequired]
         [BsonRepresentation(BsonType.ObjectId)]
         public string? UserId { get; set; }
+        
+        [BsonRequired]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? TeamId { get; set; } 
     }
 }
