@@ -9,7 +9,7 @@ namespace hackateam.Dtos.Submission
             Id = submission.Id;
             Status = submission.SubmissionStatus.ToString();
             SOP = submission.SOP;
-            RequirementId = submission.RequirementId;
+            Requirement = submission.RequirementId;
             User = user != null ? new UserResponseDto(user) : submission.UserId;
             CreatedAt = submission.CreatedAt;
         }
@@ -20,7 +20,7 @@ namespace hackateam.Dtos.Submission
 
         public string? SOP { get; set; }
 
-        public string? RequirementId { get; set; }
+        public string? Requirement { get; set; }
 
         public object? User { get; set; }
 
