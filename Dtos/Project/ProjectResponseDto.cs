@@ -1,14 +1,17 @@
+using hackateam.Dtos.Skill;
+using hackateam.Dtos.User;
+
 namespace hackateam.Dtos.Project
 {
     public class ProjectResponseDto
     {
-        public ProjectResponseDto(hackateam.Models.Project project)
+        public ProjectResponseDto(hackateam.Models.Project project, hackateam.Models.Skill skill, hackateam.Models.User user)
         {
             Id = project.Id;
             Title = project.Title;
             Description = project.Description;
-            UserId = project.UserId;
-            SkillId = project.SkillId;
+            UserResponse = new UserResponseDto(user);
+            SkillResponse = new SkillResponseDto(skill);
         }
 
         public string? Id { get; set; }
@@ -17,8 +20,8 @@ namespace hackateam.Dtos.Project
         
         public string? Description { get; set; }
 
-        public string? UserId { get; set; }
+        public UserResponseDto? UserResponse { get; set; }
 
-        public string? SkillId { get; set; }
+        public SkillResponseDto? SkillResponse { get; set; }
     }
 }
