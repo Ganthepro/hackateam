@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Gan\\hackateam\\hackateam-api.csproj": {}
+    "C:\\Users\\pawit\\OneDrive\\Documents\\GitHub\\hackateam\\hackateam-api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Gan\\hackateam\\hackateam-api.csproj": {
+    "C:\\Users\\pawit\\OneDrive\\Documents\\GitHub\\hackateam\\hackateam-api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Gan\\hackateam\\hackateam-api.csproj",
+        "projectUniqueName": "C:\\Users\\pawit\\OneDrive\\Documents\\GitHub\\hackateam\\hackateam-api.csproj",
         "projectName": "hackateam-api",
-        "projectPath": "C:\\Users\\Gan\\hackateam\\hackateam-api.csproj",
-        "packagesPath": "C:\\Users\\Gan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Gan\\hackateam\\obj\\",
+        "projectPath": "C:\\Users\\pawit\\OneDrive\\Documents\\GitHub\\hackateam\\hackateam-api.csproj",
+        "packagesPath": "C:\\Users\\pawit\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\pawit\\OneDrive\\Documents\\GitHub\\hackateam\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Gan\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\pawit\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -59,6 +59,14 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.6.2, )"
+            },
+            "Swashbuckle.AspNetCore.Annotations": {
+              "target": "Package",
+              "version": "[7.2.0, )"
+            },
+            "Swashbuckle.AspNetCore.Filters": {
+              "target": "Package",
+              "version": "[8.0.2, )"
             }
           },
           "imports": [
@@ -80,7 +88,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
