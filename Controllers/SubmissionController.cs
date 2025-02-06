@@ -26,7 +26,7 @@ public class SubmissionController : Controller
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var submissions = await _submissionService.GetAll();
         var user = await _userServices.Get(user => user.Id == userId);
-        return await Task.FromResult(submissions.Select(submission => new SubmissionResponseDto(submission)).ToList());
+        return await Task.FromResult(submissions.Select(submission => new SubmissionResponseDto(submission, user)).ToList());
     }
 
     [HttpPost]
