@@ -102,7 +102,6 @@ public class NotificationController : Controller
 
         await _notificationService.Update(notification => notification.Id == id, updateNotificationDto);
 
-        // Get updated notification with related data
         var updatedNotification = await _notificationService.Get(notification => notification.Id == id);
         var user = await _userService.Get(user => user.Id == updatedNotification.UserId);
         var team = await _teamService.Get(team => team.Id == updatedNotification.TeamId);
