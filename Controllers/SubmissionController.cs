@@ -13,11 +13,13 @@ public class SubmissionController : Controller
 {
     private readonly SubmissionService _submissionService;
     private readonly UserService _userServices;
+    private readonly RequirementService _requirementService;
 
-    public SubmissionController(SubmissionService submissionService, UserService userServices)
+    public SubmissionController(SubmissionService submissionService, UserService userServices, RequirementService requirementService)
     {
         _submissionService = submissionService;
         _userServices = userServices;
+        _requirementService = requirementService;
     }
 
     [HttpGet]
@@ -26,6 +28,7 @@ public class SubmissionController : Controller
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var submissions = await _submissionService.GetAll();
         var user = await _userServices.Get(user => user.Id == userId);
+
         return await Task.FromResult(submissions.Select(submission => new SubmissionResponseDto(submission, user)).ToList());
     }
 
@@ -35,7 +38,8 @@ public class SubmissionController : Controller
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var submission = await _submissionService.Create(userId!, createSubmissionDto);
         var user = await _userServices.Get(user => user.Id == submission.UserId);
-        return CreatedAtAction(nameof(Get), new { id = submission.Id }, new SubmissionResponseDto(submission, user));
+        var requirement = await _requirementService.Get(requirement => requirement.Id == submission.RequirementId);
+        return CreatedAtAction(nameof(Get), new { id = submission.Id }, new SubmissionResponseDto(submission, user, requirement));
     }
 
     [HttpGet("{id:length(24)}")]
@@ -44,7 +48,8 @@ public class SubmissionController : Controller
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var submission = await _submissionService.Get(submission => submission.Id == id && submission.UserId == userId);
         var user = await _userServices.Get(user => user.Id == submission.UserId);
-        return await Task.FromResult(Ok(new SubmissionResponseDto(submission, user)));
+        var requirement = await _requirementService.Get(requirement => requirement.Id == submission.RequirementId);
+        return await Task.FromResult(Ok(new SubmissionResponseDto(submission, user, requirement)));
     }
 
 
@@ -54,7 +59,8 @@ public class SubmissionController : Controller
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var submission = await _submissionService.Update(submission => submission.Id == id && submission.UserId == userId, updateSubmissionDto);
         var user = await _userServices.Get(user => user.Id == submission.UserId);
-        return await Task.FromResult(Ok(new SubmissionResponseDto(submission, user)));
+        var requirement = await _requirementService.Get(requirement => requirement.Id == submission.RequirementId);
+        return await Task.FromResult(Ok(new SubmissionResponseDto(submission, user, requirement)));
     }
 
     [HttpDelete]
