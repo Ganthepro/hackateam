@@ -9,5 +9,8 @@ namespace hackateam.Dtos.Notification
 
         [Required]
         public string? UserId { get; set; }
+
+        [Required]
+        public string? TeamId { get; set; }
     }
 }

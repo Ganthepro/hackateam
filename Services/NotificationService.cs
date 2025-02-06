@@ -44,7 +44,8 @@ public class NotificationService
             var notification = new Notification
             {
                 Type = createNotificationDto.Type,
-                UserId = createNotificationDto.UserId
+                UserId = createNotificationDto.UserId,
+                TeamId = createNotificationDto.TeamId
             };
             await _notifications.InsertOneAsync(notification);
             return notification;
