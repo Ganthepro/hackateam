@@ -8,9 +8,6 @@ namespace hackateam.Dtos.Team
         [StringLength(100, MinimumLength = 3)]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Team lead ID is required")]
-        public string LeadId { get; set; }
-
         [Required(ErrorMessage = "Hackathon ID is required")]
         public string HackathonId { get; set; }
 
