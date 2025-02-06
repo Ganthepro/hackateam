@@ -31,7 +31,7 @@ public class TeamService
         return team;
     }
 
-    public async Task<Team> Create(CreateTeamDto createTeamDto)
+    public async Task<Team> Create(string id, CreateTeamDto createTeamDto)
     {
         try
         {
@@ -50,7 +50,7 @@ public class TeamService
             var team = new Team
             {
                 Name = createTeamDto.Name,
-                LeadId = createTeamDto.LeadId,
+                LeadId = id,
                 Status = TeamStatus.Opened,
                 HackathonId = createTeamDto.HackathonId,
                 ExpiredAt = createTeamDto.ExpiredAt // Ensure value is provided
