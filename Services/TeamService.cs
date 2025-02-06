@@ -51,7 +51,6 @@ public class TeamService
             {
                 Name = createTeamDto.Name,
                 LeadId = createTeamDto.LeadId,
-                CrewId = new List<string>(), // Initialize empty crew
                 Status = TeamStatus.Opened,
                 HackathonId = createTeamDto.HackathonId,
                 ExpiredAt = createTeamDto.ExpiredAt // Ensure value is provided
