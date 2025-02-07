@@ -1,19 +1,28 @@
-@{
-    ViewData["Title"] = "Login";
-}
-
-<section>
-    <h1>LOGIN</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/authen.css" asp-append-version="true" />
+    <title>@ViewData["Title"] - Login</title>
+</head>
+<body>
+    <section>
+    <h1>Login</h1>
     <form id="login">
-    <label for="fullname">Fullname</label>
+    <label for="fullname">Username or Email</label>
     <input type="text" id="fullname" name="fullname" required />
 
     <label for="password">Password</label>
     <input type="password" id="password" name="password" required />
 
-    <button type="submit">Login</button>
+    <div class="submit"><button type="submit">sign in</button></div>
     </form>
 </section>
 <footer>
-    <a asp-controller="Home" asp-action="Register">Create New Account</a>
+    Don't have an account ?
+    <a asp-controller="Home" asp-action="Register">Register</a>
 </footer>
+</body>
+</html>
+
