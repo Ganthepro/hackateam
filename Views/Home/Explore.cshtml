@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Explore</title>
+    @* Page Style *@
+    <link rel="stylesheet" href="~/css/explore.css" asp-append-version="true" />
+    @* Components Style *@
+    <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
+</head>
+<body>
+    @* Navbar Component *@
+    <nav class="navbar">
+        <div>Hackateam</div>
+        <div class="navbar-links">
+            <a asp-controller="Home" asp-action="Intro">Home</a>
+            <a asp-controller="Home" asp-action="Explore">Explore</a>
+            <a asp-controller="Home" asp-action="Team">Team</a>
+            <a asp-controller="Home" asp-action="Notification">Notification</a>
+            <a asp-controller="Home" asp-action="Profile">Profile</a>
+        </div>
+        <img src="~/pictures/dropdown-menu-icon.svg" alt="dropdown-menu" class="dropdown-menu"/>
+    </nav>
+
+    @* Content Page *@
+    <h1>Hello Explore-Page</h1>
+    <h1>Hello Explore-Page</h1>
+    <h1>Hello Explore-Page</h1>
+    <h1>Hello Explore-Page</h1>
+    <h1>Hello Explore-Page</h1>
+    <h1>Hello Explore-Page</h1>
+    <h1>Hello Explore-Page</h1>
+    <h1>Hello Explore-Page</h1>
+    <h1>Hello Explore-Page</h1>
+    <h1>Hello Explore-Page</h1>
+    <h1>Hello Explore-Page</h1>
+    <h1>Hello Explore-Page</h1>
+    <h1>Hello Explore-Page</h1>
+    <h1>Hello Explore-Page</h1>
+    <h1>Hello Explore-Page</h1>
+    <h1>Hello Explore-Page</h1>
+
+    @* Footer Component *@
+    <footer>
+        <div class="footer-content-01">
+            <p>© 2025 Hackateam</p>
+            <div class="footer-link">
+                <img src="~/pictures/github-icon.svg" alt="github-icon" />
+                <a href="#">Hackateam repository</a>
+            </div>
+            <div class="footer-link">
+                <img src="~/pictures/instagram-icon.svg" alt="instagram-icon" />
+                <a href="#">SAIG Instagram</a>
+            </div>
+        </div>
+        <div class="footer-content-02">
+            <p>KMITL Computer Engineering</p>
+            <div class="footer-logo">
+                <img src="~/pictures/KMITL-logo.svg" alt="KMITL-logo">
+                <img src="~/pictures/CE-logo.svg" alt="KMITL-logo">
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/js/navbar.js"></script>
+</body>
+</html>
