@@ -24,8 +24,8 @@ public class UserService
         _users.Indexes.CreateOne(indexModel);
     }
 
-    public async Task<List<User>> GetAll() =>
-        await _users.Find(user => true).ToListAsync();
+    public async Task<List<User>> GetAll(UserQueryDto userQueryDto) =>
+        await _users.Find(user => userQueryDto.Email ? ).Skip(userQueryDto.Page).Limit(userQueryDto.Limit).ToListAsync();
 
     public async Task<User> Get(Expression<Func<User, bool>> filter)
     {

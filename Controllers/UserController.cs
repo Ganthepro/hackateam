@@ -18,10 +18,10 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<List<UserResponseDto>>> Get()
+    [Authorize]
+    public async Task<ActionResult<List<UserResponseDto>>> Get(UserQueryDto userQueryDto)
     {
-        var users = await _userService.GetAll();
+        var users = await _userService.GetAll(userQueryDto);
         return await Task.FromResult(users.Select(user => new UserResponseDto(user)).ToList());
     }
 
