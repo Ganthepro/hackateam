@@ -11,12 +11,16 @@ namespace hackateam.Services;
 public class SubmissionService
 {
     private readonly IMongoCollection<Submission> _submissions;
+    private readonly RequirementService _requirementService;
+    private readonly TeamService _teamService;
 
-    public SubmissionService(IOptions<DatabaseSettings> settings)
+    public SubmissionService(IOptions<DatabaseSettings> settings, RequirementService requirementService, TeamService teamService)
     {
         var client = new MongoClient(settings.Value.ConnectionString);
         var database = client.GetDatabase(settings.Value.DatabaseName);
         _submissions = database.GetCollection<Submission>("Submissions");
+        _requirementService = requirementService;
+        _teamService = teamService;
     }
 
     public async Task<List<Submission>> GetAll() =>
@@ -36,6 +40,10 @@ public class SubmissionService
     {
         try
         {
+            var requirement = await _requirementService.Get(requirement => requirement.Id == createSubmissionDto.RequirementId);
+            var team = await _teamService.Get(team => team.Id == requirement.TeamId);
+            if (team.LeadId == id)
+                throw new HttpResponseException((int)HttpStatusCode.Forbidden, "Team lead cannot submit");
             var submission = new Submission
             {
                 UserId = id!,
