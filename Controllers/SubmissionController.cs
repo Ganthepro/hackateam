@@ -3,6 +3,7 @@ using hackateam.Services;
 using hackateam.Dtos.Submission;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using hackateam.Dtos.Utils;
 
 namespace hackateam.Controllers;
 
@@ -23,10 +24,10 @@ public class SubmissionController : Controller
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<SubmissionResponseDto>>> Get()
+    public async Task<ActionResult<List<SubmissionResponseDto>>> Get(PaginationQueryDto query)
     {
-        var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var submissions = await _submissionService.GetAll();
+        var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+        var submissions = await _submissionService.GetAll(userId, query);
         var user = await _userServices.Get(user => user.Id == userId);
 
         return await Task.FromResult(submissions.Select(submission => new SubmissionResponseDto(submission, user)).ToList());

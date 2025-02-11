@@ -5,6 +5,8 @@ using hackateam.Shared;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System.Linq.Expressions;
+using System.Security.Claims;
+using hackateam.Dtos.Utils;
 
 namespace hackateam.Services;
 
@@ -23,8 +25,8 @@ public class SubmissionService
         _teamService = teamService;
     }
 
-    public async Task<List<Submission>> GetAll() =>
-        await _submissions.Find(submission => true).ToListAsync();
+    public async Task<List<Submission>> GetAll(string userId, PaginationQueryDto query) =>
+        await _submissions.Find(submission => submission.UserId == userId).Skip(query.Page - 1).Limit(query.Limit).ToListAsync();
 
     public async Task<Submission> Get(Expression<Func<Submission, bool>> filter)
     {
