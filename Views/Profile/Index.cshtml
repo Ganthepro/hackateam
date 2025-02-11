@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Profile";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+    <title>@ViewData["Title"] - Profile</title>
+</head>
+<body>
+    <header>
+        <h1>My Profile</h1>
+    </header>
+
+    <main>
+        <section id="Name">
+            <h2>Full Name</h2>
+            <p>John Doe</p>
+
+            <h2>Education</h2>
+            <p>Bachelor's Degree in Computer Engineering</p>
+
+            <h2>Header</h2>
+            <p>Software Engineer</p>
+
+            <h2>Tel</h2>
+            <p>+123 456 7890</p>
+
+            <h2>Email</h2>
+            <p>johndoe@example.com</p>
+        </section>
+
+        <section id="project">
+            <h2>Projects</h2>
+            <ol>
+                <li>
+                    <h3>Title</h3>
+                    <p>Mobile App Development</p>
+
+                    <h3>Description</h3>
+                    <p>Develop Mobile App</p>
+
+                    <h3>Skill</h3>
+                    <p>Dart</p>
+                </li>
+                <li>
+                    <h3>Title</h3>
+                    <p>Web Development</p>
+
+                    <h3>Description</h3>
+                    <p>Develop Website</p>
+
+                    <h3>Skill</h3>
+                    <p>HTML, CSS, Javascript</p>
+                </li>
+            </ol>
+        </section>
+    </main>
+
+    <footer>
+        <a asp-controller="Profile" asp-action="EditProfile">Go To Edit Profile</a>
+        <a asp-controller="Profile" asp-action="EditProject">Go To Edit Project</a>
+    </footer>
+</body>
+</html>
