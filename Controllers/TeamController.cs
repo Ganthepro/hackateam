@@ -22,9 +22,9 @@ public class TeamController : Controller
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<TeamResponseDto>>> Get()
+    public async Task<ActionResult<List<TeamResponseDto>>> Get(TeamQueryDto teamQueryDto)
     {
-        var teams = await _teamService.GetAll();
+        var teams = await _teamService.GetAll(teamQueryDto);
         var teamDtos = new List<TeamResponseDto>();
         foreach (var team in teams)
         {
