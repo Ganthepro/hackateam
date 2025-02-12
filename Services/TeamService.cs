@@ -3,7 +3,7 @@ using hackateam.Models;
 using hackateam.Shared;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using MongoDB.Bson;  // This provides BsonDocument
+using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using System.Linq.Expressions;
 using hackateam.Dtos.Team;
@@ -19,14 +19,10 @@ public class TeamService
         var database = client.GetDatabase(settings.Value.DatabaseName);
         _teams = database.GetCollection<Team>("Teams");
     }
-
-    // public async Task<List<Team>> GetAll() =>
-    //     await _teams.Find(team => true).ToListAsync();
     public async Task<List<Team>> GetAll(TeamQueryDto teamQueryDto)
     {
         var pipeline = new List<BsonDocument>();
 
-        // Join with Users collection to get Lead Name
         pipeline.Add(new BsonDocument("$lookup", new BsonDocument
             {
                 { "from", "Users" },
@@ -35,7 +31,6 @@ public class TeamService
                 { "as", "Lead" }
             }));
 
-        // Join with Hackathons collection to get Hackathon Name
         pipeline.Add(new BsonDocument("$lookup", new BsonDocument
             {
                 { "from", "Hackathons" },
@@ -44,11 +39,9 @@ public class TeamService
                 { "as", "Hackathon" }
             }));
 
-        // Unwind the Lead and Hackathon arrays
         pipeline.Add(new BsonDocument("$unwind", new BsonDocument("path", "$Lead")));
         pipeline.Add(new BsonDocument("$unwind", new BsonDocument("path", "$Hackathon")));
 
-        // Build filter conditions
         var filters = new List<BsonDocument>();
 
         if (!string.IsNullOrEmpty(teamQueryDto.Name))
@@ -71,17 +64,14 @@ public class TeamService
             filters.Add(new BsonDocument("Status", teamQueryDto.Status.Value.ToString()));
         }
 
-        // Apply filter if there are any conditions
         if (filters.Count > 0)
         {
             pipeline.Add(new BsonDocument("$match", new BsonDocument("$and", new BsonArray(filters))));
         }
 
-        // Apply pagination
         pipeline.Add(new BsonDocument("$skip", (teamQueryDto.Page - 1) * teamQueryDto.Limit));
         pipeline.Add(new BsonDocument("$limit", teamQueryDto.Limit));
 
-        // Execute aggregation pipeline
         var results = await _teams.Aggregate<Team>(pipeline).ToListAsync();
         return results;
 
@@ -102,14 +92,12 @@ public class TeamService
         try
         {
 
-            // Ensure ExpiredAt is in the future
             if (createTeamDto.ExpiredAt <= DateTime.UtcNow)
             {
                 throw new HttpResponseException((int)HttpStatusCode.BadRequest,
                     Constants.TeamMessage.EXPIRE_DATE_CONFLICT);
             }
 
-            // Validate if team name is unique for this hackathon
             var existingTeam = await _teams.Find(t =>
                 t.Name == createTeamDto.Name &&
                 t.HackathonId == createTeamDto.HackathonId
@@ -127,7 +115,7 @@ public class TeamService
                 LeadId = id,
                 Status = TeamStatus.Opened,
                 HackathonId = createTeamDto.HackathonId,
-                ExpiredAt = createTeamDto.ExpiredAt // Ensure value is provided
+                ExpiredAt = createTeamDto.ExpiredAt
             };
 
             await _teams.InsertOneAsync(team);
@@ -144,7 +132,6 @@ public class TeamService
     public async Task<Team> Update(Expression<Func<Team, bool>> filter, UpdateTeamDto updateTeamDto)
     {
 
-        // Ensure ExpiredAt is in the future
         if (updateTeamDto.ExpiredAt <= DateTime.UtcNow)
         {
             throw new HttpResponseException((int)HttpStatusCode.BadRequest,

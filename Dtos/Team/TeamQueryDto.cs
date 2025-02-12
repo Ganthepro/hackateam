@@ -8,14 +8,14 @@ namespace hackateam.Dtos.Team;
 public class TeamQueryDto : PaginationQueryDto
 {
     [FromQuery]
-    public string? Name { get; set; }  // Filter by Team Name
+    public string? Name { get; set; } 
 
     [FromQuery]
-    public string? LeadName { get; set; }  // Filter by Lead Name
+    public string? LeadName { get; set; }
 
     [FromQuery]
-    public string? HackathonName { get; set; }  // Filter by Hackathon Name
+    public string? HackathonName { get; set; }
 
     [FromQuery]
-    public TeamStatus? Status { get; set; }  // Filter by Team Status
+    public TeamStatus? Status { get; set; }
 }

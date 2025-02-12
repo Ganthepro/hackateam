@@ -48,11 +48,7 @@ namespace hackateam.Models
         [BsonRequired]
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime ExpiredAt { get; set; }
-
-        // This should match the structure of the Lead document
-        public User Lead { get; set; } // 'Lead' is now a complex object
-
-        // This should match the structure of the Hackathon document
-        public Hackathon Hackathon { get; set; } // 'Hackathon' is a complex object
+        public User Lead { get; set; }
+        public Hackathon Hackathon { get; set; }
     }
 }
