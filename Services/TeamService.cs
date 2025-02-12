@@ -35,6 +35,14 @@ public class TeamService
     {
         try
         {
+
+            // Ensure ExpiredAt is in the future
+            if (createTeamDto.ExpiredAt <= DateTime.UtcNow)
+            {
+                throw new HttpResponseException((int)HttpStatusCode.BadRequest, 
+                    Constants.TeamMessage.EXPIRE_DATE_CONFLICT);
+            }
+            
             // Validate if team name is unique for this hackathon
             var existingTeam = await _teams.Find(t => 
                 t.Name == createTeamDto.Name && 
