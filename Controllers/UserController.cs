@@ -19,9 +19,9 @@ public class UserController : Controller
 
     [HttpGet]
     [Authorize]
-    public async Task<ActionResult<List<UserResponseDto>>> Get()
+    public async Task<ActionResult<List<UserResponseDto>>> Get(UserQueryDto userQueryDto)
     {
-        var users = await _userService.GetAll();
+        var users = await _userService.GetAll(userQueryDto);
         return await Task.FromResult(users.Select(user => new UserResponseDto(user)).ToList());
     }
 
@@ -31,9 +31,11 @@ public class UserController : Controller
         return await Task.FromResult(Ok(new UserResponseDto(await _userService.Get(user => user.Id == id))));
     }
 
-    [HttpPatch("{id:length(24)}")]
-    public async Task<ActionResult<UserResponseDto>> Update(string id, UpdateUserDto updateUserDto)
+    [HttpPatch]
+    [Authorize]
+    public async Task<ActionResult<UserResponseDto>> Update(UpdateUserDto updateUserDto)
     {
+        var id = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var user = await _userService.Get(user => user.Id == id);
         user = await _userService.Update(user => user.Id == id, updateUserDto);
         return await Task.FromResult(Ok(new UserResponseDto(user)));

@@ -5,22 +5,28 @@ using hackateam.Shared;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System.Linq.Expressions;
+using System.Security.Claims;
+using hackateam.Dtos.Utils;
 
 namespace hackateam.Services;
 
 public class SubmissionService
 {
     private readonly IMongoCollection<Submission> _submissions;
+    private readonly RequirementService _requirementService;
+    private readonly TeamService _teamService;
 
-    public SubmissionService(IOptions<DatabaseSettings> settings)
+    public SubmissionService(IOptions<DatabaseSettings> settings, RequirementService requirementService, TeamService teamService)
     {
         var client = new MongoClient(settings.Value.ConnectionString);
         var database = client.GetDatabase(settings.Value.DatabaseName);
         _submissions = database.GetCollection<Submission>("Submissions");
+        _requirementService = requirementService;
+        _teamService = teamService;
     }
 
-    public async Task<List<Submission>> GetAll() =>
-        await _submissions.Find(submission => true).ToListAsync();
+    public async Task<List<Submission>> GetAll(string userId, PaginationQueryDto query) =>
+        await _submissions.Find(submission => submission.UserId == userId).Skip(query.Page - 1).Limit(query.Limit).ToListAsync();
 
     public async Task<Submission> Get(Expression<Func<Submission, bool>> filter)
     {
@@ -36,6 +42,10 @@ public class SubmissionService
     {
         try
         {
+            var requirement = await _requirementService.Get(requirement => requirement.Id == createSubmissionDto.RequirementId);
+            var team = await _teamService.Get(team => team.Id == requirement.TeamId);
+            if (team.LeadId == id)
+                throw new HttpResponseException((int)HttpStatusCode.Forbidden, "Team lead cannot submit");
             var submission = new Submission
             {
                 UserId = id!,
