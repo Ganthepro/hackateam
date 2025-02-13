@@ -48,6 +48,7 @@ public class AuthService
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, jwtPayloadDto.Id!),
+            new Claim(ClaimTypes.Role, jwtPayloadDto.Role.ToString()!)
         };
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SecretKey"]!));
         var credential = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
