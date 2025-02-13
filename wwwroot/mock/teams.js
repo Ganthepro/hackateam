@@ -1,0 +1,166 @@
+import { hackathons } from "./hackathons.js";
+
+/**
+ * @typedef {Object} Teams
+ * @property {number} id
+ * @property {string} name
+ * @property {string} lead
+ * @property {string["Opened", "Closed", "Cancelled"]} status
+ * @property {Object} hackathon
+ * @property {string} createdAt
+ * @property {string} updatedAt
+ * @property {string} expiredAt
+ */
+
+export const teams = [
+    {
+        id: 1,
+        name: "Team-01",
+        lead: "Tom Cassidy",
+        status: "Opened",
+        hackathon: hackathons[0],
+        createdAt: "2025-01-25",
+        updatedAt: "2025-02-01",
+        expiredAt: "2025-02-05",
+    },
+    {
+        id: 2,
+        name: "Team-02",
+        lead: "Silly Bonya",
+        status: "Closed",
+        hackathon: hackathons[1],
+        createdAt: "2025-01-25",
+        updatedAt: "2025-02-01",
+        expiredAt: "2025-02-05",
+    },
+    {
+        id: 3,
+        name: "Team-03",
+        lead: "Sara Conora",
+        status: "Cancelled",
+        hackathon: hackathons[1],
+        createdAt: "2025-01-25",
+        updatedAt: "2025-02-01",
+        expiredAt: "2025-02-05",
+    },
+    {
+        id: 4,
+        name: "Team-04",
+        lead: "John Doe",
+        status: "Opened",
+        hackathon: hackathons[2],
+        createdAt: "2025-01-25",
+        updatedAt: "2025-02-01",
+        expiredAt: "2025-02-05",
+    },
+    {
+        id: 5,
+        name: "Team-05",
+        lead: "Alice Johnson",
+        status: "Closed",
+        hackathon: hackathons[2],
+        createdAt: "2025-01-25",
+        updatedAt: "2025-02-01",
+        expiredAt: "2025-02-05",
+    },
+    {
+        id: 6,
+        name: "Team-06",
+        lead: "Bob Smith",
+        status: "Closed",
+        hackathon: hackathons[3],
+        createdAt: "2025-01-25",
+        updatedAt: "2025-02-01",
+        expiredAt: "2025-02-05",
+    },
+    {
+        id: 7,
+        name: "Team-07",
+        lead: "Charlie Brown",
+        status: "Opened",
+        hackathon: hackathons[3],
+        createdAt: "2025-01-25",
+        updatedAt: "2025-02-01",
+        expiredAt: "2025-02-05",
+    },
+    {
+        id: 8,
+        name: "Team-08",
+        lead: "David Wilson",
+        status: "Closed",
+        hackathon: hackathons[4],
+        createdAt: "2025-01-25",
+        updatedAt: "2025-02-01",
+        expiredAt: "2025-02-05",
+    },
+    {
+        id: 9,
+        name: "Team-09",
+        lead: "Eva Green",
+        status: "Opened",
+        hackathon: hackathons[4],
+        createdAt: "2025-01-25",
+        updatedAt: "2025-02-01",
+        expiredAt: "2025-02-05",
+    },
+    {
+        id: 10,
+        name: "Team-10",
+        lead: "Frank White",
+        status: "Opened",
+        hackathon: hackathons[5],
+        createdAt: "2025-01-25",
+        updatedAt: "2025-02-01",
+        expiredAt: "2025-02-05",
+    },
+    {
+        id: 11,
+        name: "Team-11",
+        lead: "Grace Black",
+        status: "Cancelled",
+        hackathon: hackathons[4],
+        createdAt: "2025-01-25",
+        updatedAt: "2025-02-01",
+        expiredAt: "2025-02-05",
+    },
+    // {
+    //     id: 12,
+    //     name: "Team-12",
+    //     lead: "Henry Adams",
+    //     status: "Closed",
+    //     hackathon: hackathons[1],
+    //     createdAt: "2025-01-25",
+    //     updatedAt: "2025-02-01",
+    //     expiredAt: "2025-02-05",
+    // },
+    // {
+    //     id: 13,
+    //     name: "Team-13",
+    //     lead: "Ivy Clark",
+    //     status: "Opened",
+    //     hackathon: hackathons[0],
+    //     createdAt: "2025-01-25",
+    //     updatedAt: "2025-02-01",
+    //     expiredAt: "2025-02-05",
+    // },
+    // {
+    //     id: 14,
+    //     name: "Team-14",
+    //     lead: "Jack Davis",
+    //     status: "Closed",
+    //     hackathon: hackathons[0],
+    //     createdAt: "2025-01-25",
+    //     updatedAt: "2025-02-01",
+    //     expiredAt: "2025-02-05",
+    // },
+    {
+        id: 14,
+        name: "Team-15",
+        lead: "Katie Evans",
+        status: "Opened",
+        hackathon: hackathons[2],
+        createdAt: "2025-01-25",
+        updatedAt: "2025-02-01",
+        expiredAt: "2025-02-05",
+    }
+];
