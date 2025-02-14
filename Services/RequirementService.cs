@@ -36,8 +36,6 @@ public class RequirementService
     {
         try
         {
-
-            // Validate if role name is unique for this team
             var existingRole = await _requirement.Find(t => 
                 t.RoleName == createRequirementDto.RoleName && 
                 t.TeamId == createRequirementDto.TeamId

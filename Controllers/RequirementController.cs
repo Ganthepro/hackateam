@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using hackateam.Services;
 using hackateam.Dtos.Requirement;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace hackateam.Controllers;
 
@@ -54,11 +55,17 @@ public class RequirementController : Controller
     [HttpPost]
     public async Task<ActionResult<RequirementResponseDto>> Create(CreateRequirementDto createRequirementDto)
     {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         var team = await _teamService.Get(team => team.Id == createRequirementDto.TeamId);
         if (team == null)
         {
             return NotFound(Constants.TeamMessage.NOT_FOUND);
+        }
+
+        if (team.LeadId != userId)
+        {
+            return NotFound(Constants.TeamMessage.NO_PERMISSION);
         }
 
         var skill = await _skillService.Get(skill => skill.Id == createRequirementDto.SkillId);
@@ -77,6 +84,7 @@ public class RequirementController : Controller
     [HttpPatch("{id:length(24)}")]
     public async Task<ActionResult<RequirementResponseDto>> Update(string id, UpdateRequirementDto updateRequirementDto)
     {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         var requirement = await _requirementService.Get(requirement => requirement.Id == id);
         if (requirement == null)
@@ -92,6 +100,11 @@ public class RequirementController : Controller
 
         var updatedRequirement = await _requirementService.Update(requirement => requirement.Id == id, updateRequirementDto);
         var team = await _teamService.Get(team => team.Id == updatedRequirement.TeamId);
+
+        if (team.LeadId != userId)
+        {
+            return NotFound(Constants.TeamMessage.NO_PERMISSION);
+        }
 
         return Ok(new RequirementResponseDto(updatedRequirement, team, skill));
     }
