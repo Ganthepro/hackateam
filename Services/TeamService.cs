@@ -128,6 +128,12 @@ public class TeamService
         }
     }
 
+    public async void UpdateBanner(string id, string fileName)
+    {
+        var team = await Get(team => team.Id == id);
+        team.Banner = fileName;
+        await _teams.ReplaceOneAsync(team => team.Id == id, team);
+    }
 
     public async Task<Team> Update(Expression<Func<Team, bool>> filter, UpdateTeamDto updateTeamDto)
     {

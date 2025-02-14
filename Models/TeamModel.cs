@@ -50,5 +50,6 @@ namespace hackateam.Models
         public DateTime ExpiredAt { get; set; }
         public User Lead { get; set; }
         public Hackathon Hackathon { get; set; }
+        public string? Banner { get; set; } = null;
     }
 }
