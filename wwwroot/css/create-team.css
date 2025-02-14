@@ -1,0 +1,73 @@
+/* Default for all pages */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", serif;
+    font-size: 20px;
+}
+
+.member-requirement-group-container {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+}
+
+.delete-requirement-btn {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    height: fit-content;
+}
+
+.delete-requirement-btn:hover {
+    background-color: #cc0000;
+}
+
+.add-requirement-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.add-requirement-btn:hover {
+    background-color: #45a049;
+}
+
+/* Default (Large screens, ≥ 1200px) */
+body {
+    height: fit-content;
+    min-height: 100vh;
+    background-color: #444F5A;
+    font-size: 24px;
+    color: #EEEEEE;
+}
+
+/* Small Laptops & Tablets (≤ 1199px) */
+@media (max-width: 1200px) {
+    body {
+        font-size: 20px;
+    }
+}
+
+/* Tablets (≤ 769px) */
+@media (max-width: 769px) {
+    body {
+        font-size: 18px;
+    }
+}
+
+/* Mobile Phones (≤ 480px) */
+@media (max-width: 480px) {
+    body {
+        font-size: 16px;
+    }
+}

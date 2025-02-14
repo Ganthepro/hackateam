@@ -1,22 +1,22 @@
 import { teams } from "../mock/teams.js";
 
+let { ITEMS_PER_PAGE, MAX_PAGE_BUTTONS } = updateItemsPerPage();
+let currentPageFeatured = 1;
+let currentPageAll = 1;
+let resizeTimeout;
+
 function updateItemsPerPage() {
     const width = window.innerWidth;
     if (width <= 480) {
-        return 3;
+        return { ITEMS_PER_PAGE: 3, MAX_PAGE_BUTTONS: 3 };
     } else if (width <= 769) {
-        return 4;
+        return { ITEMS_PER_PAGE: 4, MAX_PAGE_BUTTONS: 3 };
     } else if (width <= 1199) {
-        return 6;
+        return { ITEMS_PER_PAGE: 6, MAX_PAGE_BUTTONS: 5 };
     } else {
-        return 8;
+        return { ITEMS_PER_PAGE: 8, MAX_PAGE_BUTTONS: 5 };
     }
 }
-
-let ITEMS_PER_PAGE = updateItemsPerPage();
-const MAX_PAGE_BUTTONS = 5;
-let currentPageFeatured = 1;
-let currentPageAll = 1;
 
 function createRequirementCard(team) {
     const card = document.createElement('div');
@@ -44,6 +44,8 @@ function createRequirementCard(team) {
 
 function displayTeams(teams, containerId, currentPage) {
     const container = document.getElementById(containerId);
+    if (!container) return;
+
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     const end = start + ITEMS_PER_PAGE;
     const paginatedTeams = teams.slice(start, end);
@@ -102,11 +104,22 @@ function getPageNumbers(currentPage, totalPages) {
     return pages;
 }
 
+function createPaginationButton(page, currentPage, onClick) {
+    const pageBtn = document.createElement('button');
+    pageBtn.classList.add('page-number');
+    if (page.number === currentPage) pageBtn.classList.add('active');
+    pageBtn.textContent = page.number;
+    pageBtn.addEventListener('click', onClick);
+    return pageBtn;
+}
+
 function updatePagination(teams, paginationId, currentPage, containerIdToUpdate, isFeatureSection) {
-    const totalPages = Math.ceil(teams.length / ITEMS_PER_PAGE);
     const paginationContainer = document.getElementById(paginationId);
+    if (!paginationContainer) return;
+
+    const totalPages = Math.ceil(teams.length / ITEMS_PER_PAGE);
     
-    paginationContainer.innerHTML = `
+    const paginationHTML = `
         <button class="pagination-btn prev-btn" ${currentPage === 1 ? 'disabled' : ''}>
             Prev
         </button>
@@ -116,26 +129,29 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
         </button>
     `;
     
-    const numbersContainer = paginationContainer.querySelector('.pagination-numbers');
+    // Remove old event listeners by replacing the element
+    const newPaginationContainer = paginationContainer.cloneNode(false);
+    newPaginationContainer.innerHTML = paginationHTML;
+    paginationContainer.parentNode.replaceChild(newPaginationContainer, paginationContainer);
+    
+    const numbersContainer = newPaginationContainer.querySelector('.pagination-numbers');
     const pages = getPageNumbers(currentPage, totalPages);
     
     pages.forEach(page => {
         if (page.isNumber) {
-            const pageBtn = document.createElement('button');
-            pageBtn.classList.add('page-number');
-            if (page.number === currentPage) pageBtn.classList.add('active');
-            pageBtn.textContent = page.number;
-            pageBtn.addEventListener('click', () => {
+            const onClick = () => {
+                const newPage = page.number;
                 if (isFeatureSection) {
-                    currentPageFeatured = page.number;
+                    currentPageFeatured = newPage;
                     displayTeams(teams, containerIdToUpdate, currentPageFeatured);
                     updatePagination(teams, paginationId, currentPageFeatured, containerIdToUpdate, isFeatureSection);
                 } else {
-                    currentPageAll = page.number;
+                    currentPageAll = newPage;
                     displayTeams(teams, containerIdToUpdate, currentPageAll);
                     updatePagination(teams, paginationId, currentPageAll, containerIdToUpdate, isFeatureSection);
                 }
-            });
+            };
+            const pageBtn = createPaginationButton(page, currentPage, onClick);
             numbersContainer.appendChild(pageBtn);
         } else {
             const ellipsis = document.createElement('span');
@@ -145,8 +161,9 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
         }
     });
     
-    const prevBtn = paginationContainer.querySelector('.prev-btn');
-    const nextBtn = paginationContainer.querySelector('.next-btn');
+    // Add event listeners for prev/next buttons
+    const prevBtn = newPaginationContainer.querySelector('.prev-btn');
+    const nextBtn = newPaginationContainer.querySelector('.next-btn');
     
     prevBtn.addEventListener('click', () => {
         if (currentPage > 1) {
@@ -180,13 +197,20 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
 function main() {
     displayTeams(teams, 'featured-cards', currentPageFeatured);
     displayTeams(teams, 'all-cards', currentPageAll);
-    updatePagination(teams, 'all-pagination', currentPageAll, 'all-cards', false);
     updatePagination(teams, 'featured-pagination', currentPageFeatured, 'featured-cards', true);
+    updatePagination(teams, 'all-pagination', currentPageAll, 'all-cards', false);
 }
 
+// Debounced window resize handler
 window.addEventListener('resize', () => {
-    ITEMS_PER_PAGE = updateItemsPerPage();
-    main();
+    if (resizeTimeout) {
+        clearTimeout(resizeTimeout);
+    }
+    
+    resizeTimeout = setTimeout(() => {
+        ({ ITEMS_PER_PAGE, MAX_PAGE_BUTTONS } = updateItemsPerPage());
+        main();
+    }, 250);
 });
 
 document.addEventListener('DOMContentLoaded', main);
