@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("hackateam-api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+eb1885686eb72c6e7b3bf7f0cdd410e76a31b05d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ac4a61125a9220d04e2821f0e3e952a0040a7379")]
 [assembly: System.Reflection.AssemblyProductAttribute("hackateam-api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("hackateam-api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
