@@ -14,7 +14,7 @@ public class FileService
         return new FileStream(filePath, FileMode.Open);
     }
 
-    public async Task<string?> UploadFile(string fileName, IFormFile file, FolderName folderName)
+    private async Task<string?> UploadFile(string fileName, IFormFile file, FolderName folderName)
     {
         if (file == null || file.Length == 0)
         {
