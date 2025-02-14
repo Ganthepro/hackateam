@@ -5,6 +5,7 @@ using hackateam.Shared;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System.Linq.Expressions;
+using MongoDB.Bson;
 
 namespace hackateam.Services;
 
@@ -24,8 +25,27 @@ public class SkillService
         _skills.Indexes.CreateOne(indexModel);
     }
 
-    public async Task<List<Skill>> GetAll() =>
-        await _skills.Find(skill => true).ToListAsync();
+    public async Task<List<Skill>> GetAll(SkillQueryDto skillQueryDto)
+    {
+        var filters = new List<FilterDefinition<Skill>>();
+
+        if (!string.IsNullOrEmpty(skillQueryDto.Title))
+        {
+            // Option 1: Case-insensitive regex search
+            filters.Add(Builders<Skill>.Filter.Regex(
+                skill => skill.Title,
+                new BsonRegularExpression($".*{skillQueryDto.Title}.*", "i")
+            ));
+
+        }
+
+        var filter = filters.Any() ? Builders<Skill>.Filter.Or(filters) : Builders<Skill>.Filter.Empty;
+
+        return await _skills.Find(filter)
+            .Skip((skillQueryDto.Page - 1) * skillQueryDto.Limit)
+            .Limit(skillQueryDto.Limit)
+            .ToListAsync();
+    }
 
     public async Task<Skill> Get(Expression<Func<Skill, bool>> filter)
     {
@@ -58,7 +78,7 @@ public class SkillService
     {
         var updateDefinitionBuilder = Builders<Skill>.Update;
         var updateDefinitions = new List<UpdateDefinition<Skill>>();
-        foreach(var property in updateSkillDto.GetType().GetProperties())
+        foreach (var property in updateSkillDto.GetType().GetProperties())
         {
             if (property.GetValue(updateSkillDto) != null)
             {
@@ -67,7 +87,8 @@ public class SkillService
             }
         }
         var update = updateDefinitionBuilder.Combine(updateDefinitions);
-        var skill = await _skills.FindOneAndUpdateAsync<Skill>(filter, update, new FindOneAndUpdateOptions<Skill>{
+        var skill = await _skills.FindOneAndUpdateAsync<Skill>(filter, update, new FindOneAndUpdateOptions<Skill>
+        {
             ReturnDocument = ReturnDocument.After
         });
         if (skill == null)

@@ -24,8 +24,30 @@ public class ProjectService
         _projects.Indexes.CreateOne(indexModel);
     }
 
-    public async Task<List<Project>> GetAll() =>
-        await _projects.Find(project => true).ToListAsync();
+    public async Task<List<Project>> GetAll(ProjectQueryDto projectQueryDto)
+    {
+        var filters = new List<FilterDefinition<Project>>();
+
+        if (!string.IsNullOrEmpty(projectQueryDto.Title))
+            filters.Add(Builders<Project>.Filter.Eq(project => project.Title, projectQueryDto.Title));
+        if (!string.IsNullOrEmpty(projectQueryDto.UserName))
+        {
+            var user = await _userService.Get(user => user.FullName == projectQueryDto.UserName);
+            filters.Add(Builders<Project>.Filter.Eq(project => project.UserId, user.Id));
+        }
+        if (!string.IsNullOrEmpty(projectQueryDto.SkillName))
+        {
+            var skill = await _skillService.Get(skill => skill.Name == projectQueryDto.SkillName);
+            filters.Add(Builders<Project>.Filter.Eq(project => project.SkillId, skill.Id));
+        }
+    
+        var filter = filters.Any() ? Builders<Project>.Filter.And(filters) : Builders<Project>.Filter.Empty;
+
+        return await _projects.Find(filter)
+            .Skip((projectQueryDto.Page - 1) * projectQueryDto.Limit)
+            .Limit(projectQueryDto.Limit)
+            .ToListAsync();
+    }
 
     public async Task<Project> Get(Expression<Func<Project, bool>> filter)
     {
