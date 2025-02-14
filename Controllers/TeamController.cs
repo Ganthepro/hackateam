@@ -12,14 +12,12 @@ using System.Net;
 public class TeamController : Controller
 {
     private readonly TeamService _teamService;
-    private readonly HackathonService _hackathonService;
     private readonly UserService _userService;
     private readonly FileService _fileService;
 
-    public TeamController(TeamService teamService, HackathonService hackathonService, UserService userService, FileService fileService)
+    public TeamController(TeamService teamService, UserService userService, FileService fileService)
     {
         _teamService = teamService;
-        _hackathonService = hackathonService;
         _userService = userService;
         _fileService = fileService;
     }
@@ -61,9 +59,8 @@ public class TeamController : Controller
         var teamDtos = new List<TeamResponseDto>();
         foreach (var team in teams)
         {
-            var hackathon = await _hackathonService.Get(hackathon => hackathon.Id == team.HackathonId);
             var user = await _userService.Get(user => user.Id == team.LeadId);
-            teamDtos.Add(new TeamResponseDto(team, hackathon, user));
+            teamDtos.Add(new TeamResponseDto(team, user));
         }
         return Ok(teamDtos);
     }
@@ -78,28 +75,22 @@ public class TeamController : Controller
             return NotFound(Constants.TeamMessage.NOT_FOUND);
         }
         var user = await _userService.Get(user => user.Id == team.LeadId);
-        var hackathon = await _hackathonService.Get(hackathon => hackathon.Id == team.HackathonId);
 
-        return Ok(new TeamResponseDto(team, hackathon, user));
+        return Ok(new TeamResponseDto(team, user));
     }
 
     [HttpPost]
     [Authorize]
     public async Task<ActionResult<TeamResponseDto>> Create(CreateTeamDto createTeamDto)
     {
-        var hackathon = await _hackathonService.Get(hackathon => hackathon.Id == createTeamDto.HackathonId);
-        if (hackathon == null)
-        {
-            return NotFound(Constants.HackathonMessage.NOT_FOUND);
-        }
-
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
         var team = await _teamService.Create(userId!, createTeamDto);
+        var user = await _userService.Get(user => user.Id == team.LeadId);
+
         return CreatedAtAction(
             nameof(Get),
             new { id = team.Id },
-            new TeamResponseDto(team, hackathon));
+            new TeamResponseDto(team, user));
 
     }
 
@@ -115,9 +106,8 @@ public class TeamController : Controller
 
         var user = await _userService.Get(user => user.Id == team.LeadId);
         var updatedTeam = await _teamService.Update(team => team.Id == id, updateTeamDto);
-        var hackathon = await _hackathonService.Get(hackathon => hackathon.Id == updatedTeam.HackathonId);
         
-        return Ok(new TeamResponseDto(updatedTeam, hackathon, user));
+        return Ok(new TeamResponseDto(updatedTeam, user));
     }
 
     [HttpDelete("{id}")]
