@@ -4,6 +4,7 @@
     padding: 0;
     font-family: "Inter", serif;
     font-size: 20px;
+    color: #EEEEEE;
 }
 
 /* Default (Large screens, ≥ 1200px) */
@@ -15,7 +16,6 @@ body {
     box-sizing: border-box;
     background-color: #444F5A;
     font-size: 24px;
-    color: #EEEEEE;
 }
 
 .explore-content {
@@ -91,34 +91,103 @@ body {
 }
 
 .team-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
     width: 100%;
     height: fit-content;
-    border: 2px solid #FF6701;
-    color: #EEEEEE;
 }
 
 .team-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 5fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 24px;
     width: 100%;
-    height: fit-content;
 }
 
 .card {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    height: fit-content;
+    border-radius: 16px;
+    background: #222831;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+}
+
+.card-status {
+    padding: 12px;
+}
+
+.card-image img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.card-detail {
+    padding: 12px;
+}
+
+.card-detail p {
+    font-size: 0.9rem;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 12px;
     width: 100%;
-    height: 100%;
-    padding: 24px;
-    border-radius: 16px;
+}
+
+.pagination-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
     background-color: #FF6701;
-    color: #EEEEEE;
-    font-size: 1rem;
+    color: white;
+    font-size: 0.8rem;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
+}
+
+.pagination-btn:hover:not([disabled]) {
+    background-color: #E05900;
+}
+
+.pagination-btn[disabled] {
+    background-color: #888888;
+    cursor: not-allowed;
+    opacity: 0.75;
+}
+
+.pagination-numbers {
+    display: flex;
+    gap: 8px;
+}
+
+.page-number {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background-color: #222831;
+    color: white;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.page-number:hover {
+    background-color: #FF6701;
+}
+
+.page-number.active {
+    background-color: #FF6701;
 }
 
 /* Small Laptops & Tablets (≤ 1199px) */
@@ -138,6 +207,19 @@ body {
     .search-cancel {
         width: 20px;
         height: 20px;
+    }
+
+    .team-cards {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .pagination-container {
+        gap: 8px;
+    }
+
+    .pagination-numbers {
+        gap: 6px;
     }
 }
 
@@ -173,6 +255,32 @@ body {
         padding: 6px 12px;
         border-radius: 8px;
     }
+
+    .team-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .pagination-container {
+        gap: 6px;
+    }
+
+    .pagination-container {
+        gap: 8px;
+    }
+    
+    .pagination-btn {
+        padding: 6px 12px;
+    }
+    
+    .page-number {
+        width: 32px;
+        height: 32px;
+    }
+
+    .pagination-numbers {
+        gap: 4px;
+    }
 }
 
 /* Mobile Phones (≤ 480px) */
@@ -206,5 +314,33 @@ body {
     .search-button {
         padding: 6px 12px;
         border-radius: 8px;
+    }
+
+    .team-cards {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 12px;
+    }
+
+    .pagination-container {
+        gap: 4px;
+    }
+
+    .pagination-container {
+        gap: 6px;
+    }
+    
+    .pagination-btn {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+    }
+    
+    .page-number {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+
+    .pagination-numbers {
+        gap: 2px;
     }
 }
