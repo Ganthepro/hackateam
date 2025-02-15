@@ -11,7 +11,7 @@ public class TeamQueryDto : PaginationQueryDto
     public string? Name { get; set; } 
 
     [FromQuery]
-    public string? LeadName { get; set; }
+    public string? LeadId { get; set; }
 
     [FromQuery]
     public string? HackathonName { get; set; }
