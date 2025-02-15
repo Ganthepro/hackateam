@@ -14,7 +14,7 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: #444F5A;
+    background-color: #222831;
     font-size: 24px;
 }
 
@@ -24,7 +24,8 @@ body {
     align-items: center;
     flex-direction: column;
     gap: 24px;
-    margin: 64px;
+    padding: 64px;
+    background-color: #444F5A;
 }
 
 .search-form {
@@ -201,7 +202,7 @@ body {
     }
 
     .explore-content {
-        margin: 36px;
+        padding: 36px;
     }
 
     .search-form {
@@ -238,7 +239,7 @@ body {
     }
 
     .explore-content {
-        margin: 24px;
+        padding: 24px;
     }
 
     .search-form {
@@ -270,7 +271,7 @@ body {
     }
 
     .card-image img {
-        height: 80px;
+        height: 108px;
     }
 
     .pagination-container {
@@ -302,7 +303,7 @@ body {
     }
 
     .explore-content {
-        margin: 20px;
+        padding: 20px;
     }
 
     .search-form {
@@ -334,7 +335,7 @@ body {
     }
 
     .card-image img {
-        height: 60px;
+        height: 90px;
     }
 
     .pagination-container {
