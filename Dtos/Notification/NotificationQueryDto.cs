@@ -10,7 +10,6 @@ namespace hackateam.Dtos.Notification
         public Models.Type? Type { get; set; } = null!;
 
         [FromQuery]
-        [RegularExpression(@"^[a-zA-Z0-9\s-]*$")]
-        public string? TeamName { get; set; } = null!;
+        public string? TeamId { get; set; } = null!;
     }
 }   

@@ -27,7 +27,23 @@ public class ProjectService
 
     public async Task<List<Project>> GetAll(ProjectQueryDto projectQueryDto)
     {
-        
+        var filters = new List<FilterDefinition<Project>>();
+
+        if(!string.IsNullOrEmpty(projectQueryDto.Title))
+            filters.Add(Builders<Project>.Filter.Regex(project => project.Title, new BsonRegularExpression(projectQueryDto.Title, "i")));
+
+        if(!string.IsNullOrEmpty(projectQueryDto.UserId))
+            filters.Add(Builders<Project>.Filter.Eq(project => project.UserId, projectQueryDto.UserId));
+
+        if(!string.IsNullOrEmpty(projectQueryDto.SkillId))
+            filters.Add(Builders<Project>.Filter.Eq(project => project.SkillId, projectQueryDto.SkillId));
+
+        var filter = filters.Any() ? Builders<Project>.Filter.And(filters) : Builders<Project>.Filter.Empty;
+
+        return await _projects.Find(filter)
+            .Skip((projectQueryDto.Page - 1) * projectQueryDto.Limit)
+            .Limit(projectQueryDto.Limit)
+            .ToListAsync();
     }
 
     public async Task<Project> Get(Expression<Func<Project, bool>> filter)
