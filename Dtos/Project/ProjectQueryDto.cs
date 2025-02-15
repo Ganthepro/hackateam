@@ -10,9 +10,9 @@ namespace hackateam.Dtos.Project
         public string? Title { get; set; } = null!;
 
         [FromQuery]
-        public string? UserName { get; set; } = null!;
+        public string? UserId { get; set; } = null!;
 
         [FromQuery]
-        public string? SkillName { get; set; } = null!;
+        public string? SkillId { get; set; } = null!;
     }
 }

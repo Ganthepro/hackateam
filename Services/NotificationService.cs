@@ -5,6 +5,7 @@ using hackateam.Shared;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System.Linq.Expressions;
+using MongoDB.Bson;
 
 namespace hackateam.Services;
 
@@ -26,23 +27,50 @@ public class NotificationService
 
     public async Task<List<Notification>> GetAll(NotificationQueryDto notificationQueryDto, string userId)
     {
-        var filters = new List<FilterDefinition<Notification>>();
+        var pipeline = new List<BsonDocument>();
 
-        filters.Add(Builders<Notification>.Filter.Eq(notification => notification.UserId, userId));
+        pipeline.Add(new BsonDocument("$lookup", new BsonDocument
+    {
+        {"from", "Teams"},
+        {"localField", "TeamId"},
+        {"foreignField", "_id"},
+        {"as", "Team"}
+    }));
 
-        if (!string.IsNullOrEmpty(notificationQueryDto.Type?.ToString()))
-            filters.Add(Builders<Notification>.Filter.Eq(notification => notification.Type, notificationQueryDto.Type));
+        pipeline.Add(new BsonDocument("$unwind", new BsonDocument("path", "$Team")));
+
+        var matchConditions = new List<BsonDocument>();
+
+
+        if (notificationQueryDto.Type.HasValue)
+        {
+            matchConditions.Add(new BsonDocument("Type", notificationQueryDto.Type.ToString()));
+        }
+
         if (!string.IsNullOrEmpty(notificationQueryDto.TeamName))
         {
-            //TODO : Add team name filter
+            matchConditions.Add(new BsonDocument("Team.Name",
+                new BsonDocument("$regex", notificationQueryDto.TeamName)
+                .Add("$options", "i")));
         }
-        
-        var filter = filters.Any() ? Builders<Notification>.Filter.And(filters) : Builders<Notification>.Filter.Empty;
 
-        return await _notifications.Find(filter)
-            .Skip((notificationQueryDto.Page - 1) * notificationQueryDto.Limit)
-            .Limit(notificationQueryDto.Limit)
-            .ToListAsync();
+        if (matchConditions.Any())
+        {
+            pipeline.Add(new BsonDocument("$match",
+                new BsonDocument("$and", new BsonArray(matchConditions))));
+        }
+
+        if (notificationQueryDto.Page > 0 && notificationQueryDto.Limit > 0)
+        {
+            pipeline.Add(new BsonDocument("$skip", (notificationQueryDto.Page - 1) * notificationQueryDto.Limit));
+            pipeline.Add(new BsonDocument("$limit", notificationQueryDto.Limit));
+        }
+
+        var notifications = await _notifications.Aggregate<Notification>(pipeline).ToListAsync();
+
+        var results = notifications.Where(notification => notification.UserId == userId).ToList();
+
+        return results;
     }
 
     public async Task<Notification> Get(Expression<Func<Notification, bool>> filter)
