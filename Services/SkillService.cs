@@ -31,7 +31,6 @@ public class SkillService
 
         if (!string.IsNullOrEmpty(skillQueryDto.Title))
         {
-            // Option 1: Case-insensitive regex search
             filters.Add(Builders<Skill>.Filter.Regex(
                 skill => skill.Title,
                 new BsonRegularExpression($".*{skillQueryDto.Title}.*", "i")
