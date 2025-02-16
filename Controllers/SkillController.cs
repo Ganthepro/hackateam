@@ -18,9 +18,9 @@ public class SkillController : Controller
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<SkillResponseDto>>> Get()
+    public async Task<ActionResult<List<SkillResponseDto>>> Get(SkillQueryDto skillQueryDto)
     {
-        var skills = await _skillService.GetAll();
+        var skills = await _skillService.GetAll(skillQueryDto);
         return await Task.FromResult(skills.Select(skill => new SkillResponseDto(skill)).ToList());
     }
 
