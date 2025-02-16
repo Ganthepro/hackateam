@@ -8,7 +8,7 @@ namespace hackateam.Dtos.Requirement;
 public class RequirementQueryDto : PaginationQueryDto
 {
 
-    [FromQuery]
+    [FromQuery, Length(24, 24)]
     public string? TeamId { get; set; }
 
 }
