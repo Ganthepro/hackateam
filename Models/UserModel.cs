@@ -32,4 +32,6 @@ public class User
 
     [BsonRequired]
     public string? Tel { get; set; }
+
+    public string? Avatar { get; set; } = null;
 }

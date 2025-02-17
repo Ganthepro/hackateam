@@ -19,9 +19,19 @@ public class RequirementService
         _requirement = database.GetCollection<Requirement>("Requirements");
     }
 
-    public async Task<List<Requirement>> GetAll() =>
-        await _requirement.Find(requirement => true).ToListAsync();
+    public async Task<List<Requirement>> GetAll(RequirementQueryDto requirementQueryDto)
+    {
+        var filters = new List<FilterDefinition<Requirement>>();
+        if (!string.IsNullOrEmpty(requirementQueryDto.TeamId))
+            filters.Add(Builders<Requirement>.Filter.Eq(requirement => requirement.TeamId, requirementQueryDto.TeamId)); 
 
+        var filter = filters.Any() ? Builders<Requirement>.Filter.And(filters) : Builders<Requirement>.Filter.Empty;
+
+        return await _requirement.Find(filter)
+            .Skip((requirementQueryDto.Page - 1) * requirementQueryDto.Limit)
+            .Limit(requirementQueryDto.Limit)
+            .ToListAsync();
+    }
     public async Task<Requirement> Get(Expression<Func<Requirement, bool>> filter)
     {
         var requirement = await _requirement.Find(filter).FirstOrDefaultAsync();
@@ -36,8 +46,6 @@ public class RequirementService
     {
         try
         {
-
-            // Validate if role name is unique for this team
             var existingRole = await _requirement.Find(t => 
                 t.RoleName == createRequirementDto.RoleName && 
                 t.TeamId == createRequirementDto.TeamId
