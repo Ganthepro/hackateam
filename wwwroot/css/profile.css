@@ -136,3 +136,35 @@ button {
     font-size: 16px;
   }
 }
+
+@media screen and (max-width: 400px) {
+  img {
+    width: 100px;
+    height: 100px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  h2 {
+    font-size: 18px;
+    display: inline;
+  }
+
+  h3 {
+    font-size: 16px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+
+  strong {
+    font-size: 14px;
+  }
+
+  button {
+    font-size: 12px;
+  }
+}
