@@ -16,7 +16,7 @@ async function Register() {
     });
 
     if (!response.ok) {
-      throw new Error(`Login failed: ${response.status}`);
+      throw new Error(`Register failed: ${response.status}`);
     }
 
     const result = await response.json();
