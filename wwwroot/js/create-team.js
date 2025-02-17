@@ -1,6 +1,5 @@
 const requirementsContainer = document.querySelector('.requirements');
 
-// Function to update delete buttons state
 function updateDeleteButtons() {
     const deleteButtons = requirementsContainer.querySelectorAll('.delete-requirement-btn');
     const requirementCount = requirementsContainer.children.length;
@@ -31,14 +30,25 @@ function createRequirementGroup() {
         <div class="member-requirement-group">
             <label for="member-quantity">Quantity</label>
             <input 
-                type="number" 
-                name="member-quantity"
-                min="1"
+                type="number"
+                min="1" 
+                name="member-quantity" 
                 placeholder="Enter member quantity"
             >
         </div>
+        <div class="member-requirement-group">
+            <label for="member-skill">Skill</label>
+            <input 
+                type="text" 
+                name="member-skill" 
+                placeholder="Enter member skill"
+            >
+        </div>
         <button type="button" class="delete-requirement-btn">
-            Delete
+            <img
+                src="../pictures/delete-icon.svg"
+                alt="delete icon"        
+            />
         </button>
     `;
 
