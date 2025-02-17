@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/css/authen.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
     <title>@ViewData["Title"] - EditProfile</title>
 </head>
 <body>  
@@ -16,10 +16,10 @@
         <form id="editprofile" onsubmit="event.preventDefault(); Submit();">
             <label for="avatar">Avatar</label>
             <input type="file" id="avatar" name="avatar" accept="image/*">
-            <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="my avatar" width="200px" height="200px" id="showavatar" style="display: block; margin: auto;">
+            <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="my avatar" id="showavatar">
 
             <label for="header">Header</label>
-            <select id="header" name="header">
+            <select id="header" name="header" required>
                 <option value="">Select</option>
                     <option value="Mr.">Mr.</option>
                     <option value="Mrs.">Mrs.</option>
