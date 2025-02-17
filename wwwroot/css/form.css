@@ -84,6 +84,13 @@ a {
   color: #fea82f;
 }
 
+img {
+  display: block;
+  margin: auto;
+  width: 200px;
+  height: 200px;
+}
+
 @media screen and (max-width: 800px) {
   section {
     width: 80%;
