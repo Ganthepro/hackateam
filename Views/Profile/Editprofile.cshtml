@@ -13,9 +13,13 @@
 <body>  
     <section>
         <h1>Edit Profile</h1>
-        <form id="editprofile" onsubmit="event.preventDefault(); EditProfile();">
+        <form id="editprofile" onsubmit="event.preventDefault(); Submit();">
+            <label for="avatar">Avatar</label>
+            <input type="file" id="avatar" name="avatar" accept="image/*">
+            <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="my avatar" width="200px" height="200px" id="showavatar" style="display: block; margin: auto;">
+
             <label for="header">Header</label>
-            <select id="header" name="header" required>
+            <select id="header" name="header">
                 <option value="">Select</option>
                     <option value="Mr.">Mr.</option>
                     <option value="Mrs.">Mrs.</option>
