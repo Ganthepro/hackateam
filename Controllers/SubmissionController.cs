@@ -41,9 +41,14 @@ public class SubmissionController : Controller
     public async Task<ActionResult<SubmissionResponseDto>> Create(CreateSubmissionDto createSubmissionDto)
     {
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var requirement = await _requirementService.Get(requirement => requirement.Id == createSubmissionDto.RequirementId);
+        var team = await _teamService.Get(team => team.Id == requirement.TeamId);
+        if (team.LeadId == userId)
+        {
+            throw new HttpResponseException((int)HttpStatusCode.Forbidden, "Team lead cannot submit");
+        }
         var submission = await _submissionService.Create(userId!, createSubmissionDto);
         var user = await _userServices.Get(user => user.Id == submission.UserId);
-        var requirement = await _requirementService.Get(requirement => requirement.Id == submission.RequirementId);
         return CreatedAtAction(nameof(Get), new { id = submission.Id }, new SubmissionResponseDto(submission, user, requirement));
     }
 
