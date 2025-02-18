@@ -1,3 +1,12 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", serif;
+    font-size: 20px;
+    color: #EEEEEE;
+}
+
 /* Default (Large screens, ≥ 1200px) */
 body {
     height: fit-content;
@@ -5,28 +14,419 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    background-color: #222831;
+    font-size: 1.5rem;
+}
+
+.explore-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 4rem;
     background-color: #444F5A;
-    font-size: 24px;
-    color: #EEEEEE;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 0.36rem;
+    width: 50%;
+    height: fit-content;
+    padding: 0.36rem;
+    border-radius: 1rem;
+    background-color: #EEEEEE;
+    box-shadow: 0 0 4px 4px #EEEEEE40;
+}
+
+.search-space {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 0.36rem;
+    padding-right: 2rem;
+    outline: none;
+    border-radius: 0.6rem;
+    border: 2px solid #FF6701;
+    background-color: #EEEEEE;
+    font-size: 0.8rem;
+}
+
+.search-cancel {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0.36rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 0.2s ease-in-out;
+}
+
+.search-cancel:hover {
+    opacity: 1;
+}
+
+.search-button {
+    padding: 0.4rem 1rem;
+    border: none;
+    border-radius: 0.8rem;
+    background-color: #FF6701;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.search-button:hover {
+    background-color: #E05900;
+}
+
+.team-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    height: fit-content;
+    padding: 0.8rem;
+    border-radius: 1rem;
+    border: 2px solid #FF6701;
+    background-color: #393E46;
+    box-shadow: 0 0 4px 4px #393E4640;
+}
+
+.team-card-content h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.team-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    width: 100%;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: fit-content;
+    border-radius: 1rem;
+    border: 2px solid #FF6701;
+    background: #222831;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 0 10px 4px #FF6701;
+    scale: 1.01;
+}
+
+.card-status {
+    padding: 12px;
+}
+
+.card-image img {
+    width: 100%;
+    height: 9.6rem;
+    object-fit: cover;
+}
+
+.card-detail {
+    padding: 12px;
+}
+
+.card-detail h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #FF6701;
+}
+
+.card-detail p {
+    font-size: 0.9rem;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.pagination-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.page-search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem;
+    border-radius: 0.8rem;
+    border: 2px solid #FF6701;
+}
+
+.page-search {
+    width: 3.2rem;
+    padding: 0.4rem;
+    border: none;
+    border-radius: 0.6rem;
+    background-color: #EEEEEE;
+    color: #222831;
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.page-search:focus {
+    box-shadow: 0 0 0 2px #FF6701;
+}
+
+.page-search::placeholder {
+    color: #555555;
+    opacity: 0.7;
+}
+
+.page-navigation {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.pagination-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: #EEEEEE;
+    color: #222831;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.pagination-btn:hover:not([disabled]) {
+    background-color: #FF6701;
+    color: white;
+}
+
+.pagination-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.current-page {
+    width: 2.8rem;
+    height: 2.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #EEEEEE;
+    border-radius: 50%;
+    border: 2px solid #FF6701;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #222831;
 }
 
 /* Small Laptops & Tablets (≤ 1199px) */
 @media (max-width: 1200px) {
-    body {
+    * {
         font-size: 20px;
+    }
+
+    .explore-content {
+        padding: 2.2rem;
+    }
+
+    .search-form {
+        width: 64%;
+    }
+
+    .search-cancel {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+
+    .team-card-content {
+        padding: 0.6rem;
+    }
+
+    .team-cards {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.9rem;;
+    }
+
+    .card-image img {
+        height: 8rem;
+    }
+
+    .pagination-numbers {
+        gap: 0.36rem;
+    }
+
+    .current-page {
+        width: 2.6rem;
+        height: 2.6rem;
     }
 }
 
 /* Tablets (≤ 769px) */
 @media (max-width: 769px) {
-    body {
+    * {
         font-size: 18px;
+    }
+
+    .explore-content {
+        padding: 1.5rem;
+    }
+
+    .search-form {
+        width: 80%;
+        gap: 0.25rem;
+        padding: 0.25rem;
+        border-radius: 0.75rem;
+    }
+
+    .search-bar {
+        padding: 0.25rem;
+        padding-right: 1.5rem;
+        border-radius: 0.5rem;
+    }
+
+    .search-cancel {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+
+    .search-button {
+        padding: 0.36rem 0.75rem;
+        border-radius: 0.5rem;
+    }
+
+    .team-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+    }
+
+    .card-image img {
+        height: 7.2rem;
+    }
+
+    .pagination-wrapper {
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .page-search-wrapper {
+        border-radius: 1rem;
+    }
+    
+    .pagination-btn {
+        padding: 0.36rem 0.75rem;
+    }
+    
+    .page-number {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .pagination-numbers {
+        gap: 0.25rem;
+    }
+
+    .current-page {
+        width: 2.4rem;
+        height: 2.4rem;
     }
 }
 
 /* Mobile Phones (≤ 480px) */
 @media (max-width: 480px) {
-    body {
+    * {
         font-size: 16px;
+    }
+
+    .explore-content {
+        padding: 1.25rem;
+    }
+
+    .search-form {
+        width: 90%;
+        gap: 0.25rem;
+        padding: 0.25rem;
+        border-radius: 0.75rem;
+    }
+
+    .search-bar {
+        padding: 0.25rem;
+        padding-right: 1.5rem;
+        border-radius: 0.5rem;
+    }
+
+    .search-cancel {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .search-button {
+        padding: 0.36rem 0.75rem;
+        border-radius: 0.5rem;
+    }
+
+    .team-card-content {
+        padding: 0.6rem;
+    }
+
+    .team-cards {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 0.75rem;
+    }
+
+    .card-image img {
+        height: 6rem;
+    }
+
+    .pagination-wrapper {
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .page-search-wrapper {
+        border-radius: 1rem;
+    }
+    
+    .pagination-btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    .page-number {
+        width: 1.75rem;
+        height: 1.75rem;
+        font-size: 0.8rem;
+    }
+
+    .pagination-numbers {
+        gap: 0.125rem;
+    }
+
+    .current-page {
+        width: 2.2rem;
+        height: 2.2rem;
     }
 }

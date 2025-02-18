@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - Explore</title>
     @* Page Style *@
     <link rel="stylesheet" href="~/css/explore.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/card.css" asp-append-version="true" />
     @* Components Style *@
     <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
@@ -13,7 +14,7 @@
 <body>
     @* Navbar Component *@
     <nav class="navbar">
-        <div>Hackateam</div>
+        <div class="navbar-title">Hackateam</div>
         <div class="navbar-links">
             <a asp-controller="Home" asp-action="Intro">Home</a>
             <a asp-controller="Home" asp-action="Explore">Explore</a>
@@ -25,22 +26,31 @@
     </nav>
 
     @* Content Page *@
-    <h1>Hello Explore-Page</h1>
-    <h1>Hello Explore-Page</h1>
-    <h1>Hello Explore-Page</h1>
-    <h1>Hello Explore-Page</h1>
-    <h1>Hello Explore-Page</h1>
-    <h1>Hello Explore-Page</h1>
-    <h1>Hello Explore-Page</h1>
-    <h1>Hello Explore-Page</h1>
-    <h1>Hello Explore-Page</h1>
-    <h1>Hello Explore-Page</h1>
-    <h1>Hello Explore-Page</h1>
-    <h1>Hello Explore-Page</h1>
-    <h1>Hello Explore-Page</h1>
-    <h1>Hello Explore-Page</h1>
-    <h1>Hello Explore-Page</h1>
-    <h1>Hello Explore-Page</h1>
+    <div class="explore-content">
+        <form action="search-card" method="get" class="search-form">
+            <div class="search-space">
+                <input type="text" placeholder="Search" class="search-bar">
+                <img src="~/pictures/search-box/search-cancel.svg" alt="search-cancel" class="search-cancel">
+            </div>
+            <button type="submit" class="search-button">
+                Search
+            </button>
+        </form>
+        <div class="team-card-content">
+            <h2>Featured Projects :</h2>
+            <div class="team-cards" id="featured-cards">
+                @* create cards *@
+            </div>
+            <div class="pagination-container" id="featured-pagination"></div>
+        </div>
+        <div class="team-card-content">
+            <h2>All Projects :</h2>
+            <div class="team-cards" id="all-cards">
+                @* create cards *@
+            </div>
+            <div class="pagination-container" id="all-pagination"></div>
+        </div>
+    </div>
 
     @* Footer Component *@
     <footer>
@@ -65,5 +75,8 @@
     </footer>
 
     <script src="~/js/navbar.js"></script>
+    <script src="~/js/search-space.js"></script>
+    <script type="module" src="~/js/explore.js"></script>
+    <script type="module" src="~/js/pagination.js"></script>
 </body>
 </html>

@@ -3,6 +3,8 @@ using hackateam.Services;
 using hackateam.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using hackateam.Shared;
+using System.Net;
 
 namespace hackateam.Controllers;
 
@@ -11,10 +13,12 @@ namespace hackateam.Controllers;
 public class UserController : Controller
 {
     private readonly UserService _userService;
+    private readonly FileService _fileService;
 
-    public UserController(UserService userService)
+    public UserController(UserService userService, FileService fileService)
     {
         _userService = userService;
+        _fileService = fileService;
     }
 
     [HttpGet("me")]
@@ -24,6 +28,31 @@ public class UserController : Controller
         var id = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         return await Task.FromResult(Ok(new UserResponseDto(await _userService.Get(user => user.Id == id))));
     }
+
+    [HttpPut("avatar")]
+    [Authorize]
+    [Consumes("multipart/form-data")]
+    public async Task<NoContentResult> UpdateAvatar(IFormFile file)
+    {
+        var id = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var user = await _userService.Get(user => user.Id == id);
+        var fileName = await _fileService.UpdateFile(user.Id + Path.GetExtension(file.FileName), FileService.FolderName.Avatar, file);
+        _userService.UpdateAvatar(user.Id!, fileName!);
+        return await Task.FromResult(NoContent());
+    }
+
+    [HttpGet("{id:length(24)}/avatar")]
+    public async Task<FileStreamResult> GetAvatar(string id)
+    {
+        var user = await _userService.Get(user => user.Id == id);
+        if (user.Avatar == null)
+        {
+            throw new HttpResponseException((int)HttpStatusCode.NotFound, "Avatar not found");
+        }
+        var stream = _fileService.Get(user.Avatar!, FileService.FolderName.Avatar);
+        return await Task.FromResult(File(stream, "image/jpeg"));
+    }
+
 
     [HttpGet]
     [Authorize]
@@ -51,7 +80,7 @@ public class UserController : Controller
 
     [Authorize]
     [HttpDelete]
-    public async Task<ActionResult<UserResponseDto>> Delete()
+    public async Task<NoContentResult> Delete()
     {
         var id = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         await _userService.Remove(user => user.Id == id);

@@ -1,8 +1,82 @@
-section {
-  background-color: #cfcfcf;
-  padding: 1%;
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #222831;
+  color: #eeeeee;
+}
+
+h1 {
+  font-size: 40px;
+}
+
+h2 {
+  font-size: 26px;
+  display: inline;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+p {
+  font-size: 20px;
+}
+
+strong {
+  font-size: 22px;
+}
+
+header {
+  text-align: center;
   margin: 1%;
-  border-radius: 10px;
+}
+
+#showproject {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+article {
+  background-color: #444f5a;
+  margin: 1%;
+}
+
+h2 {
+  margin-left: 1%;
+}
+
+#profile {
+  display: grid;
+  grid-template-columns: auto auto;
+  background-color: #444f5a;
+}
+
+section {
+  width: 80%;
+  height: 40%;
+  margin: auto;
+  padding: 1%;
+}
+
+img {
+  margin: auto;
+  width: 300px;
+  height: 300px;
+  padding: 5%;
+}
+
+#profile-details {
+  margin: auto;
+}
+
+#profile-details p {
+  margin-bottom: 15px;
+}
+
+article p {
+  margin: 15px;
 }
 
 footer {
@@ -10,23 +84,85 @@ footer {
   display: flex;
   justify-content: center;
   font-weight: bold;
+  color: #eeeeee;
 }
 
 a {
   margin-left: 1%;
   text-decoration: none;
+  color: #fea82f;
 }
 
-ol {
-  display: flex;
-  flex-wrap: nowrap;
-}
-
-ol li {
-  margin-left: 5%;
-  background-color: #fea82f;
-  list-style-type: none;
+article {
   padding: 1%;
-  border-radius: 10px;
-  width: 20vw;
+}
+
+button {
+  font-weight: bold;
+  background-color: #ff6701;
+  border-radius: 5px;
+  font-size: 20px;
+  color: #eeeeee;
+}
+
+@media screen and (max-width: 800px) {
+  img {
+    width: 100px;
+    height: 100px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  h3 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 16px;
+  }
+
+  strong {
+    font-size: 18px;
+  }
+
+  button {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  img {
+    width: 100px;
+    height: 100px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  h3 {
+    font-size: 16px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+
+  strong {
+    font-size: 14px;
+  }
+
+  button {
+    font-size: 12px;
+  }
 }

@@ -1,4 +1,3 @@
-// Team.cs (updated model)
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -36,8 +35,9 @@ namespace hackateam.Models
         public TeamStatus Status { get; set; }
 
         [BsonRequired]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string HackathonId { get; set; }
+        public string HackathonName { get; set; }
+        [BsonRequired]
+        public string HackathonDescription { get; set; }
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime CreatedAt { get; private set; }
@@ -48,5 +48,6 @@ namespace hackateam.Models
         [BsonRequired]
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime ExpiredAt { get; set; }
+        public string? Banner { get; set; } = null;
     }
 }

@@ -22,9 +22,10 @@ public class NotificationController : Controller
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<NotificationResponseDto>>> Get()
+    public async Task<ActionResult<List<NotificationResponseDto>>> Get(NotificationQueryDto notificationQueryDto)
     {
-        var notifications = await _notificationService.GetAll();
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var notifications = await _notificationService.GetAll(notificationQueryDto, userId!);
         var notificationDtos = new List<NotificationResponseDto>();
         foreach (var notification in notifications)
         {
@@ -39,8 +40,9 @@ public class NotificationController : Controller
     [HttpGet("{id:length(24)}")]
     public async Task<ActionResult<NotificationResponseDto>> Get(string id)
     {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var notification = await _notificationService.Get(notification => notification.Id == id);
-        if (notification == null)
+        if (notification == null || notification.UserId != userId)
         {
             return NotFound(Constants.NotificationMessage.NOT_FOUND);
         }
@@ -112,8 +114,9 @@ public class NotificationController : Controller
     [HttpDelete("{id:length(24)}")]
     public async Task<ActionResult> Delete(string id)
     {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var notification = await _notificationService.Get(notification => notification.Id == id);
-        if (notification == null)
+        if (notification == null || notification.UserId != userId)
         {
             return NotFound(Constants.NotificationMessage.NOT_FOUND);
         }

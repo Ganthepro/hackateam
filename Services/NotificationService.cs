@@ -5,6 +5,7 @@ using hackateam.Shared;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System.Linq.Expressions;
+using MongoDB.Bson;
 
 namespace hackateam.Services;
 
@@ -24,9 +25,26 @@ public class NotificationService
         _notifications.Indexes.CreateOne(indexModel);
     }
 
-    public async Task<List<Notification>> GetAll() =>
-        await _notifications.Find(notification => true).ToListAsync();
-    
+    public async Task<List<Notification>> GetAll(NotificationQueryDto notificationQueryDto, string userId)
+    {
+        var filters = new List<FilterDefinition<Notification>>();
+
+        if (notificationQueryDto.Type != null)
+            filters.Add(Builders<Notification>.Filter.Eq(notification => notification.Type, notificationQueryDto.Type));
+
+        if (!string.IsNullOrEmpty(notificationQueryDto.TeamId))
+            filters.Add(Builders<Notification>.Filter.Eq(notification => notification.TeamId, notificationQueryDto.TeamId));
+
+        filters.Add(Builders<Notification>.Filter.Eq(notification => notification.UserId, userId));
+
+        var filter = filters.Any() ? Builders<Notification>.Filter.And(filters) : Builders<Notification>.Filter.Empty;
+
+        return await _notifications.Find(filter)
+            .Skip((notificationQueryDto.Page - 1) * notificationQueryDto.Limit)
+            .Limit(notificationQueryDto.Limit)
+            .ToListAsync();
+    }
+
     public async Task<Notification> Get(Expression<Func<Notification, bool>> filter)
     {
         var notification = await _notifications.Find(filter).FirstOrDefaultAsync();
@@ -60,7 +78,7 @@ public class NotificationService
     {
         var updateDefinitionBuilder = Builders<Notification>.Update;
         var updateDefinitions = new List<UpdateDefinition<Notification>>();
-        foreach(var property in updateNotificationDto.GetType().GetProperties())
+        foreach (var property in updateNotificationDto.GetType().GetProperties())
         {
             if (property.GetValue(updateNotificationDto) != null)
             {
@@ -75,7 +93,7 @@ public class NotificationService
         }
         return notification;
     }
-    
+
     public async Task Remove(Expression<Func<Notification, bool>> filter)
     {
         var notification = await _notifications.Find(filter).FirstOrDefaultAsync();
@@ -85,5 +103,5 @@ public class NotificationService
         }
         await _notifications.DeleteOneAsync(filter);
     }
-    
+
 }

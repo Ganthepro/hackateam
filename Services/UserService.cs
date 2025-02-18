@@ -78,6 +78,13 @@ public class UserService
         }
     }
 
+    public async void UpdateAvatar(string id, string fileName)
+    {
+        var user = await Get(user => user.Id == id);
+        user.Avatar = fileName;
+        await _users.ReplaceOneAsync(user => user.Id == id, user);
+    }
+
     public async Task<User> Update(Expression<Func<User, bool>> filter, UpdateUserDto updateUserDto)
     {
         var updateDefinitionBuilder = Builders<User>.Update;

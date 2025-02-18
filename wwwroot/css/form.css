@@ -1,9 +1,18 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #222831;
+}
+
 section {
   width: 30%;
   height: 50%;
   display: block;
   margin: auto;
-  background-color: #cfcfcf;
+  background-color: #444f5a;
   border-radius: 5%;
   padding: 1%;
 }
@@ -12,6 +21,8 @@ h1 {
   text-align: center;
   font-weight: 600;
   font-size: 40px;
+  margin-bottom: 5%;
+  color: #eeeeee;
 }
 
 form {
@@ -22,11 +33,23 @@ form {
 label {
   font-size: 20px;
   font-weight: bold;
+  color: #eeeeee;
 }
 
 input {
   display: block;
   width: 100%;
+  height: 30px;
+  border-radius: 5px;
+  background-color: #cfcfcf;
+  margin-bottom: 5%;
+  padding: 10px;
+}
+
+select {
+  display: block;
+  width: 100%;
+  height: 30px;
   border-radius: 5px;
   background-color: #cfcfcf;
   margin-bottom: 5%;
@@ -40,9 +63,11 @@ input {
 
 button {
   font-weight: bold;
-  background-color: #cfcfcf;
+  background-color: #ff6701;
   border-radius: 10px;
   width: 40%;
+  font-size: 20px;
+  color: #eeeeee;
 }
 
 footer {
@@ -50,11 +75,20 @@ footer {
   display: flex;
   justify-content: center;
   font-weight: bold;
+  color: #eeeeee;
 }
 
 a {
   margin-left: 1%;
   text-decoration: none;
+  color: #fea82f;
+}
+
+img {
+  display: block;
+  margin: auto;
+  width: 200px;
+  height: 200px;
 }
 
 @media screen and (max-width: 800px) {
