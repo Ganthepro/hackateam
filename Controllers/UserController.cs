@@ -17,6 +17,14 @@ public class UserController : Controller
         _userService = userService;
     }
 
+    [HttpGet("me")]
+    [Authorize]
+    public async Task<ActionResult<UserResponseDto>> GetMe()
+    {
+        var id = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        return await Task.FromResult(Ok(new UserResponseDto(await _userService.Get(user => user.Id == id))));
+    }
+
     [HttpGet]
     [Authorize]
     public async Task<ActionResult<List<UserResponseDto>>> Get(UserQueryDto userQueryDto)
