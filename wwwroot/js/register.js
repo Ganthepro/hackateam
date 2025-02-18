@@ -1,4 +1,4 @@
-const api = "http://localhost:5234";
+api = "http://localhost:5234";
 
 async function Register() {
   const email = document.getElementById("email").value;
