@@ -1,5 +1,7 @@
 import { teams } from "../mock/teams.js";
 
+const api = "http://localhost:5234";
+
 let { ITEMS_PER_PAGE } = updateItemsPerPage();
 let currentPageFeatured = 1;
 let currentPageAll = 1;
@@ -18,27 +20,90 @@ function updateItemsPerPage() {
     }
 }
 
+async function fetchTeams() {
+    try {
+        const response = await fetch(`${api}/Team`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getCookie("token")}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fetch teams failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Fetched Teams :", data);
+            
+        displayTeams(data, 'featured-cards', currentPageFeatured);
+        displayTeams(data, 'all-cards', currentPageAll);
+        updatePagination(data, 'featured-pagination', currentPageFeatured, 'featured-cards', true);
+        updatePagination(data, 'all-pagination', currentPageAll, 'all-cards', false);
+    } catch (error) {
+        console.error("Error fetching teams:", error);
+    }
+}
+
+async function fetchTeamBanner(teamId) {
+    try {
+        const response = await fetch(`${api}/Team/${teamId}/banner`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getCookie("token")}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fetch banners failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Fetched Banners :", data);
+    } catch (error) {
+        console.error("Error fetching team banners:", error);
+        return null;
+    }
+}
+
 function createRequirementCard(team) {
     const card = document.createElement('div');
     card.classList.add('card');
+    
+    const createdDate = new Date(team.createdAt).toLocaleDateString();
+    const updatedDate = new Date(team.updatedAt).toLocaleDateString();
+    const expiredDate = new Date(team.expiredAt).toLocaleDateString();
+
+    const statusText = team.status === 0 ? 'Open' : 'Closed';
+
+    const imageElement = document.createElement('img');
+    imageElement.src = team.banner;
+    imageElement.alt = "Team Banner";
+    imageElement.classList.add('team-banner');
+    
     card.innerHTML = `
-        <a asp-controller="Home" asp-action="Explore/${team.id}">
-            <div class="card-status">
-                ${team.status}
+        <a href="/Home/Explore/${team.id}">
+            <div class="card-status ${statusText.toLowerCase()}">
+                ${statusText}
             </div>
             <div class="card-image">
-                <img src="${team.image}" alt="${team.name}"/>
+                <img src="" alt="Team Banner">
             </div>
             <div class="card-detail">
-                <h2>${team.name}</h2>
-                <p>Lead: ${team.lead}</p>
-                <p>Hackathon: ${team.hackathon.name}</p>
-                <p>Created At: ${team.createdAt}</p>
-                <p>Updated At: ${team.updatedAt}</p>
-                <p>Expired At: ${team.expiredAt}</p>
+                <h2>${team.leadResponse.name}</h2>
+                <p class="hackathon-name">Hackathon: ${team.hackathonName}</p>
+                <p class="hackathon-desc">${team.hackathonDescription}</p>
+                <div class="date-info">
+                    <p>Created: ${createdDate}</p>
+                    <p>Updated: ${updatedDate}</p>
+                    <p>Expires: ${expiredDate}</p>
+                </div>
             </div>
         </a>
     `;
+    
     return card;
 }
 
@@ -96,14 +161,6 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
     const pageSearch = newPaginationContainer.querySelector('.page-search');
     const prevBtn = newPaginationContainer.querySelector('.prev-btn');
     const nextBtn = newPaginationContainer.querySelector('.next-btn');
-    
-    pageSearch.addEventListener('input', (e) => {
-        if (e.target.value === '' || /^\d+$/.test(e.target.value)) {
-            e.target.dataset.value = e.target.value;
-        } else {
-            e.target.value = e.target.dataset.value || '';
-        }
-    });
 
     pageSearch.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
@@ -153,10 +210,8 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
 }
 
 function main() {
-    displayTeams(teams, 'featured-cards', currentPageFeatured);
-    displayTeams(teams, 'all-cards', currentPageAll);
-    updatePagination(teams, 'featured-pagination', currentPageFeatured, 'featured-cards', true);
-    updatePagination(teams, 'all-pagination', currentPageAll, 'all-cards', false);
+    fetchTeams();
+    fetchTeamBanner("67b03846903f6a033185dbba");
 }
 
 window.addEventListener('resize', () => {
@@ -166,10 +221,11 @@ window.addEventListener('resize', () => {
     
     currentPageFeatured = 1;
     currentPageAll = 1;
+
     resizeTimeout = setTimeout(() => {
         ({ ITEMS_PER_PAGE } = updateItemsPerPage());
         main();
-    }, 250);
+    }, 100);
 });
 
 document.addEventListener('DOMContentLoaded', main);

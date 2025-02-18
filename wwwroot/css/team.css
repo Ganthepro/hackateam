@@ -1,0 +1,50 @@
+/* Default for all pages */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", serif;
+    font-size: 20px;
+}
+
+
+/* Default (Large screens, ≥ 1200px) */
+body {
+    height: fit-content;
+    min-height: 100vh;
+    background-color: #222831;
+    font-size: 24px;
+    color: #EEEEEE;
+}
+
+.team-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 4rem;
+    width: 100%;
+    height: fit-content;
+    background-color: #444F5A;
+}
+
+/* Small Laptops & Tablets (≤ 1199px) */
+@media (max-width: 1200px) {
+    * {
+        font-size: 20px;
+    }
+}
+
+/* Tablets (≤ 769px) */
+@media (max-width: 769px) {
+    * {
+        font-size: 18px;
+    }
+}
+
+/* Mobile Phones (≤ 480px) */
+@media (max-width: 480px) {
+    * {
+        font-size: 16px;
+    }
+}

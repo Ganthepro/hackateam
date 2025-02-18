@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"] - Explore</title>
+    <title>@ViewData["Title"] - Team</title>
     @* Page Style *@
-    <link rel="stylesheet" href="~/css/explore.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/team.css" asp-append-version="true" />
     @* Components Style *@
     <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
@@ -13,7 +13,7 @@
 <body>
     @* Navbar Component *@
     <nav class="navbar">
-        <div class="navbar-title">Hackateam</div>
+        <div>Hackateam</div>
         <div class="navbar-links">
             <a asp-controller="Home" asp-action="Intro">Home</a>
             <a asp-controller="Home" asp-action="Explore">Explore</a>
@@ -25,29 +25,14 @@
     </nav>
 
     @* Content Page *@
-    <div class="explore-content">
-        <form action="search-card" method="get" class="search-form">
-            <div class="search-space">
-                <input type="text" placeholder="Search" class="search-bar">
-                <img src="~/pictures/search-box/search-cancel.svg" alt="search-cancel" class="search-cancel">
+    <div class="team-content">
+        <div class="team-details">
+            <h2 class="team-name" id="team-name"></h2>
+            <div class="team-info">
+                <div class="team-description" id="team-description"></div>
+                <div class="team-lead" id="team-lead"></div>
+                <div class="team-hackathon" id="team-hackathon"></div>
             </div>
-            <button type="submit" class="search-button">
-                Search
-            </button>
-        </form>
-        <div class="team-card-content">
-            <h2>Featured Projects :</h2>
-            <div class="team-cards" id="featured-cards">
-                @* create cards *@
-            </div>
-            <div class="pagination-container" id="featured-pagination"></div>
-        </div>
-        <div class="team-card-content">
-            <h2>All Projects :</h2>
-            <div class="team-cards" id="all-cards">
-                @* create cards *@
-            </div>
-            <div class="pagination-container" id="all-pagination"></div>
         </div>
     </div>
 
@@ -73,10 +58,26 @@
         </div>
     </footer>
 
-    <script src="~/js/navbar.js"></script>
-    <script src="~/js/search-space.js"></script>
-    <script type="module" src="~/js/explore.js"></script>
-    <script src="~/js/cookie.js" asp-append-version="true"></script>
-    <script src="~/js/alertError.js" asp-append-version="true"></script>
+    <script type="module" src="~/js/team.js">
+        import { teams } from "../mock/teams.js";
+
+        let teamId = 1;
+
+        function displayTeamDetails(teamId) {
+            const selectedTeam = teams.find(team => team.id === teamId);
+
+            if (!selectedTeam) {
+                console.error('Team not found');
+                return;
+            }
+
+            document.querySelectorById('team-name').textContent = selectedTeam.name;
+            document.querySelectorById('team-lead').textContent = selectedTeam.lead;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            displayTeamDetails(teamId);
+        });
+    </script>
 </body>
 </html>

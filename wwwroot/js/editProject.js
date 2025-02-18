@@ -74,6 +74,7 @@ async function SearchSkill() {
     if (!response.ok) {
       throw new Error(`Edit Project failed: ${response.status}`);
     }
+    
     const data = await response.json();
     CreateOption(data);
   } catch (error) {
