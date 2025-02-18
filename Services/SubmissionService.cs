@@ -57,13 +57,27 @@ public class SubmissionService
         }
         catch (Exception e)
         {
-            switch (e.GetType().ToString()) {
+            switch (e.GetType().ToString())
+            {
                 case "BsonSerializationException":
                     throw new HttpResponseException((int)HttpStatusCode.Conflict, "Submission already exists");
                 default:
                     throw new HttpResponseException((int)HttpStatusCode.InternalServerError, "Internal server error");
             }
         }
+    }
+
+    public async Task<Submission> UpdateStatus(Expression<Func<Submission, bool>> filter, UpdateSubmissionStatusDto updateSubmissionStatusDto)
+    {
+        var submission = await _submissions.FindOneAndUpdateAsync<Submission>(filter, Builders<Submission>.Update.Set("SubmissionStatus", updateSubmissionStatusDto.Status), new FindOneAndUpdateOptions<Submission>
+        {
+            ReturnDocument = ReturnDocument.After
+        });
+        if (submission == null)
+        {
+            throw new HttpResponseException((int)HttpStatusCode.NotFound, "Submission not found");
+        }
+        return submission;
     }
 
     public async Task<Submission> Update(Expression<Func<Submission, bool>> filter, UpdateSubmissionDto updateSubmissionDto)
