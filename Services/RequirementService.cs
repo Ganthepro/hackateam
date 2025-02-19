@@ -92,4 +92,9 @@ public class RequirementService
             Builders<Requirement>.Filter.Eq(h => h.Id, id)
         );
     }
+
+    public async Task RemoveAll(Expression<Func<Requirement, bool>> filter)
+    {
+        await _requirement.DeleteManyAsync(filter);
+    }
 }

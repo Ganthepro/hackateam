@@ -99,4 +99,8 @@ public class SubmissionService
         }
         return submission;
     }
+    public async Task RemoveAll(Expression<Func<Submission, bool>> filter)
+    {
+        await _submissions.DeleteManyAsync(filter);
+    }
 }
