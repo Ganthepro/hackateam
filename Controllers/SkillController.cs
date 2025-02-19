@@ -11,10 +11,12 @@ namespace hackateam.Controllers;
 public class SkillController : Controller
 {
     private readonly SkillService _skillService;
+    private readonly ProjectService _projectService;
 
-    public SkillController(SkillService skillService)
+    public SkillController(SkillService skillService, ProjectService projectService)
     {
         _skillService = skillService;
+        _projectService = projectService; 
     }
 
     [HttpGet]
@@ -51,6 +53,7 @@ public class SkillController : Controller
     {
         var skill = await _skillService.Get(skill => skill.Id == id);
         await _skillService.Remove(skill => skill.Id == id);
+        await _projectService.RemoveAll(project => project.SkillId == id);
         return await Task.FromResult(Ok(new SkillResponseDto(skill)));
     }
 }

@@ -105,4 +105,8 @@ public class ProjectService
         }
         await _projects.DeleteOneAsync(filter);
     }
+    public async Task RemoveAll(Expression<Func<Project, bool>> filter)
+    {
+        await _projects.DeleteManyAsync(filter);
+    }
 }
