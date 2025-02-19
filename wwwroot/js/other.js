@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function Profile() {
   const id = document.getElementById("userId").dataset.id;
-  console.log(`${api}/User/${id}`);
   try {
     const response = await fetch(`${api}/User/${id}`, {
       method: "Get",
