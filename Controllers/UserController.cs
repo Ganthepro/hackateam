@@ -14,11 +14,21 @@ public class UserController : Controller
 {
     private readonly UserService _userService;
     private readonly FileService _fileService;
+    private readonly NotificationService _notificationService;
 
-    public UserController(UserService userService, FileService fileService)
+    public UserController(UserService userService, FileService fileService, NotificationService notificationService)
     {
         _userService = userService;
         _fileService = fileService;
+        _notificationService = notificationService;
+    }
+
+    [HttpGet("me")]
+    [Authorize]
+    public async Task<ActionResult<UserResponseDto>> GetMe()
+    {
+        var id = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        return await Task.FromResult(Ok(new UserResponseDto(await _userService.Get(user => user.Id == id))));
     }
 
     [HttpPut("avatar")]
@@ -76,6 +86,7 @@ public class UserController : Controller
     {
         var id = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         await _userService.Remove(user => user.Id == id);
+        await _notificationService.RemoveAll(notification => notification.UserId == id);
         return await Task.FromResult(NoContent());
     }
 }
