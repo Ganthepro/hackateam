@@ -104,4 +104,8 @@ public class NotificationService
         await _notifications.DeleteOneAsync(filter);
     }
 
+    public async Task RemoveAll(Expression<Func<Notification, bool>> filter)
+    {
+        await _notifications.DeleteManyAsync(filter);
+    }
 }

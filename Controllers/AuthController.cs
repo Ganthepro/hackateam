@@ -15,7 +15,6 @@ public class AuthController : Controller
         _authService = authService;
     }
 
-    // 🔹 GET: Auth/login (Get All Hackathons)
     [HttpPost("login")]
     public async Task<ActionResult<AuthResponseDto>> Login(LoginDto loginDto)
     {

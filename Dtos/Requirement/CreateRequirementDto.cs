@@ -6,16 +6,16 @@ namespace hackateam.Dtos.Requirement
     {
 
         [Required]
-        public string TeamId { get; set; }
+        public string? TeamId { get; set; }
 
         [Required]
-        public string RoleName { get; set; }
+        public string? RoleName { get; set; }
 
         [Required]
         [Range(1, 99, ErrorMessage = "MaxSeat must be greater than 0 and not more than 99")]
         public int MaxSeat { get; set; }
 
         [Required]
-        public string SkillId { get; set; }
+        public string? SkillId { get; set; }
     }
 }
