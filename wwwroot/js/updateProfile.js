@@ -30,7 +30,7 @@ async function EditAvatar() {
       throw new Error(`Edit Avatar failed: ${response.status}`);
     }
   } catch (error) {
-    CreateErrorBlock(error);
+    CreateErrorBlock("Edit Avatar failed");
   }
 }
 
