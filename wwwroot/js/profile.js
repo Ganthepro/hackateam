@@ -2,16 +2,16 @@ api = "http://localhost:5234";
 
 var showMore = false;
 var project;
+var userId = null;
 
-document.addEventListener("DOMContentLoaded", function () {
-  Profile();
-  Project();
+document.addEventListener("DOMContentLoaded", async function () {
+  await Profile();
+  await Project();
 });
 
 async function Profile() {
-  const id = document.getElementById("userId").dataset.id;
   try {
-    const response = await fetch(`${api}/User/${id}`, {
+    const response = await fetch(`${api}/User/me`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -24,15 +24,16 @@ async function Profile() {
     }
 
     const data = await response.json();
+    userId = data.id;
     ShowData(data);
   } catch (error) {
-    CreateErrorBlock("Get Profile failed. Please check your data.");
+    CreateErrorBlock(error);
   }
 }
 
 function ShowData(data) {
   const image = document.getElementById("avatar");
-  image.src = `${api}/User/${data.id}/avatar`;
+  image.src = `${api}/User/${userId}/avatar`;
   const fullname = document.getElementById("fullname");
   fullname.innerHTML = `<strong>Fullname:</strong> ${data.header} ${data.fullName}`;
   const tel = document.getElementById("tel");
@@ -42,8 +43,6 @@ function ShowData(data) {
 }
 
 async function Project() {
-  const userId = document.getElementById("userId").dataset.id;
-
   try {
     const response = await fetch(`${api}/Project?UserId=${userId}`, {
       method: "Get",
@@ -61,7 +60,7 @@ async function Project() {
     project = data;
     CreateProject(data);
   } catch (error) {
-    CreateErrorBlock(error);
+    CreateErrorBlock("Get Project failed");
   }
 }
 
@@ -77,13 +76,38 @@ function CreateProject(data) {
     const article = document.createElement("article");
     const title = document.createElement("h3");
     title.innerHTML = `${element.title}`;
+    title.style.display = "inline";
+    const deleteButton = document.createElement("button");
+    deleteButton.id = "delete";
+    deleteButton.textContent = "✖";
+    deleteButton.onclick = function (event) {
+      event.stopPropagation();
+      CreateConfirm(
+        `Do you want to delete "${element.title}"?`,
+        async function () {
+          await DeleteProject(element.id);
+          article.remove();
+          const index = project.findIndex((item) => item.id === element.id);
+          if (index > -1) {
+            project.splice(index, 1);
+          }
+          CreateProject(project);
+        },
+        function () {}
+      );
+    };
     const description = document.createElement("p");
     description.innerHTML = `<strong>Description:</strong> ${element.description}`;
     const skill = document.createElement("p");
     skill.innerHTML = `<strong>Description:</strong> ${element.skillResponse.title}`;
     article.appendChild(title);
+    article.appendChild(deleteButton);
     article.appendChild(description);
     article.appendChild(skill);
+    article.onclick = function () {
+      window.location.href = `${api}/Profile/UpdateProject?id=${element.id}`;
+    };
+    article.style.cursor = "pointer";
     projectsList.appendChild(article);
   });
 }
@@ -102,4 +126,30 @@ function SeeLess() {
   button.textContent = "Show All";
   button.onclick = SeeMore;
   CreateProject(project);
+}
+
+async function DeleteProject(id) {
+  try {
+    const response = await fetch(`${api}/Project/${id}`, {
+      method: "Delete",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("token")}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Delete Project failed: ${response.status}`);
+    }
+  } catch (error) {
+    CreateErrorBlock("Delete Project failed");
+  }
+}
+
+function PageUpdateProfile() {
+  window.location.href = `${api}/Profile/UpdateProfile`;
+}
+
+function PageCreateProject() {
+  window.location.href = `${api}/Profile/CreateProject`;
 }

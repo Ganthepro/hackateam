@@ -16,64 +16,29 @@
 
     <main>
         <section id="profile">
-            <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="Avatar of Mr. John Doe" />
+            <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="Avatar of Mr. John Doe" id="avatar" />
             <div id="profile-details">
-                <p id="fullname"><strong>Fullname:</strong> Mr. John Doe</p>
-                <p id="education"><strong>Education:</strong> Bachelor's Degree in Computer Engineering</p>
-                <p id="tel"><strong>Tel:</strong> +123 456 7890</p>
-                <p id="email"><strong>Email:</strong> johndoe@example.com</p>
+                <p id="fullname"><strong>Fullname:</strong></p>
+                <p id="tel"><strong>Tel:</strong></p>
+                <p id="email"><strong>Email:</strong></p>
             </div>
+            <button id="edit" onclick="PageUpdateProfile()">Edit</button>
         </section>
 
-        <section id="projects">
+        <div id="projects">
             <div id="showproject">
-                <h2>Projects :</h2>
-                <button id="load-more" class="toggle-btn">Show All</button>
+                <h2>Projects </h2>
+                <button id="add" onclick="PageCreateProject()">+</button>
+                <button id="loadMore" onclick="SeeMore()">Show All</button>
             </div>
-            <div class="projects-list">
-            <article class="project">
-                <h3>Mobile App Development</h3>
-                <p><strong>Description:</strong> Develop Mobile App</p>
-                <p><strong>Skills:</strong> Dart</p>
-            </article>
+        </div>
+        <div id="projects-list">
 
-            <article class="project">
-                <h3>Web Development</h3>
-                <p><strong>Description:</strong> Develop Website</p>
-                <p><strong>Skills:</strong> HTML, CSS, JavaScript</p>
-            </article>
-            <article class="project">
-                <h3>Mobile App Development</h3>
-                <p><strong>Description:</strong> Develop Mobile App</p>
-                <p><strong>Skills:</strong> Dart</p>
-            </article>
-
-            <article class="project">
-                <h3>Web Development</h3>
-                <p><strong>Description:</strong> Develop Website</p>
-                <p><strong>Skills:</strong> HTML, CSS, JavaScript</p>
-            </article>
-            <article class="project">
-                <h3>Mobile App Development</h3>
-                <p><strong>Description:</strong> Develop Mobile App</p>
-                <p><strong>Skills:</strong> Dart</p>
-            </article>
-
-            <article class="project">
-                <h3>Web Development</h3>
-                <p><strong>Description:</strong> Develop Website</p>
-                <p><strong>Skills:</strong> HTML, CSS, JavaScript</p>
-            </article>
-            </div>
-        </section>
+        </div>
     </main>
-
-    <footer>
-        <a asp-controller="Profile" asp-action="EditProfile">Go To Edit Profile</a>
-        <a asp-controller="Profile" asp-action="EditProject">Go To Edit Project</a>
-    </footer>
-
     <script src="~/js/cookie.js" asp-append-version="true"></script>
     <script src="~/js/authentication.js" asp-append-version="true"></script>
+    <script src="~/js/alertError.js" asp-append-version="true"></script>
+    <script src="~/js/profile.js" asp-append-version="true"></script>
 </body>
 </html>
