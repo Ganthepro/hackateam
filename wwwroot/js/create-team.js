@@ -31,7 +31,8 @@ function createRequirementGroup() {
             <label for="member-quantity">Quantity</label>
             <input 
                 type="number"
-                min="1" 
+                min="1"
+                max="99"
                 name="member-quantity" 
                 placeholder="Enter member quantity"
             >

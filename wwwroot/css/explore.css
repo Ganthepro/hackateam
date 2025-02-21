@@ -5,6 +5,7 @@
     font-family: "Inter", serif;
     font-size: 20px;
     color: #EEEEEE;
+    text-decoration: none;
 }
 
 /* Default (Large screens, ≥ 1200px) */
@@ -24,71 +25,15 @@ body {
     align-items: center;
     flex-direction: column;
     gap: 1.5rem;
-    padding: 4rem;
+    padding: 2rem 4rem;
     background-color: #444F5A;
 }
 
-.search-form {
-    display: flex;
-    align-items: center;
-    gap: 0.36rem;
-    width: 50%;
-    height: fit-content;
-    padding: 0.36rem;
-    border-radius: 1rem;
-    background-color: #EEEEEE;
-    box-shadow: 0 0 4px 4px #EEEEEE40;
-}
-
-.search-space {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: fit-content;
-}
-
-.search-bar {
-    width: 100%;
-    padding: 0.36rem;
-    padding-right: 2rem;
-    outline: none;
-    border-radius: 0.6rem;
-    border: 2px solid #FF6701;
-    background-color: #EEEEEE;
-    font-size: 0.8rem;
-}
-
-.search-cancel {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 0.36rem;
-    width: 1.5rem;
-    height: 1.5rem;
-    cursor: pointer;
-    opacity: 0.8;
-    transition: all 0.2s ease-in-out;
-}
-
-.search-cancel:hover {
-    opacity: 1;
-}
-
-.search-button {
-    padding: 0.4rem 1rem;
-    border: none;
-    border-radius: 0.8rem;
-    background-color: #FF6701;
-    color: white;
-    font-size: 0.85rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-}
-
-.search-button:hover {
-    background-color: #E05900;
+.explore-header {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #FF6701;
+    text-shadow: 0px 0px 2px #EEEEEE40;
 }
 
 .team-card-content {
@@ -145,17 +90,39 @@ body {
 }
 
 .card-detail {
-    padding: 12px;
+    padding: 0.6rem;
 }
 
 .card-detail h2 {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: #FF6701;
 }
 
 .card-detail p {
+    font-size: 0.8rem;
+}
+
+.line-truncate {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Number of lines to show */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-status {
+    padding: 0.6rem;
     font-size: 0.9rem;
+    font-weight: 700;
+    color: white;
+}
+
+.card-status.open {
+    background-color: #00A86B;
+}
+
+.card-status.closed {
+    background-color: #D80032;
 }
 
 .pagination-container {
@@ -163,12 +130,6 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-}
-
-.pagination-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
 }
 
 .page-search-wrapper {
@@ -253,15 +214,6 @@ body {
         padding: 2.2rem;
     }
 
-    .search-form {
-        width: 64%;
-    }
-
-    .search-cancel {
-        width: 1.25rem;
-        height: 1.25rem;
-    }
-
     .team-card-content {
         padding: 0.6rem;
     }
@@ -293,29 +245,6 @@ body {
 
     .explore-content {
         padding: 1.5rem;
-    }
-
-    .search-form {
-        width: 80%;
-        gap: 0.25rem;
-        padding: 0.25rem;
-        border-radius: 0.75rem;
-    }
-
-    .search-bar {
-        padding: 0.25rem;
-        padding-right: 1.5rem;
-        border-radius: 0.5rem;
-    }
-
-    .search-cancel {
-        width: 1.25rem;
-        height: 1.25rem;
-    }
-
-    .search-button {
-        padding: 0.36rem 0.75rem;
-        border-radius: 0.5rem;
     }
 
     .team-cards {
@@ -363,29 +292,6 @@ body {
 
     .explore-content {
         padding: 1.25rem;
-    }
-
-    .search-form {
-        width: 90%;
-        gap: 0.25rem;
-        padding: 0.25rem;
-        border-radius: 0.75rem;
-    }
-
-    .search-bar {
-        padding: 0.25rem;
-        padding-right: 1.5rem;
-        border-radius: 0.5rem;
-    }
-
-    .search-cancel {
-        width: 1rem;
-        height: 1rem;
-    }
-
-    .search-button {
-        padding: 0.36rem 0.75rem;
-        border-radius: 0.5rem;
     }
 
     .team-card-content {

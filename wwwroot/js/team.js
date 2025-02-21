@@ -1,20 +1,28 @@
-import { teams } from "../mock/teams.js";
+const api = "http://localhost:5234";
 
-let teamId = 1;
+async function fetchUserMe() {
+    try {
+        const response = await fetch(`${api}/User/me`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getCookie("token")}`,
+            },
+        });
 
-function displayTeamDetails(teamId) {
-    const selectedTeam = teams.find(team => team.id === teamId);
+        if (!response.ok) {
+            throw new Error(`Fetch User Failed: ${response.status}`);
+        }
 
-    if (!selectedTeam) {
-        console.error('Team not found');
-        return;
+        const data = await response.json();
+        console.log("Fetched User:", data);
+    } catch (error) {
+        console.error('Error:', error);
     }
-
-    document.getElementById('team-name').textContent = selectedTeam.name;
-    document.getElementById('team-lead').textContent = selectedTeam.lead;
-    document.getElementById('team-hackathon').textContent = selectedTeam.hackathon.name;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    displayTeamDetails(teamId);
-});
+function main() {
+    fetchUserMe();
+}
+
+main();

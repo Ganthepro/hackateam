@@ -9,6 +9,7 @@
     @* Components Style *@
     <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/search-bar.css" asp-append-version="true" />
 </head>
 <body>
     @* Navbar Component *@
@@ -26,6 +27,7 @@
 
     @* Content Page *@
     <div class="explore-content">
+        <h1 class="explore-header">Explore and find your team!!</h1>
         <form action="search-card" method="get" class="search-form">
             <div class="search-space">
                 <input type="text" placeholder="Search" class="search-bar">
@@ -36,14 +38,14 @@
             </button>
         </form>
         <div class="team-card-content">
-            <h2>Featured Projects :</h2>
+            <h2>Featured Projects</h2>
             <div class="team-cards" id="featured-cards">
                 @* create cards *@
             </div>
             <div class="pagination-container" id="featured-pagination"></div>
         </div>
         <div class="team-card-content">
-            <h2>All Projects :</h2>
+            <h2>All Projects</h2>
             <div class="team-cards" id="all-cards">
                 @* create cards *@
             </div>
@@ -76,7 +78,6 @@
     <script src="~/js/navbar.js"></script>
     <script src="~/js/search-space.js"></script>
     <script type="module" src="~/js/explore.js"></script>
-    <script type="module" src="~/js/pagination.js"></script>
     <script src="~/js/cookie.js" asp-append-version="true"></script>
     <script src="~/js/authentication.js" asp-append-version="true"></script>
 </body>

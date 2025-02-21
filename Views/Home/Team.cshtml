@@ -26,13 +26,20 @@
 
     @* Content Page *@
     <div class="team-content">
-        <div class="team-details">
-            <h2 class="team-name" id="team-name"></h2>
-            <div class="team-info">
-                <div class="team-description" id="team-description"></div>
-                <div class="team-lead" id="team-lead"></div>
-                <div class="team-hackathon" id="team-hackathon"></div>
+        <h1 class="team-header">Host and Pending Teamlist</h1>
+        <div class="team-list-content">
+            <h2>Host Team</h2>
+            <div class="team-cards" id="featured-cards">
+                @* create cards *@
             </div>
+            <div class="pagination-container" id="featured-pagination"></div>
+        </div>
+        <div class="team-list-content">
+            <h2>Pending Team</h2>
+            <div class="team-cards" id="all-cards">
+                @* create cards *@
+            </div>
+            <div class="pagination-container" id="all-pagination"></div>
         </div>
     </div>
 
@@ -58,26 +65,8 @@
         </div>
     </footer>
 
-    <script type="module" src="~/js/team.js">
-        import { teams } from "../mock/teams.js";
-
-        let teamId = 1;
-
-        function displayTeamDetails(teamId) {
-            const selectedTeam = teams.find(team => team.id === teamId);
-
-            if (!selectedTeam) {
-                console.error('Team not found');
-                return;
-            }
-
-            document.querySelectorById('team-name').textContent = selectedTeam.name;
-            document.querySelectorById('team-lead').textContent = selectedTeam.lead;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            displayTeamDetails(teamId);
-        });
-    </script>
+    <script type="module" src="~/js/team.js"></script>
+    <script src="~/js/cookie.js" asp-append-version="true"></script>
+    <script src="~/js/authentication.js" asp-append-version="true"></script>
 </body>
 </html>
