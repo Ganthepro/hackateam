@@ -1,5 +1,12 @@
 api = "http://localhost:5234";
 
+var initSkillId = "";
+var changeSkill = false;
+
+document.addEventListener("DOMContentLoaded", function () {
+  GetProject();
+});
+
 async function Submit() {
   const inputSkill = document.getElementById("skill").value;
   const datalist = document.getElementById("skills");
@@ -11,6 +18,8 @@ async function Submit() {
   if (selectedOption) {
     const skillId = selectedOption.dataset.id;
     EditProject(skillId);
+  } else if (!changeSkill) {
+    EditProject(initSkillId);
   } else {
     const body = { title: inputSkill };
     try {
@@ -38,10 +47,11 @@ async function Submit() {
 async function EditProject(skillId) {
   const title = document.getElementById("title").value;
   const description = document.getElementById("description").value;
+  const id = document.getElementById("projectId").dataset.id;
 
   try {
-    const response = await fetch(`${api}/Project`, {
-      method: "Post",
+    const response = await fetch(`${api}/Project/${id}`, {
+      method: "Patch",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getCookie("token")}`,
@@ -58,7 +68,40 @@ async function EditProject(skillId) {
   }
 }
 
+async function GetProject() {
+  const id = document.getElementById("projectId").dataset.id;
+  try {
+    const response = await fetch(`${api}/Project/${id}`, {
+      method: "Get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("token")}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Get Project failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    initSkillId = data.skillResponse.id;
+    ShowData(data);
+  } catch (error) {
+    CreateErrorBlock("Get Project failed. Please check your data.");
+  }
+}
+
+function ShowData(data) {
+  const title = document.getElementById("title");
+  title.value = data.title;
+  const description = document.getElementById("description");
+  description.value = data.description;
+  const skill = document.getElementById("skill");
+  skill.value = data.skillResponse.title;
+}
+
 async function SearchSkill() {
+  changeSkill = true;
   const skill = document.getElementById("skill").value;
   if (skill.length < 3) return;
   const body = { title: skill, limit: 2 };
@@ -74,7 +117,6 @@ async function SearchSkill() {
     if (!response.ok) {
       throw new Error(`Edit Project failed: ${response.status}`);
     }
-    
     const data = await response.json();
     CreateOption(data);
   } catch (error) {
