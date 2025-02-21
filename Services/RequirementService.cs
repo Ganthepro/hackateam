@@ -19,7 +19,12 @@ public class RequirementService
         _requirement = database.GetCollection<Requirement>("Requirements");
     }
 
-    public async Task<List<Requirement>> GetAll(RequirementQueryDto requirementQueryDto)
+    public async Task<List<Requirement>> GetAll()
+    {
+        return await _requirement.Find(_ => true).ToListAsync();
+    }
+
+    public async Task<List<Requirement>> GetPaginated(RequirementQueryDto requirementQueryDto)
     {
         var filters = new List<FilterDefinition<Requirement>>();
         if (!string.IsNullOrEmpty(requirementQueryDto.TeamId))
@@ -32,6 +37,7 @@ public class RequirementService
             .Limit(requirementQueryDto.Limit)
             .ToListAsync();
     }
+
     public async Task<Requirement> Get(Expression<Func<Requirement, bool>> filter)
     {
         var requirement = await _requirement.Find(filter).FirstOrDefaultAsync();
@@ -101,5 +107,10 @@ public class RequirementService
         return await _requirement.FindOneAndDeleteAsync(
             Builders<Requirement>.Filter.Eq(h => h.Id, id)
         );
+    }
+
+    public async Task RemoveAll(Expression<Func<Requirement, bool>> filter)
+    {
+        await _requirement.DeleteManyAsync(filter);
     }
 }
