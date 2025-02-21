@@ -2,6 +2,7 @@ const api = "http://localhost:5234";
 
 async function fetchUserMe() {
     try {
+        console.log(getCookie("token"));
         const response = await fetch(`${api}/User/me`, {
             method: "GET",
             headers: {
