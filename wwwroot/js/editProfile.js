@@ -1,4 +1,4 @@
-const api = "http://localhost:5234";
+api = "http://localhost:5234";
 
 var changeAvatar = false;
 
