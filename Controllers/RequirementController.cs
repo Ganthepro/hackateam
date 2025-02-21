@@ -27,7 +27,7 @@ public class RequirementController : Controller
     [HttpGet]
     public async Task<ActionResult<List<RequirementResponseDto>>> Get(RequirementQueryDto requirementQueryDto)
     {
-        var requirements = await _requirementService.GetAll(requirementQueryDto);
+        var requirements = await _requirementService.GetPaginated(requirementQueryDto);
 
         var requirementDto = new List<RequirementResponseDto>();
         foreach (var requirement in requirements)
