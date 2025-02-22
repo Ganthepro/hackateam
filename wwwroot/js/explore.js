@@ -53,29 +53,6 @@ function cleanupBannerUrls() {
     bannerUrls.clear();
 }
 
-async function fetchTeamLead(LeadId) {
-    try {
-        const response = await fetch(`${api}/User/${LeadId}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${getCookie("token")}`,
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error(`Fetch team lead failed: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log("Fetched Team Lead:", data);
-        return data;
-    } catch (error) {
-        console.error("Error fetching team lead:", error);
-        return null;
-    }
-}
-
 async function fetchTeams() {
     try {
         const response = await fetch(`${api}/Team`, {
@@ -98,7 +75,6 @@ async function fetchTeams() {
         const teamsWithBanners = await Promise.all(
             data.map(async (team) => {
                 const bannerBlob = await fetchTeamBanner(team.id);
-                const teamLead = await fetchTeamLead(team.leadResponse.id);
                 let bannerUrl = '/pictures/default-banner.png';
                 
                 if (bannerBlob) {
@@ -106,7 +82,7 @@ async function fetchTeams() {
                     bannerUrls.set(team.id, bannerUrl);
                 }
                 
-                return { ...team, bannerUrl, teamLead };
+                return { ...team, bannerUrl};
             })
         );
             
@@ -142,7 +118,7 @@ function createRequirementCard(team) {
                 <h2>${team.name}</h2>
                 <p class="">Hackathon : ${team.hackathonName}</p>
                 <p class="hackathon-desc line-clamp-2">${team.hackathonDescription}</p>
-                <p>Team Lead : ${team.teamLead.fullName}</p>
+                <p>Team Lead : ${team.leadResponse.fullName}</p>
                 <div class="date-info">
                     <p>Created : ${createdDate}</p>
                     <p>Updated : ${updatedDate}</p>
