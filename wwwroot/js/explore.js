@@ -1,5 +1,3 @@
-import { teams } from "../mock/teams.js";
-
 const api = "http://localhost:5234";
 
 let { ITEMS_PER_PAGE } = updateItemsPerPage();
@@ -55,7 +53,7 @@ function cleanupBannerUrls() {
 
 async function fetchTeams() {
     try {
-        const response = await fetch(`${api}/Team`, {
+        const response = await fetch(`${api}/Team?Limit=1000`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

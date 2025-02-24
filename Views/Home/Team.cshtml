@@ -28,18 +28,18 @@
     <div class="team-content">
         <h1 class="team-header">Host and Pending Teamlist</h1>
         <div class="team-list-content">
-            <h2>Host Team</h2>
-            <div class="team-cards" id="featured-cards">
+            <h2>Hosted Team</h2>
+            <div class="team-dashboards" id="hosted-teams">
                 @* create cards *@
             </div>
-            <div class="pagination-container" id="featured-pagination"></div>
+            <div class="pagination-container" id="hosted-pagination"></div>
         </div>
         <div class="team-list-content">
             <h2>Pending Team</h2>
-            <div class="team-cards" id="all-cards">
+            <div class="team-dashboards" id="pending-teams">
                 @* create cards *@
             </div>
-            <div class="pagination-container" id="all-pagination"></div>
+            <div class="pagination-container" id="pending-pagination"></div>
         </div>
     </div>
 
@@ -65,6 +65,7 @@
         </div>
     </footer>
 
+    <script src="~/js/navbar.js"></script>
     <script type="module" src="~/js/team.js"></script>
     <script src="~/js/cookie.js" asp-append-version="true"></script>
     <script src="~/js/authentication.js" asp-append-version="true"></script>
