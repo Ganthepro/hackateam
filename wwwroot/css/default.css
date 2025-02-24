@@ -4,16 +4,16 @@
     margin: 0;
     padding: 0;
     font-family: "Inter", serif;
-    font-size: 20px;
+    color: #EEEEEE;
+    text-decoration: none;
 }
 
 /* Default (Large screens, ≥ 1200px) */
 body {
     height: fit-content;
     min-height: 100vh;
-    background-color: #444F5A;
+    background-color: #0A192F;
     font-size: 24px;
-    color: #EEEEEE;
 }
 
 /* Small Laptops & Tablets (≤ 1199px) */

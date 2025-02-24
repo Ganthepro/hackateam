@@ -1,0 +1,280 @@
+/* Default for all pages */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", serif;
+    font-size: 24px;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+/* Default (Large screens, ≥ 1200px) */
+body {
+    height: fit-content;
+    min-height: 100vh;
+    background-color: #050A12;
+}
+
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px 96px;
+    border-radius: 12px;
+    background-color: #0A192F90;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+section form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+}
+
+section h1 {
+    font-weight: 700;
+    font-size: 64px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-field label {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.input-field input {
+    padding: 4px;
+    outline: none;
+    border-radius: 6px;
+    color: #050A12;
+    font-size: 20px;
+}
+
+.input-field input::placeholder {
+    color: #050A12;
+}
+
+.input-field select {
+    width: 100%;
+    outline: none;
+    border: none;
+    border-radius: 6px;
+    background-color: #FFFFFF;
+    color: #050A12;
+}
+
+select option {
+    color: #050A12;
+}
+
+.submit-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    background-color: #00A3FF;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.submit-btn:hover {
+    background-color: #0077FF;
+}
+
+.auth-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+.auth-link p {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.auth-link a {
+    text-decoration:underline;
+    font-size: 16px;
+    font-weight: 600;
+    color: #00A3FF;
+}
+
+/* Small Laptops & Tablets (≤ 1199px) */
+@media (max-width: 1200px) {
+    body {
+        font-size: 20px;
+    }
+
+    section {
+        gap: 20px;
+        padding: 20px 64px;
+        border-radius: 12px;
+    }
+    
+    section form {
+        gap: 20px;
+    }
+    
+    section h1 {
+        font-size: 54px;
+    }
+
+    .input-field {
+        gap: 8px;
+    }
+    
+    .input-field label {
+        font-size: 22px;
+    }
+    
+    .input-field input {
+        padding: 4px;
+        border-radius: 6px;
+        font-size: 18px;
+    }
+
+    .submit-btn {
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    .auth-link {
+        gap: 6px;
+    }
+    
+    .auth-link p {
+        font-size: 14px;
+    }
+    
+    .auth-link a {
+        font-size: 14px;
+    }
+}
+
+/* Tablets (≤ 769px) */
+@media (max-width: 769px) {
+    body {
+        font-size: 18px;
+    }
+
+    section {
+        gap: 16px;
+        padding: 16px 48px;
+        border-radius: 8px;
+    }
+    
+    section form {
+        gap: 16px;
+    }
+    
+    section h1 {
+        font-size: 48px;
+    }
+
+    .input-field {
+        gap: 6px;
+    }
+    
+    .input-field label {
+        font-size: 20px;
+    }
+    
+    .input-field input {
+        padding: 4px;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    .submit-btn {
+        padding: 8px;
+        border-radius: 6px;
+    }
+
+    .auth-link {
+        gap: 4px;
+    }
+    
+    .auth-link p {
+        font-size: 12px;
+    }
+    
+    .auth-link a {
+        font-size: 12px;
+    }
+}
+
+/* Mobile Phones (≤ 480px) */
+@media (max-width: 480px) {
+    body {
+        font-size: 16px;
+    }
+
+    section {
+        gap: 12px;
+        padding: 12px 36px;
+        border-radius: 8px;
+    }
+    
+    section form {
+        gap: 12px;
+    }
+    
+    section h1 {
+        font-size: 36px;
+    }
+
+    .input-field {
+        gap: 4px;
+    }
+    
+    .input-field label {
+        font-size: 16px;
+    }
+    
+    .input-field input {
+        padding: 4px;
+        border-radius: 4px;
+        font-size: 12px;
+    }
+
+    .submit-btn {
+        padding: 6px;
+        border-radius: 6px;
+    }
+
+    .auth-link {
+        gap: 4px;
+    }
+    
+    .auth-link p {
+        font-size: 10px;
+    }
+    
+    .auth-link a {
+        font-size: 10px;
+    }
+}

@@ -395,7 +395,7 @@ window.addEventListener('resize', () => {
     resizeTimeout = setTimeout(() => {
         ({ ITEMS_PER_PAGE } = updateItemsPerPage());
         main();
-    }, 100);
+    }, 10);
 });
 
 document.addEventListener('DOMContentLoaded', main);

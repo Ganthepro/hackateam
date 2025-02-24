@@ -1,0 +1,36 @@
+/* Updated grid-container styles */
+.grid-container {
+    z-index: -100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    /* Calculate the minimum between viewport width and height to determine cell size */
+    --cell-size: min(calc(100vw / 30), calc(100vh / 30));
+    /* Use repeat(auto-fill) to create as many squares as will fit */
+    grid-template-columns: repeat(auto-fill, var(--cell-size));
+    grid-template-rows: repeat(auto-fill, var(--cell-size));
+    gap: 2px;
+    justify-content: center;
+    align-content: center;
+    background-color: #050A12; /* Match your body background color */
+    overflow: hidden; /* Prevent any potential scrolling of the grid */
+}
+
+.grid-cell {
+    background: #050A12;
+    transition: background-color 0.3s ease;
+    aspect-ratio: 1/1;
+}
+
+.grid-cell.active {
+    background: #00F5D4;
+    animation: fade 2s ease-out forwards;
+}
+
+@keyframes fade {
+    0% { background: #00F5D4; }
+    100% { background: #050A12; } /* Match the initial grid-cell background */
+}
