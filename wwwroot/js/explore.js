@@ -1,9 +1,10 @@
-import { teams } from "../mock/teams.js";
+const api = "http://localhost:5234";
 
 let { ITEMS_PER_PAGE } = updateItemsPerPage();
 let currentPageFeatured = 1;
 let currentPageAll = 1;
 let resizeTimeout;
+let bannerUrls = new Map();
 
 function updateItemsPerPage() {
     const width = window.innerWidth;
@@ -18,27 +19,113 @@ function updateItemsPerPage() {
     }
 }
 
+async function fetchTeamBanner(teamId) {
+    try {
+        const response = await fetch(`${api}/Team/${teamId}/banner`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${getCookie("token")}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fetch banner failed: ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        if (blob.size === 0) {
+            return null;
+        }
+        
+        return blob;
+    } catch (error) {
+        console.error(`Error fetching banner for team ${teamId}:`, error);
+        return null;
+    }
+}
+
+function cleanupBannerUrls() {
+    bannerUrls.forEach(url => {
+        URL.revokeObjectURL(url);
+    });
+    bannerUrls.clear();
+}
+
+async function fetchTeams() {
+    try {
+        const response = await fetch(`${api}/Team?Limit=1000`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getCookie("token")}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fetch teams failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Fetched Teams:", data);
+
+        cleanupBannerUrls();
+
+        const teamsWithBanners = await Promise.all(
+            data.map(async (team) => {
+                const bannerBlob = await fetchTeamBanner(team.id);
+                let bannerUrl = '/pictures/default-banner.png';
+                
+                if (bannerBlob) {
+                    bannerUrl = URL.createObjectURL(bannerBlob);
+                    bannerUrls.set(team.id, bannerUrl);
+                }
+                
+                return { ...team, bannerUrl};
+            })
+        );
+            
+        displayTeams(teamsWithBanners, 'featured-cards', currentPageFeatured);
+        displayTeams(teamsWithBanners, 'all-cards', currentPageAll);
+        updatePagination(teamsWithBanners, 'featured-pagination', currentPageFeatured, 'featured-cards', true);
+        updatePagination(teamsWithBanners, 'all-pagination', currentPageAll, 'all-cards', false);
+    } catch (error) {
+        console.error("Error fetching teams:", error);
+    }
+}
+
+
 function createRequirementCard(team) {
     const card = document.createElement('div');
     card.classList.add('card');
+    
+    const createdDate = new Date(team.createdAt).toLocaleDateString();
+    const updatedDate = new Date(team.updatedAt).toLocaleDateString();
+    const expiredDate = new Date(team.expiredAt).toLocaleDateString();
+
+    const statusText = team.status === 0 ? 'Open' : 'Closed';
+    
     card.innerHTML = `
-        <a asp-controller="Home" asp-action="Explore/${team.id}">
-            <div class="card-status">
-                ${team.status}
+        <a href="/Home/Explore/${team.id}">
+            <div class="card-status ${statusText.toLowerCase()}">
+                ${statusText}
             </div>
             <div class="card-image">
-                <img src="${team.image}" alt="${team.name}"/>
+                <img src="${team.bannerUrl}" alt="Team Banner" onerror="this.src='/pictures/default-banner.png'">
             </div>
             <div class="card-detail">
                 <h2>${team.name}</h2>
-                <p>Lead: ${team.lead}</p>
-                <p>Hackathon: ${team.hackathon.name}</p>
-                <p>Created At: ${team.createdAt}</p>
-                <p>Updated At: ${team.updatedAt}</p>
-                <p>Expired At: ${team.expiredAt}</p>
+                <p class="">Hackathon : ${team.hackathonName}</p>
+                <p class="hackathon-desc line-clamp-2">${team.hackathonDescription}</p>
+                <p>Team Lead : ${team.leadResponse.fullName}</p>
+                <div class="date-info">
+                    <p>Created : ${createdDate}</p>
+                    <p>Updated : ${updatedDate}</p>
+                    <p>Expires : ${expiredDate}</p>
+                </div>
             </div>
         </a>
     `;
+    
     return card;
 }
 
@@ -64,7 +151,11 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
     const totalPages = Math.ceil(teams.length / ITEMS_PER_PAGE);
     
     const paginationHTML = `
-        <div class="pagination-wrapper">
+        <div class="page-navigation">
+            <button class="pagination-btn prev-btn" ${currentPage === 1 ? 'disabled' : ''}>
+                Prev
+            </button>
+
             <div class="page-search-wrapper">
                 <input 
                     type="text" 
@@ -75,17 +166,10 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
                     of ${totalPages}
                 </div>
             </div>
-            <div class="page-navigation">
-                <button class="pagination-btn prev-btn" ${currentPage === 1 ? 'disabled' : ''}>
-                    Prev
-                </button>
-                <div class="current-page">
-                    ${currentPage}
-                </div>
-                <button class="pagination-btn next-btn" ${currentPage === totalPages ? 'disabled' : ''}>
-                    Next
-                </button>
-            </div>
+    
+            <button class="pagination-btn next-btn" ${currentPage === totalPages ? 'disabled' : ''}>
+                Next
+            </button>
         </div>
     `;
     
@@ -96,14 +180,6 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
     const pageSearch = newPaginationContainer.querySelector('.page-search');
     const prevBtn = newPaginationContainer.querySelector('.prev-btn');
     const nextBtn = newPaginationContainer.querySelector('.next-btn');
-    
-    pageSearch.addEventListener('input', (e) => {
-        if (e.target.value === '' || /^\d+$/.test(e.target.value)) {
-            e.target.dataset.value = e.target.value;
-        } else {
-            e.target.value = e.target.dataset.value || '';
-        }
-    });
 
     pageSearch.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
@@ -153,12 +229,10 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
 }
 
 function main() {
-    displayTeams(teams, 'featured-cards', currentPageFeatured);
-    displayTeams(teams, 'all-cards', currentPageAll);
-    updatePagination(teams, 'featured-pagination', currentPageFeatured, 'featured-cards', true);
-    updatePagination(teams, 'all-pagination', currentPageAll, 'all-cards', false);
+    fetchTeams();
 }
 
+window.addEventListener('beforeunload', cleanupBannerUrls);
 window.addEventListener('resize', () => {
     if (resizeTimeout) {
         clearTimeout(resizeTimeout);
@@ -166,10 +240,11 @@ window.addEventListener('resize', () => {
     
     currentPageFeatured = 1;
     currentPageAll = 1;
+
     resizeTimeout = setTimeout(() => {
         ({ ITEMS_PER_PAGE } = updateItemsPerPage());
         main();
-    }, 250);
+    }, 100);
 });
 
 document.addEventListener('DOMContentLoaded', main);
