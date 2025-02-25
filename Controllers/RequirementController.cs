@@ -14,18 +14,20 @@ public class RequirementController : Controller
     private readonly RequirementService _requirementService;
     private readonly TeamService _teamService;
     private readonly SkillService _skillService;
+    private readonly SubmissionService _submissionService;
 
-    public RequirementController(RequirementService requirementService, TeamService teamService, SkillService skillService)
+    public RequirementController(RequirementService requirementService, TeamService teamService, SkillService skillService, SubmissionService submissionService)
     {
         _requirementService = requirementService;
         _teamService = teamService;
         _skillService = skillService;
+        _submissionService = submissionService;
     }
 
     [HttpGet]
     public async Task<ActionResult<List<RequirementResponseDto>>> Get(RequirementQueryDto requirementQueryDto)
     {
-        var requirements = await _requirementService.GetAll(requirementQueryDto);
+        var requirements = await _requirementService.GetPaginated(requirementQueryDto);
 
         var requirementDto = new List<RequirementResponseDto>();
         foreach (var requirement in requirements)
@@ -118,6 +120,8 @@ public class RequirementController : Controller
         {
             return NotFound(Constants.RequirementMessage.NOT_FOUND);
         }
+
+        await _submissionService.RemoveAll(submission => submission.RequirementId == id);
 
         return NoContent();
     }

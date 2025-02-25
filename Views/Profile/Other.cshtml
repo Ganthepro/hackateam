@@ -12,7 +12,7 @@
 <body>
     <div id="userId" data-id="@ViewBag.Id"></div>
     <header>
-        <h1>My Profile</h1>
+        <h1>Profile</h1>
     </header>
 
     <main>
@@ -25,19 +25,21 @@
             </div>
         </section>
 
-        <section id="projects">
+        <div id="projects">
             <div id="showproject">
                 <h2>Projects :</h2>
+                <p></p>
                 <button id="loadMore" onclick="SeeMore()">Show All</button>
             </div>
-            <div id="projects-list">
+            
+        </div>
+        <div id="projects-list">
 
-            </div>
-        </section>
-        <script src="~/js/alertError.js" asp-append-version="true"></script>
-        <script src="~/js/other.js" asp-append-version="true"></script>
-        <script src="~/js/cookie.js" asp-append-version="true"></script>
-        <script src="~/js/authentication.js" asp-append-version="true"></script>
+        </div>
     </main>
+    <script src="~/js/alertError.js" asp-append-version="true"></script>
+    <script src="~/js/other.js" asp-append-version="true"></script>
+    <script src="~/js/cookie.js" asp-append-version="true"></script>
+    <script src="~/js/authentication.js" asp-append-version="true"></script>
 </body>
 </html>

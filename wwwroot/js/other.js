@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function Profile() {
   const id = document.getElementById("userId").dataset.id;
-  console.log(`${api}/User/${id}`);
   try {
     const response = await fetch(`${api}/User/${id}`, {
       method: "Get",
@@ -92,7 +91,7 @@ function CreateProject(data) {
 function SeeMore() {
   showMore = true;
   const button = document.getElementById("loadMore");
-  button.textContent = "Show less";
+  button.textContent = "Show Less";
   button.onclick = SeeLess;
   CreateProject(project);
 }
