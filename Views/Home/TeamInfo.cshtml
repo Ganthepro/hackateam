@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "TeamInfo";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - TeamInfo</title>
+    <link rel="stylesheet" href="~/css/teamInfo.css" asp-append-version="true" />
+</head>
+<body>
+    <div id="teamId" data-id="@ViewBag.Id"></div>
+    <main id="card">
+        <h2 id="name">Name</h2>
+        <img src="https://www.purina.co.th/sites/default/files/styles/ttt_image_original/public/2024-02/BREED_Hero_Desktop_Burmilla_895%E2%80%8A%C3%97%E2%80%8A504.webp?itok=oiJEQuTj" alt="" width="300px" height="200px"  class="teamimage">
+        <h4 id="hackathonteam">Hackathon Name</h4>
+        <p>Description:</p>
+        <p id="description"> n the present market, considering India, few only softwares are there, who provide proper Billing and Payment system, we are on a mission to compete them with integrating AI based analytics and more.</p>
+        <p id="requirement">Requirement: Web Develop, Ux Ui, Ai Developer</p>
+        <p id="owner">Created by: Cat Homeland</p>
+        <p id="teamsize">Teamsize: 3</p>
+        <p id="expireddate">Expired Date: 12 Junuary 2025</p>
+        <section>
+            <form>
+                <h4>State Of Purpose</h4>
+                <textarea id="sop" name="sop" rows="8" required></textarea>
+
+                <h4>Select a Skill:</h4>
+
+                <div id="skills"></div>
+
+                <button type="submit" onclick="JoinTeam()">Join Team</button>
+            </form>
+        </section>
+    </main>
+    <script src="~/js/alertError.js" asp-append-version="true"></script>
+    <script src="~/js/teamInfo.js" asp-append-version="true"></script>
+    <script src="~/js/cookie.js" asp-append-version="true"></script>
+    <script src="~/js/authentication.js" asp-append-version="true"></script>
+</body>
+</html>
