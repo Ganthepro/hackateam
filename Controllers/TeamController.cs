@@ -6,6 +6,8 @@ using hackateam.Dtos.Requirement;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 namespace hackateam.Controllers;
+
+using hackateam.Dtos.Skill;
 using hackateam.Shared;
 using System.Net;
 
@@ -16,6 +18,7 @@ public class TeamController : Controller
     private readonly TeamService _teamService;
     private readonly UserService _userService;
     private readonly FileService _fileService;
+    private readonly ProjectService _projectService;
     private readonly SkillService _skillService;
     private readonly RequirementService _requirementService;
     private readonly SubmissionService _submissionService;
