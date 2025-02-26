@@ -1,0 +1,45 @@
+@{
+    ViewData["Title"] = "Profile";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+    <title>@ViewData["Title"] - Other</title>
+</head>
+<body>
+    <div id="userId" data-id="@ViewBag.Id"></div>
+    <header>
+        <h1>Profile</h1>
+    </header>
+
+    <main>
+        <section id="profile">
+            <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="Avatar of Mr. John Doe" id="avatar" />
+            <div id="profile-details">
+                <p id="fullname"><strong>Fullname:</strong></p>
+                <p id="tel"><strong>Tel:</strong></p>
+                <p id="email"><strong>Email:</strong></p>
+            </div>
+        </section>
+
+        <div id="projects">
+            <div id="showproject">
+                <h2>Projects :</h2>
+                <p></p>
+                <button id="loadMore" onclick="SeeMore()">Show All</button>
+            </div>
+            
+        </div>
+        <div id="projects-list">
+
+        </div>
+    </main>
+    <script src="~/js/alertError.js" asp-append-version="true"></script>
+    <script src="~/js/other.js" asp-append-version="true"></script>
+    <script src="~/js/cookie.js" asp-append-version="true"></script>
+    <script src="~/js/authentication.js" asp-append-version="true"></script>
+</body>
+</html>

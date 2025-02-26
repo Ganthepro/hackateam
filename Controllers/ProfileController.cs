@@ -18,13 +18,25 @@ public class ProfileController : Controller
         return View();
     }
 
-    public IActionResult EditProfile()
+    public IActionResult UpdateProfile()
     {
         return View();
     }
 
-    public IActionResult EditProject()
+    public IActionResult CreateProject()
     {
+        return View();
+    }
+
+    public ActionResult UpdateProject(string id)
+    {
+        ViewBag.Id = id; 
+        return View();
+    }
+
+    public ActionResult Other(string id)
+    {
+        ViewBag.Id = id; 
         return View();
     }
 

@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
+    <title>@ViewData["Title"] - EditProfile</title>
+</head>
+<body>  
+    <section>
+        <h1>Update Profile</h1>
+        <form id="editprofile" onsubmit="event.preventDefault(); Submit();">
+            <label for="avatar">Avatar</label>
+            <input type="file" id="avatar" name="avatar" accept="image/*">
+            <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="my avatar" id="showavatar">
+
+            <label for="header">Header</label>
+            <select id="header" name="header">
+                <option value="">Select</option>
+                    <option value="Mr.">Mr.</option>
+                    <option value="Mrs.">Mrs.</option>
+                    <option value="Ms.">Ms.</option>
+            </select>
+
+            <label for="fullname">Fullname</label>
+            <input type="text" id="fullname" name="fullname" />
+
+
+            <label for="tel">Tel</label>
+            <input type="tel" id="tel" name="tel" />
+
+            <div class="submit">
+                <button type="submit">Update</button>
+            </div>
+        </form>
+    </section>
+    <footer>
+        <a asp-controller="Profile" asp-action="Index">Go To Profile</a>
+        <a asp-controller="Profile" asp-action="CreateProject">Add New Project</a>
+    </footer>
+    <script src="~/js/cookie.js" asp-append-version="true"></script>
+    <script src="~/js/alertError.js" asp-append-version="true"></script>
+    <script src="~/js/updateProfile.js" asp-append-version="true"></script>
+    <script src="~/js/authentication.js" asp-append-version="true"></script>
+</body>
+</html>
+

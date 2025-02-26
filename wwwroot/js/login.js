@@ -1,4 +1,4 @@
-const api = "http://localhost:5234";
+api = "http://localhost:5234";
 
 async function Login() {
   const email = document.getElementById("email").value;
@@ -17,7 +17,7 @@ async function Login() {
     }
 
     const result = await response.json();
-    setCookie("token", result.token, 6);
+    setCookie("token", result.token, 12);
     window.location.href = `${api}/Home/Explore`;
   } catch (error) {
     CreateErrorBlock("Login failed. Please check your email or password.");
