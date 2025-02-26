@@ -4,19 +4,33 @@
     position: sticky;
     top: 0;
     left: 0;
+    right: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
     width: 100%;
     height: fit-content;
-    background-color: #222831;
+    background-color: #0A192F;
     font-weight: 600;
 }
 
 .navbar-title {
     font-weight: 700;
-    color: #FF6701;
+    color: #00A3FF;
+    animation: navbar-title 2s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes navbar-title {
+    0% { text-shadow: 0 0 12px #00F5D4; }
+    50% { text-shadow: 0 0 12px #0077FF; }
+    100% { text-shadow: 0 0 12px #00F5D4; }
+}
+
+@keyframes navbar-title {
+    0% { text-shadow: 0 0 12px #00F5D4; }
+    50% { text-shadow: 0 0 12px #0077FF; }
+    100% { text-shadow: 0 0 12px #00F5D4; }
 }
 
 .navbar-links {
@@ -33,7 +47,8 @@
 }
 
 .navbar-links a:hover {
-    color: #FF6701;
+    color: #0077FF;
+    text-decoration: underline;
 }
 
 .navbar img {

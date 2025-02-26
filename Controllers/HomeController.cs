@@ -53,6 +53,11 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult Notification()
+    {
+        return View();
+    }
+
     public ActionResult TeamInfo(string id)
     {
         ViewBag.Id = id; 
