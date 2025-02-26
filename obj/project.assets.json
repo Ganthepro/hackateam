@@ -8885,19 +8885,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Gan\\.nuget\\packages\\": {}
+    "C:\\Users\\asus\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Gan\\hackateam\\hackateam-api.csproj",
+      "projectUniqueName": "D:\\[KMITL]66010385\\YEAR_02\\TERM_02\\Web Dev\\hackateam\\hackateam-api.csproj",
       "projectName": "hackateam-api",
-      "projectPath": "C:\\Users\\Gan\\hackateam\\hackateam-api.csproj",
-      "packagesPath": "C:\\Users\\Gan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Gan\\hackateam\\obj\\",
+      "projectPath": "D:\\[KMITL]66010385\\YEAR_02\\TERM_02\\Web Dev\\hackateam\\hackateam-api.csproj",
+      "packagesPath": "C:\\Users\\asus\\.nuget\\packages\\",
+      "outputPath": "D:\\[KMITL]66010385\\YEAR_02\\TERM_02\\Web Dev\\hackateam\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Gan\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -8975,7 +8980,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
