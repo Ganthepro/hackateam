@@ -24,8 +24,13 @@ public class SkillService
         var indexModel = new CreateIndexModel<Skill>(indexKeys, indexOptions);
         _skills.Indexes.CreateOne(indexModel);
     }
+     
+    public async Task<List<Skill>> GetAll(Expression<Func<Skill, bool>> filter)
+    {
+        return await _skills.Find(filter).ToListAsync();
+    }
 
-    public async Task<List<Skill>> GetAll(SkillQueryDto skillQueryDto)
+    public async Task<List<Skill>> GetPaginate(SkillQueryDto skillQueryDto)
     {
         var filters = new List<FilterDefinition<Skill>>();
 

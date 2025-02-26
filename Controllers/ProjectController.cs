@@ -24,7 +24,7 @@ public class ProjectController : Controller
     [HttpGet]
     public async Task<ActionResult<List<ProjectResponseDto>>> Get(ProjectQueryDto projectQueryDto)
     {
-        var projects = await _projectService.GetAll(projectQueryDto);
+        var projects = await _projectService.GetPaginate(projectQueryDto);
         var projectDtos = new List<ProjectResponseDto>();
         foreach (var project in projects)
         {

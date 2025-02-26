@@ -409,6 +409,9 @@ FodyWeavers.xsd
 ##
 Avatar/
 
+hackateam-api.AssemblyInfo.cs
+hackateam-api.AssemblyInfoInputs.cache
+
 
 # globs
 Makefile.in
