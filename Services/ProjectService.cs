@@ -29,13 +29,13 @@ public class ProjectService
     {
         var filters = new List<FilterDefinition<Project>>();
 
-        if(!string.IsNullOrEmpty(projectQueryDto.Title))
+        if (!string.IsNullOrEmpty(projectQueryDto.Title))
             filters.Add(Builders<Project>.Filter.Regex(project => project.Title, new BsonRegularExpression(projectQueryDto.Title, "i")));
 
-        if(!string.IsNullOrEmpty(projectQueryDto.UserId))
+        if (!string.IsNullOrEmpty(projectQueryDto.UserId))
             filters.Add(Builders<Project>.Filter.Eq(project => project.UserId, projectQueryDto.UserId));
 
-        if(!string.IsNullOrEmpty(projectQueryDto.SkillId))
+        if (!string.IsNullOrEmpty(projectQueryDto.SkillId))
             filters.Add(Builders<Project>.Filter.Eq(project => project.SkillId, projectQueryDto.SkillId));
 
         var filter = filters.Any() ? Builders<Project>.Filter.And(filters) : Builders<Project>.Filter.Empty;
@@ -45,7 +45,7 @@ public class ProjectService
             .Limit(projectQueryDto.Limit)
             .ToListAsync();
     }
-    
+
     public async Task<List<Project>> GetAll(Expression<Func<Project, bool>> filter)
     {
         return await _projects.Find(filter).ToListAsync();
