@@ -19,9 +19,7 @@ async function GetNotification(userId) {
     }
 
     const result = await response.json();
-    // console.log(result);
     if (result.length === 0) {
-      console.log("No Notification");
       CreateNoMessage();
     } else {
       CreateMessage(result);
@@ -32,7 +30,6 @@ async function GetNotification(userId) {
 }
 
 function CreateMessage(data) {
-  console.log(data);
   data.forEach((element) => {
     const message = document.createElement("div");
     message.className = "message";
