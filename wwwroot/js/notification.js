@@ -19,24 +19,27 @@ async function GetNotification(userId) {
     }
 
     const result = await response.json();
+    // console.log(result);
     if (result.length === 0) {
+      console.log("No Notification");
       CreateNoMessage();
     } else {
+      CreateMessage(result);
     }
-    console.log(result);
   } catch (error) {
-    CreateErrorBlock("Get Notification failed. Please check your data.");
+    CreateErrorBlock(error);
   }
 }
 
 function CreateMessage(data) {
+  console.log(data);
   data.forEach((element) => {
     const message = document.createElement("div");
     message.className = "message";
     const name = document.createElement("h2");
-    name.innerText = element.Team.HackathonName;
+    name.innerText = element.teamResponse.hackathonName;
     const user = document.createElement("p");
-    p.innerText = `${element.User.FullName} ${element.type}`;
+    user.innerText = `${element.userResponse.fullName} ${element.type === 0 ? "Approved" : "Rejected"}`;
     message.appendChild(name);
     message.appendChild(user);
     const messages = document.getElementById("messages");
