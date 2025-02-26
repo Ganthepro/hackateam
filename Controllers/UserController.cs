@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using hackateam.Shared;
 using System.Net;
+using hackateam.Dtos.Skill;
 
 namespace hackateam.Controllers;
 
@@ -15,12 +16,16 @@ public class UserController : Controller
     private readonly UserService _userService;
     private readonly FileService _fileService;
     private readonly NotificationService _notificationService;
+    private readonly ProjectService _projectService;
+    private readonly SkillService _skillService;
 
-    public UserController(UserService userService, FileService fileService, NotificationService notificationService)
+    public UserController(UserService userService, FileService fileService, NotificationService notificationService, ProjectService projectService, SkillService skillService)
     {
         _userService = userService;
         _fileService = fileService;
         _notificationService = notificationService;
+        _projectService = projectService;
+        _skillService = skillService;
     }
 
     [HttpGet("me")]
@@ -41,6 +46,30 @@ public class UserController : Controller
         var fileName = await _fileService.UpdateFile(user.Id + Path.GetExtension(file.FileName), FileService.FolderName.Avatar, file);
         _userService.UpdateAvatar(user.Id!, fileName!);
         return await Task.FromResult(NoContent());
+    }
+
+    [HttpGet("skills")]
+    [Authorize]
+    public async Task<ActionResult<List<SkillResponseDto>>> GetSkills()
+    {
+        var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var project = await _projectService.GetAll(project => project.UserId == userId);
+
+        var skillDtos = new List<SkillResponseDto>();
+        foreach (var p in project)
+        {
+            var skill = await _skillService.Get(skill => skill.Id == p.SkillId);
+            if (skill == null)
+            {
+                return NotFound(Constants.SkillMessage.NOT_FOUND);
+            }
+            if (skillDtos.Any(s => s.Id == skill.Id))
+            {
+                continue;
+            }
+            skillDtos.Add(new SkillResponseDto(skill));
+        }
+        return Ok(skillDtos);
     }
 
     [HttpGet("{id:length(24)}/avatar")]

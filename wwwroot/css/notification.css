@@ -1,0 +1,45 @@
+body {
+  background-color: #222831;
+  color: #eeeeee;
+}
+
+header {
+  text-align: center;
+  font-weight: bolder;
+  font-size: 30px;
+  margin: 20px;
+}
+
+.message {
+  background-color: #444f5a;
+  margin: 20px;
+  border: 2px black solid;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+h2 {
+  margin: 18px;
+}
+
+p {
+  margin: 10px;
+}
+
+.nomessage {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+img {
+  height: 400px;
+  width: 400px;
+}
+
+@media screen and (max-width: 500px) {
+  img {
+    width: 200px;
+    height: 200px;
+  }
+}
