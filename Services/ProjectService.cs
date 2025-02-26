@@ -25,7 +25,7 @@ public class ProjectService
         _projects.Indexes.CreateOne(indexModel);
     }
 
-    public async Task<List<Project>> GetAll(ProjectQueryDto projectQueryDto)
+    public async Task<List<Project>> GetPaginate(ProjectQueryDto projectQueryDto)
     {
         var filters = new List<FilterDefinition<Project>>();
 
@@ -44,6 +44,11 @@ public class ProjectService
             .Skip((projectQueryDto.Page - 1) * projectQueryDto.Limit)
             .Limit(projectQueryDto.Limit)
             .ToListAsync();
+    }
+    
+    public async Task<List<Project>> GetAll(Expression<Func<Project, bool>> filter)
+    {
+        return await _projects.Find(filter).ToListAsync();
     }
 
     public async Task<Project> Get(Expression<Func<Project, bool>> filter)
