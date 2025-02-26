@@ -29,6 +29,21 @@ async function GetNotification(userId) {
   }
 }
 
+function CreateMessage(data) {
+  data.forEach((element) => {
+    const message = document.createElement("div");
+    message.className = "message";
+    const name = document.createElement("h2");
+    name.innerText = element.Team.HackathonName;
+    const user = document.createElement("p");
+    p.innerText = `${element.User.FullName} ${element.type}`;
+    message.appendChild(name);
+    message.appendChild(user);
+    const messages = document.getElementById("messages");
+    messages.appendChild(message);
+  });
+}
+
 function CreateNoMessage() {
   const noNotification = document.createElement("div");
   noNotification.className = "nomessage";
