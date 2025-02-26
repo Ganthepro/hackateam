@@ -14,12 +14,16 @@ public class TeamController : Controller
     private readonly TeamService _teamService;
     private readonly UserService _userService;
     private readonly FileService _fileService;
+    private readonly RequirementService _requirementService;
+    private readonly SubmissionService _submissionService;
 
-    public TeamController(TeamService teamService, UserService userService, FileService fileService)
+    public TeamController(TeamService teamService, UserService userService, FileService fileService, RequirementService requirementService, SubmissionService submissionService)
     {
         _teamService = teamService;
         _userService = userService;
         _fileService = fileService;
+        _requirementService = requirementService;
+        _submissionService = submissionService;
     }
 
     [HttpPut("banner")]
@@ -114,12 +118,21 @@ public class TeamController : Controller
     [Authorize]
     public async Task<IActionResult> Delete(string id)
     {
-        var deletedHackathon = await _teamService.Delete(id);
-
-        if (deletedHackathon == null)
+        var team = await _teamService.Get(team => team.Id == id);
+        if (team == null)
         {
             return NotFound(Constants.TeamMessage.NOT_FOUND);
         }
+
+        var requirements = await _requirementService.GetAll();
+        var teamRequirements = requirements.Where(req => req.TeamId == id).ToList();
+
+        foreach (var requirement in teamRequirements)
+        {
+            await _submissionService.RemoveAll(sub => sub.RequirementId == requirement.Id);
+            await _requirementService.Delete(requirement.Id!);
+        }
+        await _teamService.Delete(id);
 
         return NoContent();
     }

@@ -3,46 +3,53 @@
 <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="stylesheet" href="~/css/form.css" asp-append-version="true" />
+      <link rel="stylesheet" href="~/css/auth.css" asp-append-version="true" >
+      <link rel="stylesheet" href="~/css/effect-grid-background.css" asp-append-version="true" >
       <title>@ViewData["Title"] - Register</title>
 </head>
 <body>
-      <section>
-            <h1>Register</h1>
-            <form id="register" onsubmit="event.preventDefault(); Register();">
-                  <label for="header">Header</label>
-                  <select id="header" name="header" required>
-                        <option value="">Select</option>
-                        <option value="Mr.">Mr.</option>
-                        <option value="Mrs.">Mrs.</option>
-                        <option value="Ms.">Ms.</option>
-                  </select>
-
-                  <label for="fullName">FullName</label>
-                  <input type="text" id="fullName" name="fullName" required />
-
-                  <label for="email">Email</label>
-                  <input type="email" id="email" name="email" required />
-
-                  <label for="password">Password</label>
-                  <input type="password" id="password" name="password" required />
-
-                  <label for="tel">Tel</label>
-                  <input type="tel" id="tel" name="tel" required />
-
-                  <div class="submit">
-                        <button type="submit">Register</button>
+      <div class="grid-container" id="grid-container"></div>
+      <div class="auth-container">
+            <section>
+                  <h1>Register</h1>
+                  <form id="register" onsubmit="event.preventDefault(); Register();">
+                        <div class="input-field">
+                              <label for="header">Header</label>
+                              <select id="header" name="header" required>
+                                    <option value="Mr.">Mr.</option>
+                                    <option value="Mrs.">Mrs.</option>
+                                    <option value="Ms.">Ms.</option>
+                              </select>
+                        </div>
+                        <div class="input-field">
+                              <label for="fullName">FullName</label>
+                              <input type="text" id="fullName" name="fullName" required />
+                        </div>
+                        <div class="input-field">
+                              <label for="email">Email</label>
+                              <input type="email" id="email" name="email" required />
+                        </div>
+                        <div class="input-field">
+                              <label for="password">Password</label>
+                              <input type="password" id="password" name="password" required />
+                        </div>
+                        <div class="input-field">
+                              <label for="tel">Tel</label>
+                              <input type="tel" id="tel" name="tel" required />
+                        </div>
+                        <button type="submit" class="submit-btn">Register</button>
+                  </form>
+                  <div class="auth-link">
+                        <p>Already Have Account ?</p>
+                        <a asp-controller="Home" asp-action="Login">Login</a>
                   </div>
-                  
-            </form>
-      </section>
-      <footer>
-            Already Have Account ? 
-            <a asp-controller="Home" asp-action="Login">Login</a>
-      </footer>
+            </section>
+      </div>
+
       <script src="~/js/cookie.js" asp-append-version="true"></script>
       <script src="~/js/alertError.js" asp-append-version="true"></script>
       <script src="~/js/register.js" asp-append-version="true"></script>
+      <script src="~/js/effect-grid-background.js" asp-append-version="true"></script>
 </body>
 </html>
 
