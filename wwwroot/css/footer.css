@@ -5,7 +5,7 @@ footer {
     padding: 20px;
     width: 100%;
     height: fit-content;
-    background-color: #222831;
+    background-color: #0A192F;
     font-size: 18px;
     font-weight: 600;
 }
@@ -29,7 +29,7 @@ footer {
 
 .footer-link a {
     text-decoration: none;
-    color: #EEEEEE;
+    color: #FFFFFF;
 }
 
 .footer-content-02 {

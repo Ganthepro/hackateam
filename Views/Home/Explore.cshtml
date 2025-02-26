@@ -10,8 +10,16 @@
     <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/search-bar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/wave-grid-background.css" asp-append-version="true" />
 </head>
 <body>
+    @* Wave Grid Background *@
+    <div class="grid-container">
+        <div class="grid"></div>
+        <div class="brightness-pulse"></div>
+        <div class="glow-effect"></div>
+    </div>
+
     @* Navbar Component *@
     <nav class="navbar">
         <div class="navbar-title">Hackateam</div>
@@ -38,7 +46,7 @@
             </button>
         </form>
         <div class="team-card-content">
-            <h2>Featured Projects</h2>
+            <h2>Recommended Projects</h2>
             <div class="team-cards" id="featured-cards">
                 @* create cards *@
             </div>
@@ -80,5 +88,6 @@
     <script type="module" src="~/js/explore.js"></script>
     <script src="~/js/cookie.js" asp-append-version="true"></script>
     <script src="~/js/authentication.js" asp-append-version="true"></script>
+    <script src="~/js/wave-grid-background.js" asp-append-version="true"></script>
 </body>
 </html>
