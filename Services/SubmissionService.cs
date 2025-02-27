@@ -38,6 +38,15 @@ public class SubmissionService
         return submission;
     }
 
+    public async Task<List<Submission>> GetAllByRequirementIds(List<string> requirementIds)
+    {
+        if (requirementIds == null || !requirementIds.Any())
+        {
+            throw new HttpResponseException((int)HttpStatusCode.BadRequest, "RequirementIds list cannot be null or empty.");
+        }
+
+        return await _submissions.Find(Submission => requirementIds.Contains(Submission.RequirementId)).ToListAsync();
+    }
     public async Task<Submission> Create(string id, CreateSubmissionDto createSubmissionDto)
     {
         try

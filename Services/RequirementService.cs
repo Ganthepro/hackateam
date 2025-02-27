@@ -38,6 +38,16 @@ public class RequirementService
             .ToListAsync();
     }
 
+    public async Task<List<Requirement>> GetAllByTeamId(string teamId)
+    {
+        if (string.IsNullOrEmpty(teamId))
+        {
+            throw new HttpResponseException((int)HttpStatusCode.BadRequest, "TeamId cannot be null or empty.");
+        }
+
+        return await _requirement.Find(r => r.TeamId == teamId).ToListAsync();
+    }
+
     public async Task<Requirement> Get(Expression<Func<Requirement, bool>> filter)
     {
         var requirement = await _requirement.Find(filter).FirstOrDefaultAsync();

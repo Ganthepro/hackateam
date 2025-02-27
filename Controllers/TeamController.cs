@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using hackateam.Services;
 using hackateam.Dtos.Team;
+using hackateam.Dtos.Submission;
+using hackateam.Dtos.Requirement;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 namespace hackateam.Controllers;
@@ -21,13 +23,14 @@ public class TeamController : Controller
     private readonly RequirementService _requirementService;
     private readonly SubmissionService _submissionService;
 
-    public TeamController(TeamService teamService, UserService userService, FileService fileService, RequirementService requirementService, SubmissionService submissionService)
+    public TeamController(TeamService teamService, UserService userService, FileService fileService, RequirementService requirementService, SubmissionService submissionService, SkillService skillService)
     {
         _teamService = teamService;
         _userService = userService;
         _fileService = fileService;
         _requirementService = requirementService;
         _submissionService = submissionService;
+        _skillService = skillService;
     }
 
     [HttpPut("banner")]
@@ -57,6 +60,75 @@ public class TeamController : Controller
         }
         var stream = _fileService.Get(team.Banner!, FileService.FolderName.Teams);
         return await Task.FromResult(File(stream, "image/jpeg"));
+    }
+
+    [HttpGet("{id:length(24)}/submissions")]
+    public async Task<ActionResult<List<SubmissionResponseDto>>> GetAllSubmissionByTeamId(string id)
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        var team = await _teamService.Get(team => team.Id == id);
+        if (team == null)
+        {
+            return NotFound(Constants.TeamMessage.NOT_FOUND);
+        }
+
+        if (team.LeadId != userId)
+        {
+            return NotFound(Constants.TeamMessage.NO_PERMISSION);
+        }
+
+        var requirements = await _requirementService.GetAllByTeamId(id);
+        
+        if (requirements == null || !requirements.Any())
+        {
+            return NotFound(Constants.RequirementMessage.NOT_FOUND);
+        }
+
+        var requirementIds = requirements.Select(r => r.Id).ToList();
+        var submissions = await _submissionService.GetAllByRequirementIds(requirementIds);
+
+        if (submissions == null || !submissions.Any())
+        {
+            return NotFound(Constants.SubmissionMessage.NOT_FOUND);
+        }
+
+        var userTasks = submissions.Select(async submission =>
+        {
+            var user = await _userService.Get(u => u.Id == submission.UserId);
+            return new SubmissionResponseDto(submission, user);
+        });
+
+        var submissionDtos = await Task.WhenAll(userTasks);
+
+        return Ok(submissionDtos);
+    }
+
+    [HttpGet("{id:length(24)}/requirements")]
+    public async Task<ActionResult<List<RequirementResponseDto>>> GetAllRequirementByTeamId(string id)
+    {
+        var team = await _teamService.Get(team => team.Id == id);
+        if (team == null)
+        {
+            return NotFound(Constants.TeamMessage.NOT_FOUND);
+        }
+
+        var requirements = await _requirementService.GetAllByTeamId(id);
+        
+        if (requirements == null || !requirements.Any())
+        {
+            return NotFound(Constants.RequirementMessage.NOT_FOUND);
+        }
+
+        var userTasks = requirements.Select(async requirement =>
+        {
+            var skill = await _skillService.Get(skill => skill.Id == requirement.SkillId);
+            return new RequirementResponseDto(requirement, team, skill);
+        });
+
+        var requirementDtos = await Task.WhenAll(userTasks);
+
+        return Ok(requirementDtos);
     }
 
     [HttpGet]
