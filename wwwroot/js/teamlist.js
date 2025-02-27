@@ -230,6 +230,9 @@ async function PendingTeams() {
 function createRequirementCard(team) {
     const card = document.createElement('div');
     card.classList.add('card');
+    card.addEventListener('click', () => {
+        window.location.href = `/Home/HostedTeamManagement?teamId=${team.id}`;
+    });
     
     const createdDate = new Date(team.createdAt).toLocaleDateString();
     const updatedDate = new Date(team.updatedAt).toLocaleDateString();
@@ -237,7 +240,6 @@ function createRequirementCard(team) {
     const statusText = team.status === 0 ? 'Open' : 'Closed';
     
     card.innerHTML = `
-        <a href="/Home/Explore/${team.id}">
             <div class="card-status ${statusText.toLowerCase()}">
                 ${statusText}
             </div>
@@ -245,7 +247,7 @@ function createRequirementCard(team) {
                 <img 
                     src="${team.bannerUrl}" 
                     alt="Team Banner" 
-                    onerror="this.src='/pictures/default-banner.png'"
+                    onerror="this.src='~/pictures/default-banner.png'"
                     loading="lazy"
                 >
             </div>
@@ -260,7 +262,6 @@ function createRequirementCard(team) {
                     <p>Expires : ${expiredDate}</p>
                 </div>
             </div>
-        </a>
     `;
     
     return card;

@@ -25,50 +25,6 @@ function updateItemsPerPage() {
     }
 }
 
-async function fetchUserMe() {
-    try {
-        const response = await fetch(`${api}/User/me`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${getCookie("token")}`,
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error(`Fetch User Failed: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error:', error);
-        return null;
-    }
-}
-
-async function fetchUserById(userId) {
-    try {
-        const response = await fetch(`${api}/User/${userId}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${getCookie("token")}`,
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error(`Fetch User Failed: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error:', error);
-        return null;
-    }
-}
-
 async function fetchTeams() {
     try {
         const response = await fetch(`${api}/Team?Limit=1000`, {
@@ -84,51 +40,18 @@ async function fetchTeams() {
         }
 
         const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error:', error);
-        return [];
-    }
-}
 
-async function fetchSubmissions () {
-    try {
-        const response = await fetch(`${api}/Submission?Limit=1000`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${getCookie("token")}`,
-            },
-        });
+        const TeamBanners = await Promise.all(
+            data.map(async (team) => {   
+                const base64Banner = await fetchTeamBanner(team.id);
+                return { 
+                    ...team, 
+                    bannerUrl: base64Banner || '/pictures/default-banner.png'
+                };
+            })      
+        );  
 
-        if (!response.ok) {
-            throw new Error(`Fetch Submission Failed: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error:', error);
-        return [];
-    }
-}
-
-async function fetchRequirementsById (requirementId) {
-    try {
-        const response = await fetch(`${api}/Requirement/${requirementId}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${getCookie("token")}`,
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error(`Fetch Requirement Failed: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data;
+        return TeamBanners;
     } catch (error) {
         console.error('Error:', error);
         return [];
@@ -162,69 +85,6 @@ async function fetchTeamBanner(teamId) {
         console.error(`Error fetching banner for team ${teamId}:`, error);
         return null;
     }
-}
-
-async function HostedTeams() {
-    const user = await fetchUserMe();
-    if (!user) {
-        console.error('Failed to fetch user data');
-        return [];
-    }
-
-    const userId = user.id;
-    const teams = await fetchTeams();
-
-    const hostedTeams = teams.filter(team => 
-        team.leadResponse && team.leadResponse.id === userId
-    );
-    
-    const hostedTeamBanners = await Promise.all(
-        hostedTeams.map(async (team) => {   
-            const base64Banner = await fetchTeamBanner(team.id);
-            return { 
-                ...team, 
-                bannerUrl: base64Banner || '/pictures/default-banner.png'
-            };
-        })      
-    );  
-
-    console.log("Hosted Teams processed:", hostedTeamBanners);
-    return hostedTeamBanners;
-}
-
-async function PendingTeams() {
-    const submissions = await fetchSubmissions();
-
-    const requirements = await Promise.all(
-        submissions.map(async (submission) => {
-            try {
-                return await fetchRequirementsById(submission.requirement);
-            } catch (error) {
-                console.error(`Error fetching requirement ${submission.requirement}:`, error);
-                return null;
-            }
-        })
-    );
-
-    const pendingTeams = requirements
-        .filter(req => req && req.team)
-        .map(requirement => requirement.team);
-
-    const pendingTeamBanners = await Promise.all(
-        pendingTeams.map(async (team) => {
-            const base64Banner = await fetchTeamBanner(team.id);
-            console.log(team.leadResponse)
-            const leadResponse = await fetchUserById(team.leadResponse);
-            team.leadResponse = leadResponse;
-            return { 
-                ...team, 
-                bannerUrl: base64Banner || '/pictures/default-banner.png'
-            };
-        })
-    );
-
-    console.log("Pending Teams processed:", pendingTeamBanners);
-    return pendingTeamBanners;
 }
 
 function createRequirementCard(team) {
