@@ -137,8 +137,8 @@ async function createTeam() {
     const hackathonDescription = document.getElementById("hackathon-description").value;
     const bannerFile = document.getElementById("team-image").files[0];
 
-    const expiredAt = new Date();
-    expiredAt.setDate(expiredAt.getDate() + 7);
+    const expiredAtString = document.getElementById("hackathon-date").value;
+    const expiredAt = new Date(expiredAtString); 
 
     const teamData = {
         name: teamName,
