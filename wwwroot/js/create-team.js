@@ -135,6 +135,7 @@ async function createTeam() {
     const teamName = document.getElementById("team-name").value;
     const hackathonName = document.getElementById("hackathon-name").value;
     const hackathonDescription = document.getElementById("hackathon-description").value;
+    const bannerFile = document.getElementById("team-image").files[0];
 
     const expiredAt = new Date();
     expiredAt.setDate(expiredAt.getDate() + 7);
@@ -164,6 +165,10 @@ async function createTeam() {
         const result = await response.json();
         const teamId = result.id;
 
+        if (bannerFile) {
+            await uploadTeamBanner(teamId, bannerFile, token);
+        }
+
         await createRequirements(teamId, token);
 
         alert("Team and requirements created successfully!");
@@ -171,6 +176,30 @@ async function createTeam() {
     } catch (error) {
         console.error("Error creating team:", error);
         alert("Failed to create team. Please try again.");
+    }
+}
+
+async function uploadTeamBanner(teamId, file, token) {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+        const response = await fetch(`${api}/Team/banner?id=${teamId}`, {
+            method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to upload banner: ${response.status}`);
+        }
+
+        console.log("Banner uploaded successfully.");
+    } catch (error) {
+        console.error("Error uploading banner:", error);
+        alert("Failed to upload team banner.");
     }
 }
 
