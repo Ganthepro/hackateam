@@ -3,21 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"] - Team</title>
+    <title>@ViewData["Title"] - Teamlist</title>
     @* Page Style *@
-    <link rel="stylesheet" href="~/css/team.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/teamlist.css" asp-append-version="true" />
     @* Components Style *@
     <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/wave-grid-background.css" asp-append-version="true" />
 </head>
 <body>
+    @* Wave Grid Background *@
+    <div class="grid-container">
+        <div class="grid"></div>
+        <div class="brightness-pulse"></div>
+        <div class="glow-effect"></div>
+    </div>
+
     @* Navbar Component *@
     <nav class="navbar">
-        <div>Hackateam</div>
+        <div class="navbar-title">Hackateam</div>
         <div class="navbar-links">
             <a asp-controller="Home" asp-action="Intro">Home</a>
             <a asp-controller="Home" asp-action="Explore">Explore</a>
-            <a asp-controller="Home" asp-action="Team">Team</a>
+            <a asp-controller="Home" asp-action="Teamlist">Teamlist</a>
             <a asp-controller="Home" asp-action="Notification">Notification</a>
             <a asp-controller="Home" asp-action="Profile">Profile</a>
         </div>
@@ -26,17 +34,19 @@
 
     @* Content Page *@
     <div class="team-content">
-        <h1 class="team-header">Host and Pending Teamlist</h1>
-        <div class="team-list-content">
+        <h1 class="team-header">
+            Hosted and Pending Teamlist
+        </h1>
+        <div class="team-list-content" id="hosted-teamlist">
             <h2>Hosted Team</h2>
-            <div class="team-dashboards" id="hosted-teams">
+            <div class="team-cards" id="hosted-teams">
                 @* create cards *@
             </div>
             <div class="pagination-container" id="hosted-pagination"></div>
         </div>
-        <div class="team-list-content">
+        <div class="team-list-content" id="pending-teamlist">
             <h2>Pending Team</h2>
-            <div class="team-dashboards" id="pending-teams">
+            <div class="team-cards" id="pending-teams">
                 @* create cards *@
             </div>
             <div class="pagination-container" id="pending-pagination"></div>
@@ -66,8 +76,9 @@
     </footer>
 
     <script src="~/js/navbar.js"></script>
-    <script type="module" src="~/js/team.js"></script>
+    <script type="module" src="~/js/teamlist.js"></script>
     <script src="~/js/cookie.js" asp-append-version="true"></script>
     <script src="~/js/authentication.js" asp-append-version="true"></script>
+    <script src="~/js/wave-grid-background.js" asp-append-version="true"></script>
 </body>
 </html>
