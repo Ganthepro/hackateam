@@ -26,7 +26,7 @@ h2 {
   font-size: 30px;
 }
 
-.teamimage {
+#teamimage {
   display: block;
   margin: auto;
   width: 50vw;
@@ -34,7 +34,7 @@ h2 {
   padding: 20px;
 }
 
-.description {
+#description {
   padding: 0px 10px;
 }
 
