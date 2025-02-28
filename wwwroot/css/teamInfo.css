@@ -1,0 +1,122 @@
+body {
+  background-color: #0a192f;
+  color: #eeeeee;
+  margin: 20px;
+}
+
+#card {
+  width: 80%;
+  margin: auto;
+  background-color: #00a3ff;
+  border: #eeeeee 1px solid;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+p {
+  margin: 10px;
+  font-size: 20px;
+}
+
+h4 {
+  font-size: 24px;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+#teamimage {
+  display: block;
+  margin: auto;
+  width: 50vw;
+  height: 25vw;
+  padding: 20px;
+}
+
+#description {
+  padding: 0px 10px;
+}
+
+label {
+  display: block;
+  font-size: 20px;
+}
+
+input {
+  display: block;
+}
+
+textarea {
+  width: 100%;
+  resize: none;
+  padding: 20px;
+  border-radius: 25px;
+  font-size: 20px;
+  background-color: #00f5d4;
+  color: #eeeeee;
+}
+
+.skill {
+  display: flex;
+  margin: 20px;
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  width: 200px;
+  height: 50px;
+  text-align: center;
+  padding: 10px;
+  border: none;
+  background-color: #6200ea;
+  color: white;
+  font-size: 20px;
+  border-radius: 5px;
+}
+
+#sop {
+  font-weight: bolder;
+  margin: 15px 0px;
+}
+
+label {
+  margin: 0px 10px;
+}
+
+@media screen and (max-width: 600px) {
+  p {
+    font-size: 12px;
+  }
+
+  h4 {
+    font-size: 16px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  label {
+    font-size: 12px;
+  }
+
+  textarea {
+    font-size: 12px;
+  }
+
+  button {
+    font-size: 12px;
+  }
+
+  body {
+    margin: 5px;
+  }
+
+  #card {
+    width: 100%;
+  }
+}

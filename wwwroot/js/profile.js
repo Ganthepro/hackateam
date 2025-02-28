@@ -32,14 +32,31 @@ async function Profile() {
 }
 
 function ShowData(data) {
-  const image = document.getElementById("avatar");
-  image.src = `${api}/User/${userId}/avatar`;
+  LoadAvatar();
   const fullname = document.getElementById("fullname");
   fullname.innerHTML = `<strong>Fullname:</strong> ${data.header} ${data.fullName}`;
   const tel = document.getElementById("tel");
   tel.innerHTML = `<strong>Tel:</strong> ${data.tel}`;
   const email = document.getElementById("email");
   email.innerHTML = `<strong>Email:</strong> ${data.email}`;
+}
+
+async function LoadAvatar() {
+  const image = document.getElementById("avatar");
+  try {
+    const response = await fetch(`${api}/User/${userId}/avatar`, {
+      method: "Get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("token")}`,
+      },
+    });
+    await response.json();
+    image.src = `${api}/User/${userId}/avatar`;
+  } catch (error) {
+    image.src =
+      "https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png";
+  }
 }
 
 async function Project() {
