@@ -1,21 +1,137 @@
 const api = "http://localhost:5234";
 
 let { ITEMS_PER_PAGE } = updateItemsPerPage();
-let currentPageFeatured = 1;
+let currentPageRecommended = 1;
 let currentPageAll = 1;
 let resizeTimeout;
 let bannerUrls = new Map();
 
 function updateItemsPerPage() {
     const width = window.innerWidth;
-    if (width <= 480) {
+    
+    const style = getComputedStyle(document.documentElement);
+    const mobileBp = parseInt(style.getPropertyValue('--mobile-breakpoint') || '480');
+    const tabletBp = parseInt(style.getPropertyValue('--tablet-breakpoint') || '769');
+    const desktopBp = parseInt(style.getPropertyValue('--desktop-breakpoint') || '1199');
+
+    if (width <= mobileBp) {
         return { ITEMS_PER_PAGE: 3 };
-    } else if (width <= 769) {
+    } else if (width <= tabletBp) {
         return { ITEMS_PER_PAGE: 4 };
-    } else if (width <= 1199) {
+    } else if (width <= desktopBp) {
         return { ITEMS_PER_PAGE: 6 };
     } else {
         return { ITEMS_PER_PAGE: 8 };
+    }
+}
+
+async function fetchUserMe() {
+    try {
+        const response = await fetch(`${api}/User/me`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getCookie("token")}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fetch User Failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
+async function fetchUserById(userId) {
+    try {
+        const response = await fetch(`${api}/User/${userId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getCookie("token")}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fetch User Failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+
+async function fetchTeams() {
+    try {
+        const response = await fetch(`${api}/Team?Limit=1000`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getCookie("token")}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fetch Team Failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        return [];
+    }
+}
+
+async function fetchSubmissions () {
+    try {
+        const response = await fetch(`${api}/Submission?Limit=1000`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getCookie("token")}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fetch Submission Failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        return [];
+    }
+}
+
+async function fetchRequirementsById (requirementId) {
+    try {
+        const response = await fetch(`${api}/Requirement/${requirementId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getCookie("token")}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fetch Requirement Failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        return [];
     }
 }
 
@@ -36,63 +152,80 @@ async function fetchTeamBanner(teamId) {
         if (blob.size === 0) {
             return null;
         }
-        
-        return blob;
+
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.readAsDataURL(blob);
+        });
     } catch (error) {
         console.error(`Error fetching banner for team ${teamId}:`, error);
         return null;
     }
 }
 
-function cleanupBannerUrls() {
-    bannerUrls.forEach(url => {
-        URL.revokeObjectURL(url);
-    });
-    bannerUrls.clear();
-}
-
-async function fetchTeams() {
-    try {
-        const response = await fetch(`${api}/Team?Limit=1000`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${getCookie("token")}`,
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error(`Fetch teams failed: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log("Fetched Teams:", data);
-
-        cleanupBannerUrls();
-
-        const teamsWithBanners = await Promise.all(
-            data.map(async (team) => {
-                const bannerBlob = await fetchTeamBanner(team.id);
-                let bannerUrl = '/pictures/default-banner.png';
-                
-                if (bannerBlob) {
-                    bannerUrl = URL.createObjectURL(bannerBlob);
-                    bannerUrls.set(team.id, bannerUrl);
-                }
-                
-                return { ...team, bannerUrl};
-            })
-        );
-            
-        displayTeams(teamsWithBanners, 'featured-cards', currentPageFeatured);
-        displayTeams(teamsWithBanners, 'all-cards', currentPageAll);
-        updatePagination(teamsWithBanners, 'featured-pagination', currentPageFeatured, 'featured-cards', true);
-        updatePagination(teamsWithBanners, 'all-pagination', currentPageAll, 'all-cards', false);
-    } catch (error) {
-        console.error("Error fetching teams:", error);
+async function HostedTeams() {
+    const user = await fetchUserMe();
+    if (!user) {
+        console.error('Failed to fetch user data');
+        return [];
     }
+
+    const userId = user.id;
+    const teams = await fetchTeams();
+
+    const hostedTeams = teams.filter(team => 
+        team.leadResponse && team.leadResponse.id === userId
+    );
+    
+    const hostedTeamBanners = await Promise.all(
+        hostedTeams.map(async (team) => {   
+            const base64Banner = await fetchTeamBanner(team.id);
+            return { 
+                ...team, 
+                bannerUrl: base64Banner || '/pictures/default-banner.png'
+            };
+        })      
+    );  
+
+    console.log("Hosted Teams processed:", hostedTeamBanners);
+    return hostedTeamBanners;
 }
 
+async function PendingTeams() {
+    const submissions = await fetchSubmissions();
+
+    const requirements = await Promise.all(
+        submissions.map(async (submission) => {
+            try {
+                return await fetchRequirementsById(submission.requirement);
+            } catch (error) {
+                console.error(`Error fetching requirement ${submission.requirement}:`, error);
+                return null;
+            }
+        })
+    );
+
+    const pendingTeams = requirements
+        .filter(req => req && req.team)
+        .map(requirement => requirement.team);
+
+    const pendingTeamBanners = await Promise.all(
+        pendingTeams.map(async (team) => {
+            const base64Banner = await fetchTeamBanner(team.id);
+            console.log(team.leadResponse)
+            const leadResponse = await fetchUserById(team.leadResponse);
+            team.leadResponse = leadResponse;
+            return { 
+                ...team, 
+                bannerUrl: base64Banner || '/pictures/default-banner.png'
+            };
+        })
+    );
+
+    console.log("Pending Teams processed:", pendingTeamBanners);
+    return pendingTeamBanners;
+}
 
 function createRequirementCard(team) {
     const card = document.createElement('div');
@@ -101,7 +234,6 @@ function createRequirementCard(team) {
     const createdDate = new Date(team.createdAt).toLocaleDateString();
     const updatedDate = new Date(team.updatedAt).toLocaleDateString();
     const expiredDate = new Date(team.expiredAt).toLocaleDateString();
-
     const statusText = team.status === 0 ? 'Open' : 'Closed';
     
     card.innerHTML = `
@@ -110,11 +242,16 @@ function createRequirementCard(team) {
                 ${statusText}
             </div>
             <div class="card-image">
-                <img src="${team.bannerUrl}" alt="Team Banner" onerror="this.src='/pictures/default-banner.png'">
+                <img 
+                    src="${team.bannerUrl}" 
+                    alt="Team Banner" 
+                    onerror="this.src='/pictures/default-banner.png'"
+                    loading="lazy"
+                >
             </div>
             <div class="card-detail">
-                <h2>${team.name}</h2>
-                <p class="">Hackathon : ${team.hackathonName}</p>
+                <h2>${team.name || 'Unnamed Team'}</h2>
+                <p>Hackathon : ${team.hackathonName}</p>
                 <p class="hackathon-desc line-clamp-2">${team.hackathonDescription}</p>
                 <p>Team Lead : ${team.leadResponse.fullName}</p>
                 <div class="date-info">
@@ -186,9 +323,9 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
             const pageNum = parseInt(e.target.value);
             if (pageNum >= 1 && pageNum <= totalPages) {
                 if (isFeatureSection) {
-                    currentPageFeatured = pageNum;
-                    displayTeams(teams, containerIdToUpdate, currentPageFeatured);
-                    updatePagination(teams, paginationId, currentPageFeatured, containerIdToUpdate, isFeatureSection);
+                    currentPageRecommended = pageNum;
+                    displayTeams(teams, containerIdToUpdate, currentPageRecommended);
+                    updatePagination(teams, paginationId, currentPageRecommended, containerIdToUpdate, isFeatureSection);
                 } else {
                     currentPageAll = pageNum;
                     displayTeams(teams, containerIdToUpdate, currentPageAll);
@@ -202,9 +339,9 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
     prevBtn.addEventListener('click', () => {
         if (currentPage > 1) {
             if (isFeatureSection) {
-                currentPageFeatured--;
-                displayTeams(teams, containerIdToUpdate, currentPageFeatured);
-                updatePagination(teams, paginationId, currentPageFeatured, containerIdToUpdate, isFeatureSection);
+                currentPageRecommended--;
+                displayTeams(teams, containerIdToUpdate, currentPageRecommended);
+                updatePagination(teams, paginationId, currentPageRecommended, containerIdToUpdate, isFeatureSection);
             } else {
                 currentPageAll--;
                 displayTeams(teams, containerIdToUpdate, currentPageAll);
@@ -216,9 +353,9 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
     nextBtn.addEventListener('click', () => {
         if (currentPage < totalPages) {
             if (isFeatureSection) {
-                currentPageFeatured++;
-                displayTeams(teams, containerIdToUpdate, currentPageFeatured);
-                updatePagination(teams, paginationId, currentPageFeatured, containerIdToUpdate, isFeatureSection);
+                currentPageRecommended++;
+                displayTeams(teams, containerIdToUpdate, currentPageRecommended);
+                updatePagination(teams, paginationId, currentPageRecommended, containerIdToUpdate, isFeatureSection);
             } else {
                 currentPageAll++;
                 displayTeams(teams, containerIdToUpdate, currentPageAll);
@@ -228,17 +365,56 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
     });
 }
 
-function main() {
-    fetchTeams();
+async function main() {
+    try {
+        const hostedTeams = await fetchTeams();
+        const pendingTeams = await fetchTeams();
+
+        if (hostedTeams.length > 0) {
+            displayTeams(hostedTeams, 'recommended-cards', currentPageRecommended);
+            updatePagination(hostedTeams, 'recommended-pagination', currentPageRecommended, 'recommended-cards', true);
+        } else {
+            const recommendedTeamsContainer = document.getElementById('recommended-projects');
+            const text = document.createElement('p');
+            recommendedTeamsContainer.innerHTML = '';
+
+            const recommendedTeamsHeader = document.createElement('h2');
+            recommendedTeamsHeader.textContent = 'Recommended Projects';
+            recommendedTeamsContainer.appendChild(recommendedTeamsHeader);
+
+            text.classList.add('no-teams');
+            text.textContent = 'No Recommended Projects';
+            recommendedTeamsContainer.appendChild(text);
+        }
+
+        if (pendingTeams.length > 0) {
+            displayTeams(pendingTeams, 'all-cards', currentPageAll);
+            updatePagination(pendingTeams, 'all-pagination', currentPageAll, 'all-cards', false);
+        } else {
+            const allTeamsContainer = document.getElementById('all-projects');
+            const text = document.createElement('p');
+            allTeamsContainer.innerHTML = '';
+
+            const allTeamsHeader = document.createElement('h2');
+            allTeamsHeader.textContent = 'All Projects';
+            allTeamsContainer.appendChild(allTeamsHeader);
+
+            text.classList.add('no-teams');
+            text.textContent = 'No All Projects';
+            allTeamsContainer.appendChild(text);
+        }
+
+    } catch (error) {
+        console.error('Error in main:', error);
+    }
 }
 
-window.addEventListener('beforeunload', cleanupBannerUrls);
 window.addEventListener('resize', () => {
     if (resizeTimeout) {
         clearTimeout(resizeTimeout);
     }
     
-    currentPageFeatured = 1;
+    currentPageRecommended = 1;
     currentPageAll = 1;
 
     resizeTimeout = setTimeout(() => {

@@ -373,11 +373,35 @@ async function main() {
         if (hostedTeams.length > 0) {
             displayTeams(hostedTeams, 'hosted-teams', currentPageHosted);
             updatePagination(hostedTeams, 'hosted-pagination', currentPageHosted, 'hosted-teams', true);
+        } else {
+            const hostedTeamsContainer = document.getElementById('hosted-teamlist');
+            const text = document.createElement('p');
+            hostedTeamsContainer.innerHTML = '';
+
+            const hostedTeamsHeader = document.createElement('h2');
+            hostedTeamsHeader.textContent = 'Hosted Teams';
+            hostedTeamsContainer.appendChild(hostedTeamsHeader);
+
+            text.classList.add('no-teams');
+            text.textContent = 'No Hosted Teams';
+            hostedTeamsContainer.appendChild(text);
         }
 
         if (pendingTeams.length > 0) {
             displayTeams(pendingTeams, 'pending-teams', currentPagePending);
             updatePagination(pendingTeams, 'pending-pagination', currentPagePending, 'pending-teams', false);
+        }  else {
+            const pendingTeamsContainer = document.getElementById('pending-teamlist');
+            const text = document.createElement('p');
+            pendingTeamsContainer.innerHTML = '';
+
+            const pendingTeamsHeader = document.createElement('h2');
+            pendingTeamsHeader.textContent = 'Pending Teams';
+            pendingTeamsContainer.appendChild(pendingTeamsHeader);
+
+            text.classList.add('no-teams');
+            text.textContent = 'No Pending Teams';
+            pendingTeamsContainer.appendChild(text);
         }
     } catch (error) {
         console.error('Error in main:', error);

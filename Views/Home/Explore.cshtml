@@ -9,7 +9,7 @@
     @* Components Style *@
     <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/search-bar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/additional-tool.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/wave-grid-background.css" asp-append-version="true" />
 </head>
 <body>
@@ -26,7 +26,7 @@
         <div class="navbar-links">
             <a asp-controller="Home" asp-action="Intro">Home</a>
             <a asp-controller="Home" asp-action="Explore">Explore</a>
-            <a asp-controller="Home" asp-action="Team">Team</a>
+            <a asp-controller="Home" asp-action="Teamlist">Teamlist</a>
             <a asp-controller="Home" asp-action="Notification">Notification</a>
             <a asp-controller="Home" asp-action="Profile">Profile</a>
         </div>
@@ -35,24 +35,32 @@
 
     @* Content Page *@
     <div class="explore-content">
-        <h1 class="explore-header">Explore and find your team!!</h1>
-        <form action="search-card" method="get" class="search-form">
-            <div class="search-space">
-                <input type="text" placeholder="Search" class="search-bar">
-                <img src="~/pictures/search-box/search-cancel.svg" alt="search-cancel" class="search-cancel">
-            </div>
-            <button type="submit" class="search-button">
-                Search
+
+        <h1 class="explore-header">
+            Explore and find your team!!
+        </h1>
+        <div class="additional-container">
+            <form action="search-card" method="get" class="search-form">
+                <div class="search-space">
+                    <input type="text" placeholder="Search" class="search-bar">
+                    <img src="~/pictures/search-box/search-cancel.svg" alt="search-cancel" class="search-cancel">
+                </div>
+                <button type="submit" class="search-button">
+                    Search
+                </button>
+            </form>
+            <button class="create-team-button" id="create-team-button">
+                <a asp-controller="Home" asp-action="CreateTeam">Create Team</a>
             </button>
-        </form>
-        <div class="team-card-content">
+        </div>
+        <div class="team-card-content" id="recommended-projects">
             <h2>Recommended Projects</h2>
-            <div class="team-cards" id="featured-cards">
+            <div class="team-cards" id="recommended-cards">
                 @* create cards *@
             </div>
-            <div class="pagination-container" id="featured-pagination"></div>
+            <div class="pagination-container" id="recommended-pagination"></div>
         </div>
-        <div class="team-card-content">
+        <div class="team-card-content" id="all-projects">
             <h2>All Projects</h2>
             <div class="team-cards" id="all-cards">
                 @* create cards *@
@@ -84,7 +92,7 @@
     </footer>
 
     <script src="~/js/navbar.js"></script>
-    <script src="~/js/search-space.js"></script>
+    <script src="~/js/additional-tool.js"></script>
     <script type="module" src="~/js/explore.js"></script>
     <script src="~/js/cookie.js" asp-append-version="true"></script>
     <script src="~/js/authentication.js" asp-append-version="true"></script>

@@ -19,7 +19,7 @@ body {
     font-size: 1.5rem; /* 24px */
 }
 
-.explore-content {
+.team-content {
     z-index: 10;
     /* position: relative; */
     display: flex;
@@ -30,14 +30,14 @@ body {
     padding: 2rem 4rem; /* 32px 64px */
 }
 
-.explore-header {
+.team-header {
     font-size: 3rem; /* 48px */
     font-weight: 700;
     color: #FFFFFF;
     text-shadow: 0 0 0.5rem #00E6E680; /* 8px */
 }
 
-.team-card-content {
+.team-list-content {
     display: flex;
     flex-direction: column;
     gap: 1rem; /* 16px */
@@ -52,11 +52,11 @@ body {
     transition: all 0.2s ease;
 }
 
-.team-card-content:hover {
+.team-list-content:hover {
     box-shadow: 0 0 0.75rem rgba(0, 230, 230, 0.4); /* 12px */
 }
 
-.team-card-content h2 {
+.team-list-content h2 {
     padding-bottom: 0.5rem; /* 8px */
     border-bottom: 0.125rem solid #FFFFFF; /* 2px */
     font-size: 1.5rem; /* 24px */
@@ -213,15 +213,15 @@ body {
         font-size: 1.25rem; /* 20px */
     }
 
-    .explore-content {
+    .team-content {
         padding: 2.2rem;
     }
 
-    .explore-header {
+    .team-header {
         font-size: 2.5rem; /* 40px */
     }
 
-    .team-card-content {
+    .team-list-content {
         padding: 0.6rem;
     }
 
@@ -250,15 +250,15 @@ body {
         font-size: 1.125rem; /* 18px */
     }
 
-    .explore-content {
+    .team-content {
         padding: 1.5rem;
     }
 
-    .explore-header {
+    .team-header {
         font-size: 2.25rem; /* 36px */
     }
 
-    .team-card-content h2 {
+    .team-list-content h2 {
         padding-bottom: 0.25rem; /* 4px */
         font-size: 1.25rem; /* 20px */
     }
@@ -306,20 +306,20 @@ body {
         font-size: 1rem; /* 16px */
     }
 
-    .explore-content {
+    .team-content {
         padding: 1.25rem;
     }
     
-    .explore-header {
+    .team-header {
         font-size: 2rem; /* 32px */
     }
 
     
-    .team-card-content {
+    .team-list-content {
         padding: 0.6rem;
     }
     
-    .team-card-content h2 {
+    .team-list-content h2 {
         padding-bottom: 0.25rem; /* 4px */
         font-size: 1.25rem; /* 20px */
     }
