@@ -14,11 +14,11 @@
 </head>
 <body>
     @* Wave Grid Background *@
-    <div class="grid-container">
+    @* <div class="grid-container">
         <div class="grid"></div>
         <div class="brightness-pulse"></div>
         <div class="glow-effect"></div>
-    </div>
+    </div> *@
 
     @* Navbar Component *@
     <nav class="navbar">
@@ -34,8 +34,94 @@
     </nav>
 
     @* Content Page *@
-    <div class="hosted-content">
-        
+    <div class="hosted-team-content">
+        <div class="hosted-team-container">
+            <div class="hosted-team-header">
+                <h2>Hosted Team Management</h2>
+                <div class="hosted-team-button">
+                    <button id="edit-btn">Edit</button>
+                    <button id="save-btn">Save</button>
+                    <button id="cancel-btn">Cancel</button>
+                </div>
+            </div>
+            <form action="" class="hosted-team-infomation">
+                <div class="hosted-team-detail-container">
+                    <h3>Team Infomation</h3>
+                    <div class="hosted-team-detail">
+                        <label for="name">Team Name</label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            placeholder="Team Name"
+                        >
+                    </div>
+                    <div class="hosted-team-detail">
+                        <label for="description">Status</label>
+                        <span id="status" class="status">
+                            @* Display Status *@
+                        </span>
+                    </div>
+                    <div class="hosted-team-detail">
+                        <label for="hackathonName">Team Name</label>
+                        <input 
+                            type="text" 
+                            id="hackathonName" 
+                            name="name" 
+                            placeholder="Hackathon Name"
+                        >
+                    </div>
+                    <div class="hosted-team-detail">
+                        <label for="description">Description</label>
+                        <textarea 
+                            id="description" 
+                            name="description" 
+                            placeholder="Hackathon Description"
+                        >
+                        </textarea>
+                    </div>
+                </div>
+                <div class="hosted-team-detail-container">
+                    <h3>Date Infomation</h3>
+                    <div class="hosted-team-detail">
+                        <label for="createdAt">Created Date</label>
+                        <input 
+                            type="datetime-local" 
+                            id="createdAt" 
+                            name="createdAt"
+                        >
+                    </div>
+                    <div class="hosted-team-detail">
+                        <label for="updatedAt">Updated Date</label>
+                        <input 
+                            type="datetime-local" 
+                            id="updatedAt" 
+                            name="updatedAt"
+                        >
+                    </div>
+                    <div class="hosted-team-detail">
+                        <label for="expiredAt">Expired Date</label>
+                        <input 
+                            type="datetime-local" 
+                            id="expiredAt" 
+                            name="expiredAt"
+                        >
+                    </div>
+                </div>
+            </form>
+            <div class="hosted-team-assignments" id="hosted-team-assignments">
+                @* <div class="hosted-team-assignments-header"> *@
+                    <h3>Role Assigments</h3>
+                    @* <button>
+                        Add Requirement
+                    </button> *@
+                @* </div> *@
+                @* Display Assignments form Requirements and Submissions *@
+            </div>
+            <button class="confirm-team-btn" id="confirm-team-btn">
+                Confirm Team
+            </button>
+        </div>
     </div>
 
     @* Footer Component *@
