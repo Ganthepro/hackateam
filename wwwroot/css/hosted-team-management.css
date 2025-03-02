@@ -1,0 +1,333 @@
+/* Default for all pages */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", serif;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 1.25rem;
+}
+
+/* Default (Large screens, ≥ 1200px) */
+body {
+    position: relative;
+    height: fit-content;
+    min-height: 100vh;
+    background-color: #0A192F;
+}
+
+.hosted-team-content {
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem 4rem;
+    background-color: #050A12;
+    border: 0.125rem solid #FFFFFF;
+}
+
+.hosted-team-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 60rem;
+    padding: 1rem;
+    border: 0.125rem solid #FFFFFF;
+    border-radius: 0.5rem;
+}
+
+.hosted-team-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 1rem;
+    border-bottom: 0.125rem solid #FFFFFF;
+}
+
+.hosted-team-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.hosted-team-button button {
+    outline: none;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#edit-btn {
+    background-color: #F0F0F0;
+    color: #0A192F;
+}
+
+#save-btn {
+    background-color: #4CAF50;
+    color: #FFFFFF;
+    border-color: #4CAF50;
+}
+
+#cancel-btn {
+    background-color: #F44336;
+    color: #FFFFFF;
+    border-color: #F44336;
+}
+
+#edit-btn:hover {
+    background-color: #E0E0E0;
+}
+
+#save-btn:hover {
+    background-color: #45A049;
+}
+
+#cancel-btn:hover {
+    background-color: #D32F2F;
+}
+
+.hosted-team-infomation {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 0.125rem solid #FFFFFF;
+}
+
+.hosted-team-detail-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
+    border: 0.125rem solid #FFFFFF;
+}
+
+input[type="text"],
+input[type="datetime-local"],
+textarea {
+    width: 100%;
+    padding: 0.5rem;
+    outline: none;
+    border: none;
+    background-color: #0A192F;
+    font-size: 0.875rem;
+}
+
+textarea {
+    resize: none;
+}
+
+.hosted-team-assignments {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 1rem 0;
+    border-bottom: 0.125rem solid #FFFFFF;
+}
+
+.hosted-team-assignments-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 1rem;
+    border-bottom: 0.125rem solid #FFFFFF;
+}
+
+.hosted-team-assignments-header button {
+    outline: none;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    background-color: #00ccff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.role-requirements {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.5rem;
+    border: 0.125rem solid #FFFFFF;
+}
+
+.role-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.5rem;
+    border: 0.125rem solid #FFFFFF;
+}
+
+.role-info-header {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.role-info div {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.role-submissions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.5rem;
+    border: 0.125rem solid #FFFFFF;
+}
+
+.assignment {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.5rem;
+    border: 0.125rem solid #FFFFFF;
+}
+
+.assignment-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
+    border: 0.125rem solid #ffbb00;
+}
+
+.assignment-info p {
+    font-size: 0.875rem;
+}
+
+.assignment-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border: 0.125rem solid #00ccff;
+}
+
+.assignment-btn button {
+    outline: none;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0A192F;
+    cursor: pointer;
+}
+
+.confirm-team-btn {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    outline: none;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: #4CAF50;
+}
+
+/* Small Laptops & Tablets (≤ 1199px) */
+@media (max-width: 1200px) {
+    * {
+        font-size: 1.25rem;
+    }
+
+    .role-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+}
+
+/* Tablets (≤ 769px) */
+@media (max-width: 769px) {
+    * {
+        font-size: 1.125rem;
+    }
+
+    .hosted-team-infomation {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .role-info {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 0.5rem;
+    }
+
+    .assignment {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .assignment-info {
+        align-self: flex-start;
+    }
+
+    .assignment-btn {
+        flex-direction: row;
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .assignment-btn button {
+        width: 100%;
+    }
+}
+
+/* Mobile Phones (≤ 480px) */
+@media (max-width: 480px) {
+    * {
+        font-size: 1rem;
+    }
+
+    .hosted-team-infomation {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .role-info {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 0.25rem;
+    }
+
+    .assignment {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .assignment-info {
+        align-self: flex-start;
+    }
+
+    .assignment-btn {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .assignment-btn button {
+        width: 100%;
+    }
+}

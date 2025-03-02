@@ -227,9 +227,14 @@ async function PendingTeams() {
     return pendingTeamBanners;
 }
 
-function createRequirementCard(team) {
+function createRequirementCard(team, type) {
     const card = document.createElement('div');
     card.classList.add('card');
+    card.addEventListener('click', () => {
+        if (type === 'hosted') {
+            window.location.href = `/Home/HostedTeamManagement?teamId=${team.id}`;
+        }
+    });
     
     const createdDate = new Date(team.createdAt).toLocaleDateString();
     const updatedDate = new Date(team.updatedAt).toLocaleDateString();
@@ -237,7 +242,6 @@ function createRequirementCard(team) {
     const statusText = team.status === 0 ? 'Open' : 'Closed';
     
     card.innerHTML = `
-        <a href="/Home/Explore/${team.id}">
             <div class="card-status ${statusText.toLowerCase()}">
                 ${statusText}
             </div>
@@ -245,7 +249,7 @@ function createRequirementCard(team) {
                 <img 
                     src="${team.bannerUrl}" 
                     alt="Team Banner" 
-                    onerror="this.src='/pictures/default-banner.png'"
+                    onerror="this.src='~/pictures/default-banner.png'"
                     loading="lazy"
                 >
             </div>
@@ -260,13 +264,12 @@ function createRequirementCard(team) {
                     <p>Expires : ${expiredDate}</p>
                 </div>
             </div>
-        </a>
     `;
     
     return card;
 }
 
-function displayTeams(teams, containerId, currentPage) {
+function displayTeams(teams, containerId, currentPage, type="pending") {
     const container = document.getElementById(containerId);
     if (!container) return;
 
@@ -276,12 +279,12 @@ function displayTeams(teams, containerId, currentPage) {
     
     container.innerHTML = '';
     paginatedTeams.forEach(team => {
-        const card = createRequirementCard(team);
+        const card = createRequirementCard(team, type);
         container.appendChild(card);
     });
 }
 
-function updatePagination(teams, paginationId, currentPage, containerIdToUpdate, isFeatureSection) {
+function updatePagination(teams, paginationId, currentPage, containerIdToUpdate, isFeatureSection, type="pending") {
     const paginationContainer = document.getElementById(paginationId);
     if (!paginationContainer) return;
 
@@ -324,12 +327,12 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
             if (pageNum >= 1 && pageNum <= totalPages) {
                 if (isFeatureSection) {
                     currentPageHosted = pageNum;
-                    displayTeams(teams, containerIdToUpdate, currentPageHosted);
-                    updatePagination(teams, paginationId, currentPageHosted, containerIdToUpdate, isFeatureSection);
+                    displayTeams(teams, containerIdToUpdate, currentPageHosted, "hosted");
+                    updatePagination(teams, paginationId, currentPageHosted, containerIdToUpdate, isFeatureSection, "hosted");
                 } else {
                     currentPagePending = pageNum;
-                    displayTeams(teams, containerIdToUpdate, currentPagePending);
-                    updatePagination(teams, paginationId, currentPagePending, containerIdToUpdate, isFeatureSection);
+                    displayTeams(teams, containerIdToUpdate, currentPagePending, "pending");
+                    updatePagination(teams, paginationId, currentPagePending, containerIdToUpdate, isFeatureSection, "pending");
                 }
                 e.target.value = '';
             }
@@ -340,12 +343,12 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
         if (currentPage > 1) {
             if (isFeatureSection) {
                 currentPageHosted--;
-                displayTeams(teams, containerIdToUpdate, currentPageHosted);
-                updatePagination(teams, paginationId, currentPageHosted, containerIdToUpdate, isFeatureSection);
+                displayTeams(teams, containerIdToUpdate, currentPageHosted, "hosted");
+                updatePagination(teams, paginationId, currentPageHosted, containerIdToUpdate, isFeatureSection, "hosted");
             } else {
                 currentPagePending--;
-                displayTeams(teams, containerIdToUpdate, currentPagePending);
-                updatePagination(teams, paginationId, currentPagePending, containerIdToUpdate, isFeatureSection);
+                displayTeams(teams, containerIdToUpdate, currentPagePending, "pending");
+                updatePagination(teams, paginationId, currentPagePending, containerIdToUpdate, isFeatureSection, "pending");
             }
         }
     });
@@ -354,12 +357,12 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
         if (currentPage < totalPages) {
             if (isFeatureSection) {
                 currentPageHosted++;
-                displayTeams(teams, containerIdToUpdate, currentPageHosted);
-                updatePagination(teams, paginationId, currentPageHosted, containerIdToUpdate, isFeatureSection);
+                displayTeams(teams, containerIdToUpdate, currentPageHosted, "hosted");
+                updatePagination(teams, paginationId, currentPageHosted, containerIdToUpdate, isFeatureSection, "hosted");
             } else {
                 currentPagePending++;
-                displayTeams(teams, containerIdToUpdate, currentPagePending);
-                updatePagination(teams, paginationId, currentPagePending, containerIdToUpdate, isFeatureSection);
+                displayTeams(teams, containerIdToUpdate, currentPagePending, "pending");
+                updatePagination(teams, paginationId, currentPagePending, containerIdToUpdate, isFeatureSection, "pending");
             }
         }
     });
@@ -371,8 +374,8 @@ async function main() {
         const pendingTeams = await PendingTeams();
 
         if (hostedTeams.length > 0) {
-            displayTeams(hostedTeams, 'hosted-teams', currentPageHosted);
-            updatePagination(hostedTeams, 'hosted-pagination', currentPageHosted, 'hosted-teams', true);
+            displayTeams(hostedTeams, 'hosted-teams', currentPageHosted, "hosted");
+            updatePagination(hostedTeams, 'hosted-pagination', currentPageHosted, 'hosted-teams', true, "hosted");
         } else {
             const hostedTeamsContainer = document.getElementById('hosted-teamlist');
             const text = document.createElement('p');
@@ -388,8 +391,8 @@ async function main() {
         }
 
         if (pendingTeams.length > 0) {
-            displayTeams(pendingTeams, 'pending-teams', currentPagePending);
-            updatePagination(pendingTeams, 'pending-pagination', currentPagePending, 'pending-teams', false);
+            displayTeams(pendingTeams, 'pending-teams', currentPagePending, "pending");
+            updatePagination(pendingTeams, 'pending-pagination', currentPagePending, 'pending-teams', false, "pending");
         }  else {
             const pendingTeamsContainer = document.getElementById('pending-teamlist');
             const text = document.createElement('p');

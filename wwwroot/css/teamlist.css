@@ -13,15 +13,12 @@ body {
     position: relative;
     height: fit-content;
     min-height: 100vh;
-    margin: 0;
-    padding: 0;
     /* background-color: #050A12; */
-    font-size: 1.5rem; /* 24px */
 }
 
 .team-content {
     z-index: 10;
-    /* position: relative; */
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,6 +54,7 @@ body {
 }
 
 .team-list-content h2 {
+    margin-bottom: 0.5rem; /* 8px */
     padding-bottom: 0.5rem; /* 8px */
     border-bottom: 0.125rem solid #FFFFFF; /* 2px */
     font-size: 1.5rem; /* 24px */
@@ -259,6 +257,7 @@ body {
     }
 
     .team-list-content h2 {
+        margin-bottom: 0.25rem; /* 4px */
         padding-bottom: 0.25rem; /* 4px */
         font-size: 1.25rem; /* 20px */
     }
@@ -320,6 +319,7 @@ body {
     }
     
     .team-list-content h2 {
+        margin-bottom: 0.25rem; /* 4px */
         padding-bottom: 0.25rem; /* 4px */
         font-size: 1.25rem; /* 20px */
     }
