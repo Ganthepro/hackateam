@@ -8,8 +8,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
     <title>@ViewData["Title"] - Profile</title>
+    <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
 </head>
 <body>
+    <nav class="navbar">
+        <div class="navbar-title">Hackateam</div>
+        <div class="navbar-links">
+            <a asp-controller="Home" asp-action="Explore">Explore</a>
+            <a asp-controller="Home" asp-action="Team">Team</a>
+            <a asp-controller="Home" asp-action="Notification">Notification</a>
+            <a asp-controller="Home" asp-action="Profile">Profile</a>
+        </div>
+        <img src="~/pictures/dropdown-menu-icon.svg" alt="dropdown-menu" class="dropdown-menu"/>
+    </nav>
+    
     <header>
         <h1>My Profile</h1>
         

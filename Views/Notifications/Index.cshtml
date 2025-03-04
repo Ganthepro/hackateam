@@ -4,9 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="~/css/notification.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
     <title>@ViewData["Title"] - Notification</title>
 </head>
 <body>
+    @* Navbar Component *@
+    <nav class="navbar">
+        <div class="navbar-title">Hackateam</div>
+        <div class="navbar-links">
+            <a asp-controller="Explore">Explore</a>
+            <a asp-controller="Teams">Team</a>
+            <a asp-controller="Notifications" class="navbar-title">Notification</a>
+            <a asp-controller="Profile">Profile</a>
+        </div>
+        <img src="~/pictures/dropdown-menu-icon.svg" alt="dropdown-menu" class="dropdown-menu"/>
+    </nav>
+
     <header>Notification</header>
     <main>
         <section id="messages">
