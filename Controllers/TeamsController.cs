@@ -18,4 +18,10 @@ public class TeamsController : Controller
     {
         return View();
     }
+
+    public ActionResult Info(string id)
+    {
+        ViewBag.Id = id; 
+        return View();
+    }
 }
