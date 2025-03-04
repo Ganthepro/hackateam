@@ -145,6 +145,24 @@ public class TeamController : Controller
         return Ok(teamDtos);
     }
 
+    [HttpGet("other")]
+    [Authorize]
+    public async Task<ActionResult<List<TeamResponseDto>>> GetOtherTeam(TeamQueryDto teamQueryDto)
+    {
+        var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var teams = await _teamService.GetAll(teamQueryDto);
+        var teamDtos = new List<TeamResponseDto>();
+        foreach (var team in teams)
+        {
+            if (team.LeadId != userId)
+            {
+                var user = await _userService.Get(user => user.Id == team.LeadId);
+                teamDtos.Add(new TeamResponseDto(team, user));
+            }
+        }
+        return Ok(teamDtos);
+    }
+
     [HttpGet("{id:length(24)}")]
     [Authorize]
     public async Task<ActionResult<TeamResponseDto>> Get(string id)
