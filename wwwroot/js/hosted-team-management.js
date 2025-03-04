@@ -165,7 +165,8 @@ async function handleFormSubmit() {
     // Update team via API
     const updatedTeam = await updateTeam(teamData);
     
-    if (updatedTeam) {
+
+    if (updatedTeam !== null) {
         // Update displayed team info with the response from server
         displayTeamInfomation(updatedTeam);
         
