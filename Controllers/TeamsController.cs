@@ -8,4 +8,20 @@ public class TeamsController : Controller
     {
         return View();
     }
+
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    public IActionResult Edit()
+    {
+        return View();
+    }
+
+    public ActionResult Info(string id)
+    {
+        ViewBag.Id = id; 
+        return View();
+    }
 }
