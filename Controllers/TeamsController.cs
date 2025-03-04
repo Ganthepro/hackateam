@@ -8,4 +8,9 @@ public class TeamsController : Controller
     {
         return View();
     }
+
+    public IActionResult Create()
+    {
+        return View();
+    }
 }
