@@ -13,4 +13,9 @@ public class TeamsController : Controller
     {
         return View();
     }
+
+    public IActionResult Edit()
+    {
+        return View();
+    }
 }

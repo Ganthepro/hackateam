@@ -232,7 +232,7 @@ function createRequirementCard(team, type) {
     card.classList.add('card');
     card.addEventListener('click', () => {
         if (type === 'hosted') {
-            window.location.href = `/Home/HostedTeamManagement?teamId=${team.id}`;
+            window.location.href = `Teams/Edit?teamId=${team.id}`;
         }
     });
     
