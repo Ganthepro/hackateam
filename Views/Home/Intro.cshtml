@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"] - Intro</title>
     <link rel="stylesheet" href="~/css/intro.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/effect-grid-background.css" asp-append-version="true" />
 </head>
 <body>
+    @* Wave Grid Background *@
+    <div class="grid-container" id="grid-container"></div>
+
     @* navbar for only intro-page *@
     <nav class="intro-navbar">
-        <div>Hackateam</div>
+        <div class="navbar-title">Hackateam</div>
         <button class="intro-button">
             <a asp-controller="Home" asp-action="Login">Login</a>
         </button>
@@ -70,5 +74,6 @@
         </div>
     </div>
 
+    <script src="~/js/effect-grid-background.js" asp-append-version="true"></script>
 </body>
 </html>
