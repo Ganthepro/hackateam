@@ -79,7 +79,7 @@ public class TeamController : Controller
         }
 
         var requirements = await _requirementService.GetAllByTeamId(id);
-        
+
         if (requirements == null || !requirements.Any())
         {
             return NotFound(Constants.RequirementMessage.NOT_FOUND);
@@ -114,7 +114,7 @@ public class TeamController : Controller
         }
 
         var requirements = await _requirementService.GetAllByTeamId(id);
-        
+
         if (requirements == null || !requirements.Any())
         {
             return NotFound(Constants.RequirementMessage.NOT_FOUND);
@@ -139,6 +139,7 @@ public class TeamController : Controller
         var teamDtos = new List<TeamResponseDto>();
         foreach (var team in teams)
         {
+            await _teamService.Update(team => team.Id == team.Id && team.ExpiredAt < DateTime.UtcNow, new UpdateTeamDto { Status = Models.TeamStatus.Closed });
             var user = await _userService.Get(user => user.Id == team.LeadId);
             teamDtos.Add(new TeamResponseDto(team, user));
         }
@@ -186,7 +187,7 @@ public class TeamController : Controller
 
         var user = await _userService.Get(user => user.Id == team.LeadId);
         var updatedTeam = await _teamService.Update(team => team.Id == id, updateTeamDto);
-        
+
         return Ok(new TeamResponseDto(updatedTeam, user));
     }
 
