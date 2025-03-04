@@ -43,7 +43,7 @@ public class HomeController : Controller
         return View();
     }
 
-        public IActionResult Teamlist()
+    public IActionResult Teamlist()
     {
         return View();
     }
