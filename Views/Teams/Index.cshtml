@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"] - Teamlist</title>
+    <title>@ViewData["Title"] - Team</title>
     @* Page Style *@
-    <link rel="stylesheet" href="~/css/teamlist.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/team.css" asp-append-version="true" />
     @* Components Style *@
     <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
@@ -19,11 +19,11 @@
     <nav class="navbar">
         <div class="navbar-title">Hackateam</div>
         <div class="navbar-links">
-            <a asp-controller="Home" asp-action="Intro">Home</a>
-            <a asp-controller="Home" asp-action="Explore">Explore</a>
-            <a asp-controller="Home" asp-action="Teamlist">Teamlist</a>
-            <a asp-controller="Home" asp-action="Notification">Notification</a>
-            <a asp-controller="Home" asp-action="Profile">Profile</a>
+            <a asp-controller="Home">Home</a>
+            <a asp-controller="Explore">Explore</a>
+            <a asp-controller="Teams">Team</a>
+            <a asp-controller="Notifications">Notification</a>
+            <a asp-controller="Profile">Profile</a>
         </div>
         <img src="~/pictures/dropdown-menu-icon.svg" alt="dropdown-menu" class="dropdown-menu"/>
     </nav>
@@ -31,16 +31,16 @@
     @* Content Page *@
     <div class="team-content">
         <h1 class="team-header">
-            Hosted and Pending Teamlist
+            Hosted and Pending Team
         </h1>
-        <div class="team-list-content" id="hosted-teamlist">
+        <div class="team-list-content" id="hosted-Team">
             <h2>Hosted Team</h2>
             <div class="team-cards" id="hosted-teams">
                 @* create cards *@
             </div>
             <div class="pagination-container" id="hosted-pagination"></div>
         </div>
-        <div class="team-list-content" id="pending-teamlist">
+        <div class="team-list-content" id="pending-Team">
             <h2>Pending Team</h2>
             <div class="team-cards" id="pending-teams">
                 @* create cards *@
@@ -72,7 +72,7 @@
     </footer>
 
     <script src="~/js/navbar.js"></script>
-    <script type="module" src="~/js/teamlist.js"></script>
+    <script type="module" src="~/js/team.js"></script>
     <script src="~/js/cookie.js" asp-append-version="true"></script>
     <script src="~/js/authentication.js" asp-append-version="true"></script>
     <script src="~/js/effect-grid-background.js" asp-append-version="true"></script>

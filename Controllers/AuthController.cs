@@ -26,4 +26,16 @@ public class AuthController : Controller
     {
         return await Task.FromResult(Ok(await _authService.Register(registerDto)));
     }
+
+    [HttpGet("Login")]
+    public IActionResult Login()
+    {
+        return View();
+    }
+
+    [HttpGet("Register")]
+    public IActionResult Register()
+    {
+        return View();
+    }
 }

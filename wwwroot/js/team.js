@@ -377,7 +377,7 @@ async function main() {
             displayTeams(hostedTeams, 'hosted-teams', currentPageHosted, "hosted");
             updatePagination(hostedTeams, 'hosted-pagination', currentPageHosted, 'hosted-teams', true, "hosted");
         } else {
-            const hostedTeamsContainer = document.getElementById('hosted-teamlist');
+            const hostedTeamsContainer = document.getElementById('hosted-Team');
             const text = document.createElement('p');
             hostedTeamsContainer.innerHTML = '';
 
@@ -394,7 +394,7 @@ async function main() {
             displayTeams(pendingTeams, 'pending-teams', currentPagePending, "pending");
             updatePagination(pendingTeams, 'pending-pagination', currentPagePending, 'pending-teams', false, "pending");
         }  else {
-            const pendingTeamsContainer = document.getElementById('pending-teamlist');
+            const pendingTeamsContainer = document.getElementById('pending-Team');
             const text = document.createElement('p');
             pendingTeamsContainer.innerHTML = '';
 

@@ -18,7 +18,7 @@ async function Login() {
 
     const result = await response.json();
     setCookie("token", result.token, 12);
-    window.location.href = `${api}/Home/Explore`;
+    window.location.href = `${api}/Explore`;
   } catch (error) {
     CreateErrorBlock("Login failed. Please check your email or password.");
   }
