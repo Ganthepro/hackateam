@@ -21,7 +21,7 @@ async function Register() {
 
     const result = await response.json();
     setCookie("token", result.token, 6);
-    window.location.href = `${api}/Home/Explore`;
+    window.location.href = `${api}/Explore`;
   } catch (error) {
     CreateErrorBlock("Register failed. Please check your information.");
   }
