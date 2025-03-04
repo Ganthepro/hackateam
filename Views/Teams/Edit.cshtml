@@ -10,15 +10,11 @@
     <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/additional-tool.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/wave-grid-background.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/effect-grid-background.css" asp-append-version="true" />
 </head>
 <body>
     @* Wave Grid Background *@
-    @* <div class="grid-container">
-        <div class="grid"></div>
-        <div class="brightness-pulse"></div>
-        <div class="glow-effect"></div>
-    </div> *@
+    <div class="grid-container" id="grid-container"></div>
 
     @* Navbar Component *@
     <nav class="navbar">
@@ -57,12 +53,6 @@
                         >
                     </div>
                     <div class="hosted-team-detail">
-                        <label for="description">Status</label>
-                        <span id="status" class="status">
-                            @* Display Status *@
-                        </span>
-                    </div>
-                    <div class="hosted-team-detail">
                         <label for="hackathonName">Team Name</label>
                         <input 
                             type="text" 
@@ -80,6 +70,16 @@
                         >
                         </textarea>
                     </div>
+                    <div class="hosted-team-detail">
+                        <label for="banner">Team Banner</label>
+                        <input 
+                            type="file" 
+                            id="banner" 
+                            name="banner" 
+                            placeholder="Banner"
+                        >
+                        <div class="hosted-team-banner" id="hosted-team-banner"></div>
+                    </div>
                 </div>
                 <div class="hosted-team-detail-container">
                     <h3>Date Infomation</h3>
@@ -89,6 +89,7 @@
                             type="datetime-local" 
                             id="createdAt" 
                             name="createdAt"
+                            readonly
                         >
                     </div>
                     <div class="hosted-team-detail">
@@ -97,6 +98,7 @@
                             type="datetime-local" 
                             id="updatedAt" 
                             name="updatedAt"
+                            readonly
                         >
                     </div>
                     <div class="hosted-team-detail">
@@ -111,7 +113,7 @@
             </form>
             <div class="hosted-team-assignments" id="hosted-team-assignments">
                 @* <div class="hosted-team-assignments-header"> *@
-                    <h3>Role Assigments</h3>
+                    <h2>Role Assigments</h2>
                     @* <button>
                         Add Requirement
                     </button> *@
@@ -146,11 +148,12 @@
         </div>
     </footer>
 
+    <script type="module" src="~/js/alertError.js" asp-append-version="true"></script>
     <script src="~/js/navbar.js"></script>
     <script src="~/js/additional-tool.js"></script>
     <script type="module" src="~/js/hosted-team-management.js"></script>
     <script src="~/js/cookie.js" asp-append-version="true"></script>
     <script src="~/js/authentication.js" asp-append-version="true"></script>
-    <script src="~/js/wave-grid-background.js" asp-append-version="true"></script>
+    <script src="~/js/effect-grid-background.js" asp-append-version="true"></script>
 </body>
 </html>

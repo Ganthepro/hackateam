@@ -14,7 +14,6 @@ body {
     position: relative;
     height: fit-content;
     min-height: 100vh;
-    background-color: #0A192F;
 }
 
 .hosted-team-content {
@@ -25,8 +24,6 @@ body {
     flex-direction: column;
     gap: 1.5rem;
     padding: 2rem 4rem;
-    background-color: #050A12;
-    border: 0.125rem solid #FFFFFF;
 }
 
 .hosted-team-container {
@@ -36,7 +33,11 @@ body {
     max-width: 60rem;
     padding: 1rem;
     border: 0.125rem solid #FFFFFF;
-    border-radius: 0.5rem;
+    border-radius: 1rem;
+    background-color: #050A1260;
+    box-shadow: 0 0 0.5rem rgba(0, 164, 255, 0.3);
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
 }
 
 .hosted-team-header {
@@ -46,6 +47,12 @@ body {
     width: 100%;
     padding-bottom: 1rem;
     border-bottom: 0.125rem solid #FFFFFF;
+}
+
+.hosted-team-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #00ccff;
 }
 
 .hosted-team-button {
@@ -104,24 +111,107 @@ body {
 .hosted-team-detail-container {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.5rem;
     width: 100%;
-    border: 0.125rem solid #FFFFFF;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: #F0F0F050;
+}
+
+.hosted-team-detail-container h3 {
+    padding: 0.5rem 0;
+    border-radius: 0.25rem;
+    background-color: #0A192F75;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #00ccff;
+}
+
+.hosted-team-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.hosted-team-detail label {
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 input[type="text"],
 input[type="datetime-local"],
+input[type="number"],
+input[type="file"],
 textarea {
     width: 100%;
     padding: 0.5rem;
     outline: none;
     border: none;
+    border-radius: 0.25rem;
     background-color: #0A192F;
     font-size: 0.875rem;
 }
 
 textarea {
     resize: none;
+}
+
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+.hosted-team-banner {
+    width: 100%;
+    height: 400px; /* Adjust height based on your design requirements */
+    margin-top: 10px;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #0a1525; /* Dark background to match your theme */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hosted-team-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+#banner {
+    color: #8AA0C2;
+}
+
+#banner:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Add a label above the banner for better UX */
+.hosted-team-detail:has(#banner) label {
+    margin-bottom: 10px;
+    display: block;
+}
+
+.hosted-team-banner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 10rem;
+    overflow: hidden;
+}
+
+.hosted-team-banner img {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.25rem;
+    object-fit: cover;
+    object-position: center;
 }
 
 .hosted-team-assignments {
@@ -134,7 +224,13 @@ textarea {
     border-bottom: 0.125rem solid #FFFFFF;
 }
 
-.hosted-team-assignments-header {
+.hosted-team-assignments h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #00ccff;
+}
+
+/* .hosted-team-assignments-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -152,35 +248,42 @@ textarea {
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-}
+} */
 
 .role-requirements {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
     width: 100%;
     padding: 0.5rem;
-    border: 0.125rem solid #FFFFFF;
+    border-radius: 0.5rem;
+    background-color: #F0F0F050;
 }
 
 .role-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
     width: 100%;
     padding: 0.5rem;
-    border: 0.125rem solid #FFFFFF;
+    border-radius: 0.25rem;
+    background-color: #0A192F75;
 }
 
 .role-info-header {
-    font-size: 1rem;
+    font-size: 0.875rem;
     font-weight: 700;
+    color: #00ccff;
 }
 
 .role-info div {
-    font-size: 1rem;
+    width: 100%;
+    padding: 0.25rem;
+    border-radius: 0.125rem;
+    background-color: #0A192F50;
+    font-size: 0.875rem;
     font-weight: 500;
 }
 
@@ -190,17 +293,26 @@ textarea {
     gap: 0.5rem;
     width: 100%;
     padding: 0.5rem;
-    border: 0.125rem solid #FFFFFF;
+    border-radius: 0.25rem;
+    background-color: #0A192F75;
 }
 
 .assignment {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
     width: 100%;
     padding: 0.5rem;
-    border: 0.125rem solid #FFFFFF;
+    border-radius: 0.25rem;
+    background-color: #0A192F75;
+}
+
+.assignment-info-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.25rem;
+    width: 100%;
 }
 
 .assignment-info {
@@ -208,29 +320,62 @@ textarea {
     flex-direction: column;
     gap: 0.25rem;
     width: 100%;
-    border: 0.125rem solid #ffbb00;
 }
 
-.assignment-info p {
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    background-color: #F0F0F075;
+}
+
+.user-info label {
+    width: 100%;
+    padding: 0.25rem;
+    border-radius: 0.125rem;
+    background-color: #0A192F50;
     font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.user-info p {
+    width: 100%;
+    height: fit-content;
+    padding: 0 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
 }
 
 .assignment-btn {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    border: 0.125rem solid #00ccff;
 }
 
 .assignment-btn button {
     outline: none;
     border: none;
-    padding: 0.25rem 0.5rem;
+    padding: 0.5rem;
     border-radius: 0.25rem;
     font-size: 1rem;
-    font-weight: 600;
-    color: #0A192F;
+    font-weight: 600;;
     cursor: pointer;
+}
+
+.approve-btn {
+    background-color: #4CAF50;
+}
+
+.reject-btn {
+    background-color: #F44336;
+}
+
+.approve-btn:disabled, .reject-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .confirm-team-btn {
@@ -266,40 +411,17 @@ textarea {
         font-size: 1.125rem;
     }
 
-    .hosted-team-infomation {
-        grid-template-columns: repeat(1, 1fr);
+    .hosted-team-content {
+        padding: 1rem 2rem;
     }
 
-    .role-info {
-        display: grid;
-        grid-template-columns: repeat(1, 1fr);
-        gap: 0.5rem;
-    }
-
-    .assignment {
+    .hosted-team-header {
         flex-direction: column;
         gap: 0.5rem;
     }
 
-    .assignment-info {
-        align-self: flex-start;
-    }
-
-    .assignment-btn {
-        flex-direction: row;
-        width: 100%;
-        gap: 0.5rem;
-    }
-
-    .assignment-btn button {
-        width: 100%;
-    }
-}
-
-/* Mobile Phones (≤ 480px) */
-@media (max-width: 480px) {
-    * {
-        font-size: 1rem;
+    .hosted-team-button {
+        align-self: flex-end;
     }
 
     .hosted-team-infomation {
@@ -317,8 +439,58 @@ textarea {
         gap: 0.5rem;
     }
 
-    .assignment-info {
-        align-self: flex-start;
+    .assignment-info-container {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .assignment-btn {
+        flex-direction: row;
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .assignment-btn button {
+        width: 100%;
+        padding: 0.25rem 0.5rem;
+    }
+}
+
+/* Mobile Phones (≤ 480px) */
+@media (max-width: 480px) {
+    * {
+        font-size: 1rem;
+    }
+
+    .hosted-team-content {
+        padding: 1rem 2rem;
+    }
+
+    .hosted-team-header {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .hosted-team-button {
+        align-self: flex-end;
+    }
+
+    .hosted-team-infomation {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .role-info {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 0.25rem;
+    }
+
+    .assignment {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .assignment-info-container {
+        grid-template-columns: repeat(1, 1fr);
     }
 
     .assignment-btn {
@@ -329,5 +501,6 @@ textarea {
 
     .assignment-btn button {
         width: 100%;
+        padding: 0.25rem 0.5rem;
     }
 }
