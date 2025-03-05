@@ -390,8 +390,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         try {
             const allTeams = await fetchOtherTeamsByHackathonName();
-            
-            // Clear previous results
             const allTeamsCards = document.getElementById("all-cards");
             const allTeamsPagination = document.getElementById("all-pagination");
             allTeamsCards.innerHTML = "";
