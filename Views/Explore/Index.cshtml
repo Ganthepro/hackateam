@@ -36,12 +36,16 @@
         <div class="additional-container">
             <form action="search-card" method="get" class="search-form">
                 <div class="search-space">
-                    <input type="text" placeholder="Search" class="search-bar">
+                    <input type="text" placeholder="Search" class="search-bar" list="hackathons" id="search-bar" autocomplete="off" onkeydown="SearchHackathon()">
                     <img src="~/pictures/search-box/search-cancel.svg" alt="search-cancel" class="search-cancel">
                 </div>
                 <button type="submit" class="search-button">
                     Search
                 </button>
+                <datalist id="hackathons">
+                    @* <option value="Hack1"></option>
+                    <option value="Hack2"></option> *@
+                </datalist>
             </form>
             <button class="create-team-button" id="create-team-button">
                 <a asp-controller="Teams" asp-action="Create">Create Team</a>
@@ -84,10 +88,11 @@
             </div>
         </div>
     </footer>
-
+    
     <script src="~/js/navbar.js"></script>
     <script src="~/js/additional-tool.js"></script>
-    <script type="module" src="~/js/explore.js"></script>
+    <script src="~/js/explore.js" asp-append-version="true"></script>
+    <script src="~/js/alert.js" asp-append-version="true"></script>
     <script src="~/js/cookie.js" asp-append-version="true"></script>
     <script src="~/js/authentication.js" asp-append-version="true"></script>
     <script src="~/js/effect-grid-background.js" asp-append-version="true"></script>

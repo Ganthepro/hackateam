@@ -259,6 +259,51 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
     });
 }
 
+async function SearchHackathon() {
+    const hackathon = document.getElementById("search-bar").value;
+    if (hackathon.length < 1) return;
+
+    try {
+        const response = await fetch(`${api}/Team/other?HackathonName=${hackathon}&Limit=1000`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getCookie("token")}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Search Hackathon failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+        CreateOption(data);
+    } catch (error) {
+        CreateErrorBlock("Error SearchHackathon");
+    }
+}
+
+function CreateOption(information) {
+    const hackathons = document.getElementById("hackathons");
+    hackathons.innerHTML = "";
+
+    const uniqueHackathons = new Set();
+    let count = 0;
+
+    for (const data of information) {
+        if (!uniqueHackathons.has(data.hackathonName)) {
+            uniqueHackathons.add(data.hackathonName);
+            const value = document.createElement("option");
+            value.value = data.hackathonName;
+            value.dataset.id = data.id;
+            hackathons.appendChild(value);
+            
+            count++;
+            if (count === 2) break;
+        }
+    }
+}
+
 async function main() {
     try {
         const recommendedTeams = await fetchRecommendTeams();
