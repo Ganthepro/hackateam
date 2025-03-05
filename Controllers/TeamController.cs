@@ -174,19 +174,20 @@ public class TeamController : Controller
 
         foreach (var team in teams)
         {
-            if (team.LeadId == userId)
+            if (team.LeadId != userId)
             {
-                continue;
-            }
-            var requirements = await _requirementService.GetAllByTeamId(team.Id!);
-            
-            bool hasMatchingSkill = requirements.Any(requirement => 
-                !string.IsNullOrEmpty(requirement.SkillId) && userSkillIds.Contains(requirement.SkillId));
+                var leadUser = await _userService.Get(user => user.Id == team.LeadId);
+                var requirements = await _requirementService.GetAllByTeamId(team.Id!);
+                
+                bool hasMatchingSkill = requirements.Any(requirement => 
+                    !string.IsNullOrEmpty(requirement.SkillId) && userSkillIds.Contains(requirement.SkillId));
 
-            if (hasMatchingSkill)
-            {
-                teamDtos.Add(new TeamResponseDto(team, user));
+                if (hasMatchingSkill)
+                {
+                    teamDtos.Add(new TeamResponseDto(team, leadUser));
+                }
             }
+
         }
 
         if (teamDtos.Count == 0)
@@ -208,8 +209,9 @@ public class TeamController : Controller
         {
             if (team.LeadId != userId)
             {
+                var leadUser = await _userService.Get(user => user.Id == team.LeadId);
                 var user = await _userService.Get(user => user.Id == team.LeadId);
-                teamDtos.Add(new TeamResponseDto(team, user));
+                teamDtos.Add(new TeamResponseDto(team, leadUser));
             }
         }
         return Ok(teamDtos);
