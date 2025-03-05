@@ -5,12 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"] - CreateTeam</title>
     @* Page Style *@
-    <link rel="stylesheet" href="~/css/create-team.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/create.css" asp-append-version="true" />
     @* Components Style *@
     <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/file-input-style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/effect-grid-background.css" asp-append-version="true" />
 </head>
 <body>
+    @* Wave Grid Background *@
+    <div class="grid-container" id="grid-container"></div>
+    
     @* Navbar Component *@
     <nav class="navbar">
         <div class="navbar-title">Hackateam</div>
@@ -55,11 +60,13 @@
                     </div>
                     <div class="create-team-form-group">
                         <label for="team-image">Team Image</label>
-                        <input 
-                            type="file" 
-                            id="team-image" 
-                            name="team-image"
-                        >
+                        <div class="file-input-space">
+                            <input type="file" class="file-input" id="fileInput" aria-label="File upload">
+                            <button class="file-input-btn" aria-describedby="fileInputDesc">
+                                <span class="file-btn">Choose file</span>
+                                <span class="file-name" id="fileInputDesc">No file chosen</span>
+                            </button>
+                        </div>
                     </div>
                     <div class="create-team-form-group">
                         <label for="hackathon-name">Hackathon Name</label>
@@ -125,8 +132,10 @@
         </div>
     </footer>
 
-    <script type="module" src="~/js/create-team.js"></script>
+    <script type="module" src="~/js/create.js"></script>
     <script src="~/js/cookie.js" asp-append-version="true"></script>
     <script src="~/js/authentication.js" asp-append-version="true"></script>
+    <script src="~/js/file-input-style.js" asp-append-version="true"></script>
+    <script src="~/js/effect-grid-background.js" asp-append-version="true"></script>
 </body>
 </html>
