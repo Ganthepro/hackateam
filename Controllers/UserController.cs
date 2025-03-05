@@ -78,7 +78,8 @@ public class UserController : Controller
         var user = await _userService.Get(user => user.Id == id);
         if (user.Avatar == null)
         {
-            throw new HttpResponseException((int)HttpStatusCode.NotFound, "Avatar not found");
+            var defaultAvatar = _fileService.Get("defaulf-profile.png", FileService.FolderName.Avatar);
+            return await Task.FromResult(File(defaultAvatar, "image/jpeg"));
         }
         var stream = _fileService.Get(user.Avatar!, FileService.FolderName.Avatar);
         return await Task.FromResult(File(stream, "image/jpeg"));
