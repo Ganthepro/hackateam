@@ -1,10 +1,10 @@
 api = "http://localhost:5234";
 
 document.addEventListener("DOMContentLoaded", async function () {
-  await GetNotification(1);
+  await GetNotification();
 });
 
-async function GetNotification(userId) {
+async function GetNotification() {
   try {
     const response = await fetch(`${api}/Notification`, {
       method: "Get",
@@ -36,7 +36,13 @@ function CreateMessage(data) {
     const name = document.createElement("h2");
     name.innerText = element.teamResponse.hackathonName;
     const user = document.createElement("p");
-    user.innerText = `${element.userResponse.fullName} ${element.type === 0 ? "Approved" : "Rejected"}`;
+    user.innerText = `${element.userResponse.fullName} ${
+      element.type === 0 ? "Approved" : "Rejected"
+    }`;
+    if (element.type === 0) {
+      message.onclick = GoToTeamInfo(element.teamResponse.id);
+      message.style.cursor = "pointer";
+    }
     message.appendChild(name);
     message.appendChild(user);
     const messages = document.getElementById("messages");
@@ -48,8 +54,7 @@ function CreateNoMessage() {
   const noNotification = document.createElement("div");
   noNotification.className = "nomessage";
   const image = document.createElement("img");
-  image.src =
-    "https://static.vecteezy.com/system/resources/thumbnails/014/814/039/small/a-well-designed-flat-icon-of-no-notification-yet-vector.jpg";
+  image.src = "../pictures/notification/nomessage.jpg";
   image.alt = "No Notification";
   const message = document.createElement("h4");
   message.innerText = "No Notification";
@@ -57,4 +62,8 @@ function CreateNoMessage() {
   noNotification.appendChild(message);
   const messages = document.getElementById("messages");
   messages.appendChild(noNotification);
+}
+
+function GoToTeamInfo(id) {
+  window.location.href = `${api}/Teams/Info?id=${id}`;
 }
