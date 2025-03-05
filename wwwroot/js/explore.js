@@ -131,7 +131,7 @@ function createRequirementCard(team) {
     const statusText = team.status === 0 ? 'Open' : 'Closed';
     
     card.innerHTML = `
-        <a href="/Home/Explore/${team.id}">
+        <a href="/Teams/Info?id=${team.id}">
             <div class="card-status ${statusText.toLowerCase()}">
                 ${statusText}
             </div>
