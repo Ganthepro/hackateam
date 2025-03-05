@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
     <title>@ViewData["Title"] - Other</title>
     <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
 </head>
 <body>
     <nav class="navbar">
@@ -29,7 +30,7 @@
 
     <main>
         <section id="profile">
-            <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="Avatar of Mr. John Doe" id="avatar" />
+            <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="Avatar" id="avatar" />
             <div id="profile-details">
                 <p id="fullname"><strong>Fullname:</strong></p>
                 <p id="tel"><strong>Tel:</strong></p>
@@ -39,7 +40,7 @@
 
         <div id="projects">
             <div id="showproject">
-                <h2>Projects :</h2>
+                <h2>Projects </h2>
                 <p></p>
                 <button id="loadMore" onclick="SeeMore()">Show All</button>
             </div>
@@ -49,6 +50,29 @@
 
         </div>
     </main>
+    @* Footer Component *@
+    <footer>
+        <div class="footer-content-01">
+            <p>© 2025 Hackateam</p>
+            <div class="footer-link">
+                <img src="~/pictures/github-icon.svg" alt="github-icon" />
+                <a href="#">Hackateam repository</a>
+            </div>
+            <div class="footer-link">
+                <img src="~/pictures/instagram-icon.svg" alt="instagram-icon" />
+                <a href="#">SAIG Instagram</a>
+            </div>
+        </div>
+        <div class="footer-content-02">
+            <p>KMITL Computer Engineering</p>
+            <div class="footer-logo">
+                <img src="~/pictures/KMITL-logo.svg" alt="KMITL-logo">
+                <img src="~/pictures/CE-logo.svg" alt="KMITL-logo">
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/js/navbar.js"></script>
     <script src="~/js/alert.js" asp-append-version="true"></script>
     <script src="~/js/other.js" asp-append-version="true"></script>
     <script src="~/js/cookie.js" asp-append-version="true"></script>

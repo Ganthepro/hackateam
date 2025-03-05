@@ -103,10 +103,9 @@ function ShowData(data) {
 async function SearchSkill() {
   changeSkill = true;
   const skill = document.getElementById("skill").value;
-  if (skill.length < 3) return;
-  const body = { title: skill, limit: 2 };
+  if (skill.length < 1) return;
   try {
-    const response = await fetch(`${api}/Skill?${body}`, {
+    const response = await fetch(`${api}/Skill?Title=${skill}&Limit=2`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
