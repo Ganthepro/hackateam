@@ -19,7 +19,7 @@ h3 {
   font-size: 24px;
 }
 
-p {
+.p {
   font-size: 20px;
 }
 
@@ -33,16 +33,13 @@ header {
   margin: 1%;
 }
 
-#logout {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  z-index: 1000;
-}
-
 #showproject {
   display: grid;
   grid-template-columns: 75% 10% 15%;
+}
+
+.logout {
+  cursor: pointer;
 }
 
 article {
@@ -70,7 +67,7 @@ section {
   padding: 1%;
 }
 
-img {
+#avatar {
   margin: auto;
   width: 250px;
   height: 250px;
@@ -125,7 +122,7 @@ button {
 }
 
 @media screen and (max-width: 800px) {
-  img {
+  #avatar {
     width: 100px;
     height: 100px;
   }
@@ -142,7 +139,7 @@ button {
     font-size: 20px;
   }
 
-  p {
+  .p {
     font-size: 16px;
   }
 
@@ -152,7 +149,7 @@ button {
 }
 
 @media screen and (max-width: 400px) {
-  img {
+  #avatar {
     width: 100px;
     height: 100px;
   }
@@ -169,7 +166,7 @@ button {
     font-size: 16px;
   }
 
-  p {
+  .p {
     font-size: 12px;
   }
 

@@ -60,10 +60,9 @@ async function CreateProject(skillId) {
 
 async function SearchSkill() {
   const skill = document.getElementById("skill").value;
-  if (skill.length < 3) return;
-  const body = { title: skill, limit: 2 };
+  if (skill.length < 1) return;
   try {
-    const response = await fetch(`${api}/Skill?${body}`, {
+    const response = await fetch(`${api}/Skill?Title=${skill}&Limit=2`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +73,7 @@ async function SearchSkill() {
     if (!response.ok) {
       throw new Error(`Edit Project failed: ${response.status}`);
     }
-    
+
     const data = await response.json();
     CreateOption(data);
   } catch (error) {
