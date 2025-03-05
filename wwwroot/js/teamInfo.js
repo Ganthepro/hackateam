@@ -1,5 +1,6 @@
 api = "http://localhost:5234";
 var teamLeadId = null;
+var elementData = "yes";
 
 document.addEventListener("DOMContentLoaded", async function () {
   await GetTeam();
@@ -29,7 +30,8 @@ async function GetTeam() {
 function TeamDetail(data) {
   const name = document.getElementById("name");
   name.innerText = data.name;
-  LoadBanner();
+  const image = document.getElementById("teamimage");
+  image.src = `${api}/Team/${data.id}/banner`;
   const hackathonTeam = document.getElementById("hackathonteam");
   hackathonTeam.innerText = data.hackathonName;
   const description = document.getElementById("description");
@@ -41,25 +43,6 @@ function TeamDetail(data) {
   const thaiTime = date.toLocaleString("th-TH", { timeZone: "Asia/Bangkok" });
   const expiredDate = document.getElementById("expireddate");
   expiredDate.innerText = `Expired Date: ${thaiTime}`;
-}
-
-async function LoadBanner() {
-  const image = document.getElementById("teamimage");
-  image.src = "";
-  try {
-    const response = await fetch(`${api}/Team/${userId}/banner`, {
-      method: "Get",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookie("token")}`,
-      },
-    });
-    await response.json();
-    image.src = `${api}/Team/${userId}/banner`;
-  } catch (error) {
-    image.src =
-      "https://media.istockphoto.com/id/1147521090/th/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%96%E0%B9%88%E0%B8%B2%E0%B8%A2/%E0%B8%9E%E0%B8%B7%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%87%E0%B8%99%E0%B8%B2%E0%B8%A1%E0%B8%98%E0%B8%A3%E0%B8%A3%E0%B8%A1%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%AA%E0%B8%95%E0%B8%B9%E0%B8%94%E0%B8%B4%E0%B9%82%E0%B8%AD%E0%B8%AA%E0%B8%B5%E0%B8%82%E0%B8%B2%E0%B8%A7%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B8%A7%E0%B9%88%E0%B8%B2%E0%B8%87%E0%B9%80%E0%B8%9B%E0%B8%A5%E0%B9%88%E0%B8%B2.jpg?s=612x612&w=0&k=20&c=1EHvAkEhN1V9DlqHUIBHxIaq9NSVaKvSAV8TMbDfkfU=";
-  }
 }
 
 async function GetRequirement() {
@@ -76,7 +59,11 @@ async function GetRequirement() {
       throw new Error(`Get Requirement failed: ${response.status}`);
     }
     const data = await response.json();
-    CreateRequirement(data);
+    if (await CheckTeamLead(teamId)) {
+      DisableJoin();
+    } else {
+      CreateRequirement(data);
+    }
   } catch (error) {
     CreateErrorBlock("Get Requirement failed. Please check your data.");
   }
@@ -109,42 +96,38 @@ function CreateRequirement(data) {
 }
 
 async function JoinTeam() {
-  if (await CheckTeamLead()) {
-    CreateErrorBlock("This is your team. Can not join");
-  } else {
-    const sop = document.getElementById("sop").value;
+  const sop = document.getElementById("sop").value;
 
-    const skillRadios = document.getElementsByName("skill");
-    let requirementId = "";
-    for (let radio of skillRadios) {
-      if (radio.checked) {
-        requirementId = radio.value;
-        break;
-      }
+  const skillRadios = document.getElementsByName("skill");
+  let requirementId = "";
+  for (let radio of skillRadios) {
+    if (radio.checked) {
+      requirementId = radio.value;
+      break;
     }
-    const data = { sop, requirementId };
-    try {
-      const response = await fetch(`${api}/Submission`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getCookie("token")}`,
-        },
-        body: JSON.stringify(data),
-      });
+  }
+  const data = { sop, requirementId };
+  try {
+    const response = await fetch(`${api}/Submission`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("token")}`,
+      },
+      body: JSON.stringify(data),
+    });
 
-      if (!response.ok) {
-        throw new Error(`Join Team failed: ${response.status}`);
-      }
-
-      window.location.href = `${api}/Home/Explore`;
-    } catch (error) {
-      CreateErrorBlock("Join Team failed. Please check your data.");
+    if (!response.ok) {
+      throw new Error(`Join Team failed: ${response.status}`);
     }
+
+    window.location.href = `${api}/Home/Explore`;
+  } catch (error) {
+    CreateErrorBlock("Join Team failed. Please check your data.");
   }
 }
 
-async function CheckTeamLead() {
+async function CheckTeamLead(id) {
   try {
     const response = await fetch(`${api}/User/me`, {
       method: "Get",
@@ -160,12 +143,44 @@ async function CheckTeamLead() {
 
     const data = await response.json();
 
-    if (teamLeadId === data.id) {
+    const userIds = await GetSubmission(id);
+
+    const found = userIds.includes(data.id);
+
+    if (teamLeadId === data.id || found) {
       return true;
     } else {
       return false;
     }
   } catch (error) {
-    CreateErrorBlock("Get Profile failed. Please check your data.");
+    CreateErrorBlock(`Get Profile failed: Please check your data`);
+  }
+}
+
+function DisableJoin() {
+  const join = document.getElementById("join");
+  join.style.display = "none";
+}
+
+async function GetSubmission(id) {
+  try {
+    const response = await fetch(`${api}/Team/${id}/submissions`, {
+      method: "Get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("token")}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Get Submission failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const userIds = data.map((item) => item.user.id);
+    elementData = userIds;
+    return userIds;
+  } catch (error) {
+    CreateErrorBlock("Get Submission failed. Please check your data.");
   }
 }

@@ -2,7 +2,7 @@ api = "http://localhost:5234";
 
 var showMore = false;
 var project;
-var userId = null;
+var userId = false;
 
 document.addEventListener("DOMContentLoaded", async function () {
   await Profile();
@@ -24,39 +24,22 @@ async function Profile() {
     }
 
     const data = await response.json();
-    userId = data.id;
     ShowData(data);
   } catch (error) {
-    CreateErrorBlock(error);
+    CreateErrorBlock("Get Profile failed");
   }
 }
 
 function ShowData(data) {
-  LoadAvatar();
+  const image = document.getElementById("avatar");
+  image.src = `${api}/User/${data.id}/avatar`;
+  userId = data.id;
   const fullname = document.getElementById("fullname");
   fullname.innerHTML = `<strong>Fullname:</strong> ${data.header} ${data.fullName}`;
   const tel = document.getElementById("tel");
   tel.innerHTML = `<strong>Tel:</strong> ${data.tel}`;
   const email = document.getElementById("email");
   email.innerHTML = `<strong>Email:</strong> ${data.email}`;
-}
-
-async function LoadAvatar() {
-  const image = document.getElementById("avatar");
-  try {
-    const response = await fetch(`${api}/User/${userId}/avatar`, {
-      method: "Get",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookie("token")}`,
-      },
-    });
-    await response.json();
-    image.src = `${api}/User/${userId}/avatar`;
-  } catch (error) {
-    image.src =
-      "https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png";
-  }
 }
 
 async function Project() {
@@ -177,7 +160,7 @@ function Logout() {
     "Do you want to logout?",
     function () {
       clearCookie("token");
-      window.location.href = `${api}/Home/Intro`;
+      window.location.href = `${api}/Home`;
     },
     function () {}
   );
