@@ -1,6 +1,5 @@
 api = "http://localhost:5234";
 var teamLeadId = null;
-var elementData = "yes";
 
 document.addEventListener("DOMContentLoaded", async function () {
   await GetTeam();
@@ -178,7 +177,6 @@ async function GetSubmission(id) {
 
     const data = await response.json();
     const userIds = data.map((item) => item.user.id);
-    elementData = userIds;
     return userIds;
   } catch (error) {
     CreateErrorBlock("Get Submission failed. Please check your data.");
