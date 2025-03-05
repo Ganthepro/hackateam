@@ -83,6 +83,25 @@ body {
 
 .invitation-content p {
     font-size: 0.8em;
+    animation: intro-title 2s ease-in-out infinite alternate;
+}
+
+.invitation-content h1 {
+    font-size: 2em;
+    font-weight: 700;
+    animation: intro-title 2s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes intro-title {
+    0% { text-shadow: 0 0 1rem #00F5D4; }
+    50% { text-shadow: 0 0 1rem #0077FF; }
+    100% { text-shadow: 0 0 1rem #00F5D4; }
+}
+
+@keyframes intro-title {
+    0% { text-shadow: 0 0 1rem #00F5D4; }
+    50% { text-shadow: 0 0 1rem #0077FF; }
+    100% { text-shadow: 0 0 1rem #00F5D4; }
 }
 
 .down-arrow {
