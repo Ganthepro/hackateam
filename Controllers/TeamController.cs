@@ -8,6 +8,7 @@ using System.Security.Claims;
 namespace hackateam.Controllers;
 
 using hackateam.Dtos.Skill;
+using hackateam.Models;
 using hackateam.Shared;
 using System.Net;
 
@@ -23,7 +24,7 @@ public class TeamController : Controller
     private readonly RequirementService _requirementService;
     private readonly SubmissionService _submissionService;
 
-    public TeamController(TeamService teamService, UserService userService, FileService fileService, RequirementService requirementService, SubmissionService submissionService, SkillService skillService)
+    public TeamController(TeamService teamService, UserService userService, FileService fileService, RequirementService requirementService, SubmissionService submissionService, SkillService skillService, ProjectService projectService)
     {
         _teamService = teamService;
         _userService = userService;
@@ -31,6 +32,7 @@ public class TeamController : Controller
         _requirementService = requirementService;
         _submissionService = submissionService;
         _skillService = skillService;
+        _projectService = projectService;
     }
 
     [HttpPut("banner")]
@@ -143,6 +145,55 @@ public class TeamController : Controller
             var user = await _userService.Get(user => user.Id == team.LeadId);
             teamDtos.Add(new TeamResponseDto(team, user));
         }
+        return Ok(teamDtos);
+    }
+
+    [HttpGet("recommend")]
+    [Authorize]
+    public async Task<ActionResult<List<TeamResponseDto>>> GetRecommend(TeamQueryDto teamQueryDto)
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized();
+        }
+
+        var user = await _userService.Get(user => user.Id == userId);
+        var projects = await _projectService.GetAll(project => project.UserId == userId);
+        var userSkillIds = new HashSet<string>();
+        foreach (var project in projects)
+        {
+            if (!string.IsNullOrEmpty(project.SkillId))
+            {
+                userSkillIds.Add(project.SkillId);
+            }
+        }
+
+        var teams = await _teamService.GetAll(teamQueryDto);
+        var teamDtos = new List<TeamResponseDto>();
+
+        foreach (var team in teams)
+        {
+            if (team.LeadId == userId)
+            {
+                continue;
+            }
+            var requirements = await _requirementService.GetAllByTeamId(team.Id!);
+            
+            bool hasMatchingSkill = requirements.Any(requirement => 
+                !string.IsNullOrEmpty(requirement.SkillId) && userSkillIds.Contains(requirement.SkillId));
+
+            if (hasMatchingSkill)
+            {
+                teamDtos.Add(new TeamResponseDto(team, user));
+            }
+        }
+
+        if (teamDtos.Count == 0)
+        {
+            return NotFound(Constants.TeamMessage.NO_MATCH);
+        }
+
         return Ok(teamDtos);
     }
 
