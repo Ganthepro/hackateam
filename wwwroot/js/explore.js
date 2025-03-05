@@ -381,30 +381,39 @@ async function main() {
         console.error('Error in main:', error);
     }
 }
-document.getElementById("search-button").addEventListener("click", async function (event) {
-    event.preventDefault(); 
-    try {
-        const allTeams = await fetchOtherTeamsByHackathonName();
+document.addEventListener("DOMContentLoaded", function () {
+    const searchBar = document.getElementById("search-bar");
+    const searchButton = document.getElementById("search-button");
 
-        if (allTeams.length > 0) {
-            displayTeams(allTeams, 'all-cards', currentPageAll);
-            updatePagination(allTeams, 'all-pagination', currentPageAll, 'all-cards', false);
-        } else {
-            const allTeamsContainer = document.getElementById('all-projects');
-            const text = document.createElement('p');
-            allTeamsContainer.innerHTML = '';
+    async function handleSearch(event) {
+        event.preventDefault();
 
-            const allTeamsHeader = document.createElement('h2');
-            allTeamsHeader.textContent = 'All Projects';
-            allTeamsContainer.appendChild(allTeamsHeader);
+        try {
+            const allTeams = await fetchOtherTeamsByHackathonName();
+            
+            // Clear previous results
+            const allTeamsCards = document.getElementById("all-cards");
+            const allTeamsPagination = document.getElementById("all-pagination");
+            allTeamsCards.innerHTML = "";
+            allTeamsPagination.innerHTML = "";
 
-            text.classList.add('no-teams');
-            text.textContent = 'No All Projects';
-            allTeamsContainer.appendChild(text);
+            if (allTeams.length > 0) {
+                displayTeams(allTeams, "all-cards", currentPageAll);
+                updatePagination(allTeams, "all-pagination", currentPageAll, "all-cards", false);
+            } else {
+                allTeamsCards.innerHTML = `<p class="no-teams">No All Projects</p>`;
+            }
+        } catch (error) {
+            console.error("Error fetching teams:", error);
         }
-    } catch (error) {
-        console.error("Error fetching teams:", error);
     }
+
+    searchButton.addEventListener("click", handleSearch);
+    searchBar.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            handleSearch(event);
+        }
+    });
 });
 
 window.addEventListener('resize', () => {
