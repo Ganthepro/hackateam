@@ -6,6 +6,7 @@ using System.Security.Claims;
 using hackateam.Dtos.Utils;
 using hackateam.Shared;
 using System.Net;
+using hackateam.Models;
 
 namespace hackateam.Controllers;
 
@@ -46,6 +47,10 @@ public class SubmissionController : Controller
         if (team.LeadId == userId)
         {
             throw new HttpResponseException((int)HttpStatusCode.Forbidden, "Team lead cannot submit");
+        }
+        if (team.Status === TeamStatus.Closed || team.Status === TeamStatus.Cancelled)
+        {
+            throw new HttpResponseException((int)HttpStatusCode.Forbidden, "Team is closed or cancelled");
         }
         var submission = await _submissionService.Create(userId!, createSubmissionDto);
         var user = await _userServices.Get(user => user.Id == submission.UserId);

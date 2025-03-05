@@ -20,48 +20,28 @@ build_property._RazorSourceGeneratorDebug =
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Home/CreateTeam.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDcmVhdGVUZWFtLmNzaHRtbA==
+[D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Auth/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Home/Explore.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxFeHBsb3JlLmNzaHRtbA==
+[D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Auth/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Home/HostedTeamManagement.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxIb3N0ZWRUZWFtTWFuYWdlbWVudC5jc2h0bWw=
+[D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Explore/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXhwbG9yZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Home/Intro.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbnRyby5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Home/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxMb2dpbi5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Home/Notification.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxOb3RpZmljYXRpb24uY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Home/Register.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxSZWdpc3Rlci5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Home/TeamInfo.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUZWFtSW5mby5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Home/Teamlist.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxUZWFtbGlzdC5jc2h0bWw=
+[D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Notifications/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTm90aWZpY2F0aW9uc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Profile/CreateProject.cshtml]
@@ -90,6 +70,22 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Teams/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhbXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Teams/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhbXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Teams/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhbXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/Teams/Info.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGVhbXNcSW5mby5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/\[KMITL\]66010385/YEAR_02/TERM_02/Web Dev/hackateam/Views/_ViewImports.cshtml]

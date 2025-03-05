@@ -170,3 +170,14 @@ function PageUpdateProfile() {
 function PageCreateProject() {
   window.location.href = `${api}/Profile/CreateProject`;
 }
+
+function Logout() {
+  CreateConfirm(
+    "Do you want to logout?",
+    function () {
+      clearCookie("token");
+      window.location.href = `${api}/Home/Intro`;
+    },
+    function () {}
+  );
+}
