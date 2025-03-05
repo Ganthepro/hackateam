@@ -2,7 +2,7 @@ api = "http://localhost:5234";
 
 var showMore = false;
 var project;
-var userId = false;
+var userId = null;
 
 document.addEventListener("DOMContentLoaded", async function () {
   await Profile();
