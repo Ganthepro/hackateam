@@ -177,7 +177,7 @@ function Logout() {
     "Do you want to logout?",
     function () {
       clearCookie("token");
-      window.location.href = `${api}/Home/Intro`;
+      window.location.href = `${api}/Home`;
     },
     function () {}
   );
