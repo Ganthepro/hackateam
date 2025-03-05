@@ -75,11 +75,6 @@ public class TeamController : Controller
             return NotFound(Constants.TeamMessage.NOT_FOUND);
         }
 
-        if (team.LeadId != userId)
-        {
-            return NotFound(Constants.TeamMessage.NO_PERMISSION);
-        }
-
         var requirements = await _requirementService.GetAllByTeamId(id);
 
         if (requirements == null || !requirements.Any())
