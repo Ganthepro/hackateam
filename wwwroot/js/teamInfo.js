@@ -137,7 +137,7 @@ async function JoinTeam() {
         throw new Error(`Join Team failed: ${response.status}`);
       }
 
-      window.location.href = `${api}/Home/Explore`;
+      window.location.href = `${api}/Explore`;
     } catch (error) {
       CreateErrorBlock("Join Team failed. Please check your data.");
     }
