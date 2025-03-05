@@ -39,13 +39,8 @@
                     <input type="text" placeholder="Search" class="search-bar" list="hackathons" id="search-bar" autocomplete="off" onkeydown="SearchHackathon()">
                     <img src="~/pictures/search-box/search-cancel.svg" alt="search-cancel" class="search-cancel">
                 </div>
-                <button type="submit" class="search-button">
-                    Search
-                </button>
-                <datalist id="hackathons">
-                    @* <option value="Hack1"></option>
-                    <option value="Hack2"></option> *@
-                </datalist>
+                <button type="button" class="search-button" id="search-button">Search</button>
+                <datalist id="hackathons"></datalist>
             </form>
             <button class="create-team-button" id="create-team-button">
                 <a asp-controller="Teams" asp-action="Create">Create Team</a>

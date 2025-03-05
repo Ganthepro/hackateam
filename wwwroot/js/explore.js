@@ -304,6 +304,40 @@ function CreateOption(information) {
     }
 }
 
+async function fetchOtherTeamsByHackathonName() {
+    try {
+        const hackathon = document.getElementById("search-bar").value;
+        const response = await fetch(`${api}/Team/other?Limit=1000&HackathonName=${hackathon}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getCookie("token")}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fetch Team Failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const TeamBanners = await Promise.all(
+            data.map(async (team) => {   
+                const base64Banner = await fetchTeamBanner(team.id);
+                return { 
+                    ...team, 
+                    bannerUrl: base64Banner || '/pictures/default-banner.png'
+                };
+            })      
+        );  
+
+        return TeamBanners;
+    } catch (error) {
+        console.error('Error:', error);
+        return [];
+    }
+}
+
+
 async function main() {
     try {
         const recommendedTeams = await fetchRecommendTeams();
@@ -347,6 +381,31 @@ async function main() {
         console.error('Error in main:', error);
     }
 }
+document.getElementById("search-button").addEventListener("click", async function (event) {
+    event.preventDefault(); 
+    try {
+        const allTeams = await fetchOtherTeamsByHackathonName();
+
+        if (allTeams.length > 0) {
+            displayTeams(allTeams, 'all-cards', currentPageAll);
+            updatePagination(allTeams, 'all-pagination', currentPageAll, 'all-cards', false);
+        } else {
+            const allTeamsContainer = document.getElementById('all-projects');
+            const text = document.createElement('p');
+            allTeamsContainer.innerHTML = '';
+
+            const allTeamsHeader = document.createElement('h2');
+            allTeamsHeader.textContent = 'All Projects';
+            allTeamsContainer.appendChild(allTeamsHeader);
+
+            text.classList.add('no-teams');
+            text.textContent = 'No All Projects';
+            allTeamsContainer.appendChild(text);
+        }
+    } catch (error) {
+        console.error("Error fetching teams:", error);
+    }
+});
 
 window.addEventListener('resize', () => {
     if (resizeTimeout) {
