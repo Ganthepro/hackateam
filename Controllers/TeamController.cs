@@ -58,7 +58,8 @@ public class TeamController : Controller
         var team = await _teamService.Get(team => team.Id == id);
         if (team.Banner == null)
         {
-            throw new HttpResponseException((int)HttpStatusCode.NotFound, "Banner not found");
+            var defaultBanner = _fileService.Get("defaulf-banner.png", FileService.FolderName.Teams);
+            return await Task.FromResult(File(defaultBanner, "image/jpeg"));
         }
         var stream = _fileService.Get(team.Banner!, FileService.FolderName.Teams);
         return await Task.FromResult(File(stream, "image/jpeg"));
@@ -73,11 +74,6 @@ public class TeamController : Controller
         if (team == null)
         {
             return NotFound(Constants.TeamMessage.NOT_FOUND);
-        }
-
-        if (team.LeadId != userId)
-        {
-            return NotFound(Constants.TeamMessage.NO_PERMISSION);
         }
 
         var requirements = await _requirementService.GetAllByTeamId(id);

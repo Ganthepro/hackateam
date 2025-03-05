@@ -1,0 +1,25 @@
+.grid-container {
+    z-index: -100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    --cell-size: min(calc(100vw / 30), calc(100vh / 30));
+    grid-template-columns: repeat(auto-fill, var(--cell-size));
+    grid-template-rows: repeat(auto-fill, var(--cell-size));
+    gap: 2px;
+    justify-content: center;
+    align-content: center;
+    background-color: #050A12;
+    overflow: hidden;
+}
+
+.grid-cell {
+    background: #00F5D475;
+    transition: all 0.3s ease;
+    aspect-ratio: 1/1;
+    opacity: 0;
+    transform-origin: center;
+}

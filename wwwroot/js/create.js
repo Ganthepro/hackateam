@@ -92,8 +92,8 @@ function createRequirementGroup() {
                 type="text" 
                 name="member-skill" 
                 list="skills-${uniqueId}" 
-                autocomplete="off" 
-                <!-- Removed oninput attribute -->
+                autocomplete="off"
+                placeholder="Enter member skill"
             >
             <datalist id="skills-${uniqueId}"></datalist>
             <input type="hidden" name="selected-skill-id" />
@@ -103,22 +103,22 @@ function createRequirementGroup() {
         </button>
     `;
 
-  const skillInput = requirementContainer.querySelector(
-    'input[name="member-skill"]'
-  );
-  skillInput.addEventListener("input", function () {
-    SearchSkill(this, `skills-${uniqueId}`);
-  });
+    const skillInput = requirementContainer.querySelector(
+      'input[name="member-skill"]'
+    );
+    skillInput.addEventListener("input", function () {
+      SearchSkill(this, `skills-${uniqueId}`);
+    });
 
-  const deleteButton = requirementContainer.querySelector(
-    ".delete-requirement-btn"
-  );
-  deleteButton.addEventListener("click", () => {
-    requirementContainer.remove();
-    updateDeleteButtons();
-  });
+    const deleteButton = requirementContainer.querySelector(
+      ".delete-requirement-btn"
+    );
+    deleteButton.addEventListener("click", () => {
+      requirementContainer.remove();
+      updateDeleteButtons();
+    });
 
-  return requirementContainer;
+    return requirementContainer;
 }
 
 const addButton = document.createElement("button");
