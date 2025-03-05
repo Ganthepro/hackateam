@@ -9,32 +9,32 @@
     <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
     <title>@ViewData["Title"] - Profile</title>
     <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
 </head>
 <body>
     <nav class="navbar">
         <div class="navbar-title">Hackateam</div>
         <div class="navbar-links">
-            <a asp-controller="Home" asp-action="Explore">Explore</a>
-            <a asp-controller="Home" asp-action="Team">Team</a>
-            <a asp-controller="Home" asp-action="Notification">Notification</a>
-            <a asp-controller="Home" asp-action="Profile">Profile</a>
+            <a asp-controller="Explore" asp-action="Index">Explore</a>
+            <a asp-controller="Teams" asp-action="Index">Team</a>
+            <a asp-controller="Notifications" asp-action="Index">Notification</a>
+            <a onclick="Logout()" class="logout">Logout</a>
         </div>
         <img src="~/pictures/dropdown-menu-icon.svg" alt="dropdown-menu" class="dropdown-menu"/>
     </nav>
-    
+
     <header>
         <h1>My Profile</h1>
         
     </header>
-    <button id="logout" onclick="Logout()">logout</button>
 
     <main>
         <section id="profile">
             <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="Avatar" id="avatar" />
             <div id="profile-details">
-                <p id="fullname"><strong>Fullname:</strong></p>
-                <p id="tel"><strong>Tel:</strong></p>
-                <p id="email"><strong>Email:</strong></p>
+                <p id="fullname" class="p"><strong>Fullname:</strong></p>
+                <p id="tel" class="p"><strong>Tel:</strong></p>
+                <p id="email" class="p"><strong>Email:</strong></p>
             </div>
             <button id="edit" onclick="PageUpdateProfile()">Edit</button>
         </section>
@@ -50,9 +50,33 @@
 
         </div>
     </main>
+
+    @* Footer Component *@
+    <footer>
+        <div class="footer-content-01">
+            <p>© 2025 Hackateam</p>
+            <div class="footer-link">
+                <img src="~/pictures/github-icon.svg" alt="github-icon" />
+                <a href="#">Hackateam repository</a>
+            </div>
+            <div class="footer-link">
+                <img src="~/pictures/instagram-icon.svg" alt="instagram-icon" />
+                <a href="#">SAIG Instagram</a>
+            </div>
+        </div>
+        <div class="footer-content-02">
+            <p>KMITL Computer Engineering</p>
+            <div class="footer-logo">
+                <img src="~/pictures/KMITL-logo.svg" alt="KMITL-logo">
+                <img src="~/pictures/CE-logo.svg" alt="KMITL-logo">
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/js/navbar.js"></script>
     <script src="~/js/cookie.js" asp-append-version="true"></script>
     <script src="~/js/authentication.js" asp-append-version="true"></script>
-    <script src="~/js/alertError.js" asp-append-version="true"></script>
+    <script src="~/js/alert.js" asp-append-version="true"></script>
     <script src="~/js/profile.js" asp-append-version="true"></script>
 </body>
 </html>

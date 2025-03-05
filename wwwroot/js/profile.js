@@ -172,6 +172,7 @@ function PageCreateProject() {
 }
 
 function Logout() {
+  console.log("Hi");
   CreateConfirm(
     "Do you want to logout?",
     function () {

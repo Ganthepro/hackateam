@@ -19,6 +19,7 @@ function CreateErrorBlock(word) {
     fontWeight: "bold",
     minWidth: "200px",
     justifyContent: "space-between",
+    zIndex: 1000,
   };
 
   Object.assign(block.style, blockStyle);
@@ -67,7 +68,7 @@ function CreateConfirm(word, onConfirm, onCancel) {
     top: "10px",
     left: "50%",
     transform: "translateX(-50%)",
-    backgroundColor: "red",
+    backgroundColor: "green",
     color: "white",
     padding: "10px 20px",
     borderRadius: "5px",
@@ -78,6 +79,7 @@ function CreateConfirm(word, onConfirm, onCancel) {
     fontWeight: "bold",
     minWidth: "250px",
     justifyContent: "space-between",
+    zIndex: 1000,
   };
 
   Object.assign(block.style, blockStyle);
