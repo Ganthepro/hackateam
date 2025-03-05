@@ -25,9 +25,9 @@ function updateItemsPerPage() {
     }
 }
 
-async function fetchTeams() {
+async function fetchRecommendTeams() {
     try {
-        const response = await fetch(`${api}/Team?Limit=1000`, {
+        const response = await fetch(`${api}/Team/recommend?Limit=1000`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -57,6 +57,40 @@ async function fetchTeams() {
         return [];
     }
 }
+
+async function fetchOtherTeams() {
+    try {
+        const response = await fetch(`${api}/Team/other?Limit=1000`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getCookie("token")}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fetch Team Failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        const TeamBanners = await Promise.all(
+            data.map(async (team) => {   
+                const base64Banner = await fetchTeamBanner(team.id);
+                return { 
+                    ...team, 
+                    bannerUrl: base64Banner || '/pictures/default-banner.png'
+                };
+            })      
+        );  
+
+        return TeamBanners;
+    } catch (error) {
+        console.error('Error:', error);
+        return [];
+    }
+}
+
 
 async function fetchTeamBanner(teamId) {
     try {
@@ -227,12 +261,12 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
 
 async function main() {
     try {
-        const hostedTeams = await fetchTeams();
-        const pendingTeams = await fetchTeams();
+        const recommendedTeams = await fetchRecommendTeams();
+        const allTeams = await fetchOtherTeams();
 
-        if (hostedTeams.length > 0) {
-            displayTeams(hostedTeams, 'recommended-cards', currentPageRecommended);
-            updatePagination(hostedTeams, 'recommended-pagination', currentPageRecommended, 'recommended-cards', true);
+        if (recommendedTeams.length > 0) {
+            displayTeams(recommendedTeams, 'recommended-cards', currentPageRecommended);
+            updatePagination(recommendedTeams, 'recommended-pagination', currentPageRecommended, 'recommended-cards', true);
         } else {
             const recommendedTeamsContainer = document.getElementById('recommended-projects');
             const text = document.createElement('p');
@@ -247,9 +281,9 @@ async function main() {
             recommendedTeamsContainer.appendChild(text);
         }
 
-        if (pendingTeams.length > 0) {
-            displayTeams(pendingTeams, 'all-cards', currentPageAll);
-            updatePagination(pendingTeams, 'all-pagination', currentPageAll, 'all-cards', false);
+        if (allTeams.length > 0) {
+            displayTeams(allTeams, 'all-cards', currentPageAll);
+            updatePagination(allTeams, 'all-pagination', currentPageAll, 'all-cards', false);
         } else {
             const allTeamsContainer = document.getElementById('all-projects');
             const text = document.createElement('p');
