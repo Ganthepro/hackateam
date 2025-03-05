@@ -169,19 +169,35 @@ public class TeamController : Controller
 
         foreach (var team in teams)
         {
-            if (team.LeadId == userId)
+            if (team.LeadId != userId)
             {
-                continue;
-            }
-            var requirements = await _requirementService.GetAllByTeamId(team.Id!);
-            
-            bool hasMatchingSkill = requirements.Any(requirement => 
-                !string.IsNullOrEmpty(requirement.SkillId) && userSkillIds.Contains(requirement.SkillId));
+                var leadUser = await _userService.Get(user => user.Id == team.LeadId);
+                var requirements = await _requirementService.GetAllByTeamId(team.Id!);
 
-            if (hasMatchingSkill)
-            {
-                teamDtos.Add(new TeamResponseDto(team, user));
+                bool hasMatchingSkill = requirements.Any(requirement => 
+                    !string.IsNullOrEmpty(requirement.SkillId) && userSkillIds.Contains(requirement.SkillId));
+
+                if (requirements != null && requirements.Any())
+                {
+                    var requirementIds = requirements.Select(r => r.Id).ToList();
+                    var submissions = await _submissionService.GetAllByRequirementIds(requirementIds);
+
+                    if (submissions == null || !submissions.Any())
+                    {
+                        bool hasUserSubmitted = submissions.Any(submission => submission.UserId == userId);
+                        if (hasMatchingSkill && !hasUserSubmitted)
+                        {
+                            teamDtos.Add(new TeamResponseDto(team, leadUser));
+                        }
+                    }
+
+                }
+                else if (hasMatchingSkill)
+                {
+                    teamDtos.Add(new TeamResponseDto(team, leadUser));
+                }
             }
+
         }
 
         if (teamDtos.Count == 0)
@@ -189,6 +205,47 @@ public class TeamController : Controller
             return NotFound(Constants.TeamMessage.NO_MATCH);
         }
 
+        return Ok(teamDtos);
+    }
+
+    [HttpGet("other")]
+    [Authorize]
+    public async Task<ActionResult<List<TeamResponseDto>>> GetOtherTeam(TeamQueryDto teamQueryDto)
+    {
+        var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var teams = await _teamService.GetAll(teamQueryDto);
+        var teamDtos = new List<TeamResponseDto>();
+
+        foreach (var team in teams)
+        {
+            if (team.LeadId != userId)
+            {
+                var leadUser = await _userService.Get(user => user.Id == team.LeadId);
+                var requirements = await _requirementService.GetAllByTeamId(team.Id);
+
+                if (requirements == null || !requirements.Any())
+                {
+                    teamDtos.Add(new TeamResponseDto(team, leadUser));
+                    continue;
+                }
+
+                var requirementIds = requirements.Select(r => r.Id).ToList();
+                var submissions = await _submissionService.GetAllByRequirementIds(requirementIds);
+
+                if (submissions == null || !submissions.Any())
+                {
+                    teamDtos.Add(new TeamResponseDto(team, leadUser));
+                    continue;
+                }
+
+                bool hasUserSubmitted = submissions.Any(submission => submission.UserId == userId);
+                if (!hasUserSubmitted)
+                {
+                    teamDtos.Add(new TeamResponseDto(team, leadUser));
+                }
+            }
+        }
+        
         return Ok(teamDtos);
     }
 

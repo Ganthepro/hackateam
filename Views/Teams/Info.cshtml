@@ -36,7 +36,7 @@
         <p id="teamsize">Teamsize: </p>
         <p id="expireddate">Expired Date: </p>
         <section id="join">
-            <form onsubmit="JoinTeam();">
+            <form onsubmit="event.preventDefault(); JoinTeam();">
                 <h4>State Of Purpose</h4>
                 <textarea id="sop" name="sop" rows="8" required></textarea>
 
