@@ -4,16 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="~/css/notification.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
     <title>@ViewData["Title"] - Notification</title>
 </head>
 <body>
+    @* Navbar Component *@
+    <nav class="navbar">
+        <div class="navbar-title">Hackateam</div>
+        <div class="navbar-links">
+            <a asp-controller="Explore" asp-action="Index">Explore</a>
+            <a asp-controller="Teams" asp-action="Index">Team</a>
+            <a asp-controller="Notifications" asp-action="Index" class="navbar-title">Notification</a>
+            <a asp-controller="Profile" asp-action="Index">Profile</a>
+        </div>
+        <img src="~/pictures/dropdown-menu-icon.svg" alt="dropdown-menu" class="dropdown-menu"/>
+    </nav>
+
     <header>Notification</header>
     <main>
         <section id="messages">
         </section>
     </main>
+
+    @* Footer Component *@
+    <footer>
+        <div class="footer-content-01">
+            <p>© 2025 Hackateam</p>
+            <div class="footer-link">
+                <img src="~/pictures/github-icon.svg" alt="github-icon" />
+                <a href="#">Hackateam repository</a>
+            </div>
+            <div class="footer-link">
+                <img src="~/pictures/instagram-icon.svg" alt="instagram-icon" />
+                <a href="#">SAIG Instagram</a>
+            </div>
+        </div>
+        <div class="footer-content-02">
+            <p>KMITL Computer Engineering</p>
+            <div class="footer-logo">
+                <img src="~/pictures/KMITL-logo.svg" alt="KMITL-logo">
+                <img src="~/pictures/CE-logo.svg" alt="KMITL-logo">
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/js/navbar.js"></script>
     <script src="~/js/cookie.js" asp-append-version="true"></script>
-    <script src="~/js/alertError.js" asp-append-version="true"></script>
+    <script src="~/js/alert.js" asp-append-version="true"></script>
     <script src="~/js/notification.js" asp-append-version="true"></script>
     <script src="~/js/authentication.js" asp-append-version="true"></script>
 </body>

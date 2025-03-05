@@ -48,7 +48,7 @@ public class SubmissionController : Controller
         {
             throw new HttpResponseException((int)HttpStatusCode.Forbidden, "Team lead cannot submit");
         }
-        if (team.Status === TeamStatus.Closed || team.Status === TeamStatus.Cancelled)
+        if (team.Status == TeamStatus.Closed || team.Status == TeamStatus.Cancelled)
         {
             throw new HttpResponseException((int)HttpStatusCode.Forbidden, "Team is closed or cancelled");
         }
