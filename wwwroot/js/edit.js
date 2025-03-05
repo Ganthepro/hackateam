@@ -217,7 +217,9 @@ async function handleFormSubmit() {
     
     const updatedTeam = await updateTeam(teamData);
     
-    if (updatedTeam) {
+
+    if (updatedTeam !== null) {
+        // Update displayed team info with the response from server
         displayTeamInfomation(updatedTeam);
         alert("Team information updated successfully!");
     } else {

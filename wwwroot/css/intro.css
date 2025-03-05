@@ -150,9 +150,19 @@ body {
     box-shadow: 0 0 8px #0077FF;
 }
 
+
+/* Apply styles to the image when .reward-item is hovered */
+.reward-item:hover img {
+    transform: scale(1.1); /* Increase size */
+    filter: brightness(1.1); /* Make it slightly brighter */
+    transition: all 0.2s ease;
+    filter: drop-shadow(0 0 12px #ffbf00);
+}
+
 .reward-item img {
     width: 48px;
     height: 48px;
+    transition: all 0.2s ease; /* Ensure smooth transition */
 }
 
 .reward-item h4 {
