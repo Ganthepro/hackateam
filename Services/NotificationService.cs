@@ -18,11 +18,6 @@ public class NotificationService
         var client = new MongoClient(settings.Value.ConnectionString);
         var database = client.GetDatabase(settings.Value.DatabaseName);
         _notifications = database.GetCollection<Notification>("Notifications");
-
-        var indexKeys = Builders<Notification>.IndexKeys.Ascending(n => n.Type);
-        var indexOptions = new CreateIndexOptions { Unique = true };
-        var indexModel = new CreateIndexModel<Notification>(indexKeys, indexOptions);
-        _notifications.Indexes.CreateOne(indexModel);
     }
 
     public async Task<List<Notification>> GetAll(NotificationQueryDto notificationQueryDto, string userId)
