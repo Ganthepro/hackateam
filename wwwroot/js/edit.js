@@ -286,7 +286,7 @@ async function displayTeamBanner() {
 }
 
 function setupBannerUpload() {
-  const bannerInput = document.getElementById("banner");
+  const bannerInput = document.getElementById("fileInput");
   let selectedBannerFile = null;
 
   bannerInput.addEventListener("change", (event) => {
