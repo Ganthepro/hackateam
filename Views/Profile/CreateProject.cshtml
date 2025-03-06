@@ -17,7 +17,7 @@
             <input type="text" id="description" name="description" />
 
             <label for="skill">Skill</label>
-            <input type="text" id="skill" name="skill" list="skills" autocomplete="off" onkeydown="SearchSkill();"/>
+            <input type="text" id="skill" name="skill" list="skills" autocomplete="off" onkeydown="handleKeyPress(event);"/>
             <datalist id="skills">
             </datalist>
 

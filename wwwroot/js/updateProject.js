@@ -134,3 +134,9 @@ function CreateOption(information) {
     skills.appendChild(value);
   });
 }
+
+function handleKeyPress(event) {
+  if (event.key !== "Backspace" && event.key !== "Delete") {
+    SearchSkill();
+  }
+}
