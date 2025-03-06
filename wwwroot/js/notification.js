@@ -40,7 +40,7 @@ function CreateMessage(data) {
       element.type === 0 ? "Approved" : "Rejected"
     }`;
     if (element.type === 0) {
-      message.onclick = GoToTeamInfo(element.teamResponse.id);
+      message.onclick = () => GoToTeamInfo(element.teamResponse.id);
       message.style.cursor = "pointer";
     }
     message.appendChild(name);
