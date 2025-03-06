@@ -35,7 +35,7 @@ header {
 
 #showproject {
   display: grid;
-  grid-template-columns: 75% 10% 15%;
+  grid-template-columns: 30% 45% 10% 15%;
 }
 
 .logout {

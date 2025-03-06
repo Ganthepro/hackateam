@@ -155,7 +155,6 @@ function PageCreateProject() {
 }
 
 function Logout() {
-  console.log("Hi");
   CreateConfirm(
     "Do you want to logout?",
     function () {
@@ -164,4 +163,66 @@ function Logout() {
     },
     function () {}
   );
+}
+
+async function SearchSkill() {
+  const skill = document.getElementById("skill").value;
+  if (skill.length < 1) {
+    Project();
+    return;
+  }
+
+  try {
+    const response = await fetch(`${api}/Skill?Title=${skill}&Limit=1`, {
+      method: "Get",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("token")}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Edit Project failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    ProjectWithSkillId(data[0].id);
+  } catch (error) {
+    CreateErrorBlock("Enter Wrong Skill");
+  }
+}
+
+function handleKeyPress(event) {
+  if (
+    (event.key !== "Backspace" && event.key !== "Delete") ||
+    event.key === "Enter"
+  ) {
+    SearchSkill();
+  }
+}
+
+async function ProjectWithSkillId(skillId) {
+  try {
+    const response = await fetch(
+      `${api}/Project?UserId=${userId}&&SkillId=${skillId}`,
+      {
+        method: "Get",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getCookie("token")}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Get Project failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(data);
+    project = data;
+    CreateProject(data);
+  } catch (error) {
+    CreateErrorBlock("Get Project failed");
+  }
 }
