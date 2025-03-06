@@ -1,167 +1,149 @@
-api = "http://localhost:5234";
+// API base URL
+const api = "http://localhost:5234";
 
-var showMore = false;
-var project;
-var userId = null;
+// Get DOM elements
+const editBtn = document.getElementById('edit-btn');
+const saveBtn = document.getElementById('save-btn');
+const cancelBtn = document.getElementById('cancel-btn');
+const fullNameInput = document.querySelector('input[name="fullname"]');
+const headerSelect = document.querySelector('select');
+const telInput = document.querySelector('input[name="tel"]');
+const emailInput = document.querySelector('input[name="email"]');
 
-document.addEventListener("DOMContentLoaded", async function () {
-  await Profile();
-  await Project();
-});
+// Store original values for cancel operation
+let originalFullname = '';
+let originalTel = '';
+let originalEmail = '';
+let originalHeader = '';
 
-async function Profile() {
-  try {
-    const response = await fetch(`${api}/User/me`, {
-      method: "Get",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookie("token")}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Get Profile failed: ${response.status}`);
+// Initialize the form - fetch current user data
+async function initializeForm() {
+    try {
+        const response = await fetch(`${api}/User/me`, {
+            method: 'GET',
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${getCookie("token")}`,
+            }
+        });
+        
+        if (response.ok) {
+            const userData = await response.json();
+            console.log(userData);
+            
+            // Extract header and name
+            originalHeader = userData.header || 'Mr.';
+            originalFullname = userData.fullName || '';
+            originalTel = userData.tel || '';
+            originalEmail = userData.email || '';
+            
+            // Set values in form
+            headerSelect.value = originalHeader;
+            fullNameInput.value = originalFullname;
+            telInput.value = originalTel;
+            emailInput.value = originalEmail;
+            
+            // Disable inputs by default (view mode)
+            setViewMode();
+        } else {
+            console.error('Failed to fetch user data');
+        }
+    } catch (error) {
+        console.error('Error fetching user data:', error);
     }
-
-    const data = await response.json();
-    ShowData(data);
-  } catch (error) {
-    CreateErrorBlock("Get Profile failed");
-  }
 }
 
-function ShowData(data) {
-  const image = document.getElementById("avatar");
-  image.src = `${api}/User/${data.id}/avatar`;
-  userId = data.id;
-  const fullname = document.getElementById("fullname");
-  fullname.innerHTML = `<strong>Fullname:</strong> ${data.header} ${data.fullName}`;
-  const tel = document.getElementById("tel");
-  tel.innerHTML = `<strong>Tel:</strong> ${data.tel}`;
-  const email = document.getElementById("email");
-  email.innerHTML = `<strong>Email:</strong> ${data.email}`;
+// Switch to edit mode
+function setEditMode() {
+    // Store original values
+    originalHeader = headerSelect.value;
+    originalFullname = fullNameInput.value;
+    originalTel = telInput.value;
+    originalEmail = emailInput.value;
+    
+    // Enable inputs and select
+    headerSelect.disabled = false;
+    fullNameInput.disabled = false;
+    telInput.disabled = false;
+    emailInput.disabled = false;
+    
+    // Show save and cancel buttons, hide edit button
+    editBtn.style.display = 'none';
+    saveBtn.style.display = 'inline-block';
+    cancelBtn.style.display = 'inline-block';
 }
 
-async function Project() {
-  try {
-    const response = await fetch(`${api}/Project?UserId=${userId}`, {
-      method: "Get",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookie("token")}`,
-      },
-    });
+// Switch to view mode
+function setViewMode() {
+    // Disable inputs and select
+    headerSelect.disabled = true;
+    fullNameInput.disabled = true;
+    telInput.disabled = true;
+    emailInput.disabled = true;
+    
+    // Show edit button, hide save and cancel buttons
+    editBtn.style.display = 'inline-block';
+    saveBtn.style.display = 'none';
+    cancelBtn.style.display = 'none';
+}
 
-    if (!response.ok) {
-      throw new Error(`Get Project failed: ${response.status}`);
+// Save user data
+async function saveUserData() {
+    try {
+        const selectedHeader = headerSelect.value;
+        
+        const userData = {
+            "fullName": fullNameInput.value,
+            "header": selectedHeader,
+            "tel": telInput.value
+        };
+        
+        const response = await fetch(`${api}/User`, {
+            method: 'PATCH',
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${getCookie("token")}`,
+            },
+            body: JSON.stringify(userData)
+        });
+        
+        if (response.ok) {
+            // Update original values with new ones
+            originalHeader = selectedHeader;
+            originalFullname = fullNameInput.value;
+            originalTel = telInput.value;
+            
+            // Switch back to view mode
+            setViewMode();
+            
+            // Show success message
+            alert('Profile updated successfully!');
+        } else {
+            console.error('Failed to update user data');
+            alert('Failed to update profile. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error updating user data:', error);
+        alert('Error updating profile. Please try again.');
     }
-
-    const data = await response.json();
-    project = data;
-    CreateProject(data);
-  } catch (error) {
-    CreateErrorBlock("Get Project failed");
-  }
 }
 
-function CreateProject(data) {
-  let amount = 0;
-  const projectsList = document.getElementById("projects-list");
-  projectsList.innerHTML = "";
-  data.forEach((element) => {
-    amount += 1;
-    if (amount > 2 && !showMore) {
-      return;
-    }
-    const article = document.createElement("article");
-    const title = document.createElement("h3");
-    title.innerHTML = `${element.title}`;
-    title.style.display = "inline";
-    const deleteButton = document.createElement("button");
-    deleteButton.id = "delete";
-    deleteButton.textContent = "✖";
-    deleteButton.onclick = function (event) {
-      event.stopPropagation();
-      CreateConfirm(
-        `Do you want to delete "${element.title}"?`,
-        async function () {
-          await DeleteProject(element.id);
-          article.remove();
-          const index = project.findIndex((item) => item.id === element.id);
-          if (index > -1) {
-            project.splice(index, 1);
-          }
-          CreateProject(project);
-        },
-        function () {}
-      );
-    };
-    const description = document.createElement("p");
-    description.innerHTML = `<strong>Description:</strong> ${element.description}`;
-    const skill = document.createElement("p");
-    skill.innerHTML = `<strong>Description:</strong> ${element.skillResponse.title}`;
-    article.appendChild(title);
-    article.appendChild(deleteButton);
-    article.appendChild(description);
-    article.appendChild(skill);
-    article.onclick = function () {
-      window.location.href = `${api}/Profile/UpdateProject?id=${element.id}`;
-    };
-    article.style.cursor = "pointer";
-    projectsList.appendChild(article);
-  });
+// Cancel edit
+function cancelEdit() {
+    // Restore original values
+    headerSelect.value = originalHeader;
+    fullNameInput.value = originalFullname;
+    telInput.value = originalTel;
+    emailInput.value = originalEmail;
+    
+    // Switch back to view mode
+    setViewMode();
 }
 
-function SeeMore() {
-  showMore = true;
-  const button = document.getElementById("loadMore");
-  button.textContent = "Show Less";
-  button.onclick = SeeLess;
-  CreateProject(project);
-}
+// Event listeners
+editBtn.addEventListener('click', setEditMode);
+saveBtn.addEventListener('click', saveUserData);
+cancelBtn.addEventListener('click', cancelEdit);
 
-function SeeLess() {
-  showMore = false;
-  const button = document.getElementById("loadMore");
-  button.textContent = "Show All";
-  button.onclick = SeeMore;
-  CreateProject(project);
-}
-
-async function DeleteProject(id) {
-  try {
-    const response = await fetch(`${api}/Project/${id}`, {
-      method: "Delete",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookie("token")}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Delete Project failed: ${response.status}`);
-    }
-  } catch (error) {
-    CreateErrorBlock("Delete Project failed");
-  }
-}
-
-function PageUpdateProfile() {
-  window.location.href = `${api}/Profile/UpdateProfile`;
-}
-
-function PageCreateProject() {
-  window.location.href = `${api}/Profile/CreateProject`;
-}
-
-function Logout() {
-  console.log("Hi");
-  CreateConfirm(
-    "Do you want to logout?",
-    function () {
-      clearCookie("token");
-      window.location.href = `${api}/Home`;
-    },
-    function () {}
-  );
-}
+// Initialize the form when the page loads
+document.addEventListener('DOMContentLoaded', initializeForm);

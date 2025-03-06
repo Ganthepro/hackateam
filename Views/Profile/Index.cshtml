@@ -23,21 +23,41 @@
         <img src="~/pictures/dropdown-menu-icon.svg" alt="dropdown-menu" class="dropdown-menu"/>
     </nav>
 
-    <header>
+    <div class="profile-content">
         <h1>My Profile</h1>
-        
-    </header>
-
-    <main>
-        <section id="profile">
-            <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="Avatar" id="avatar" />
-            <div id="profile-details">
-                <p id="fullname" class="p"><strong>Fullname:</strong></p>
-                <p id="tel" class="p"><strong>Tel:</strong></p>
-                <p id="email" class="p"><strong>Email:</strong></p>
+        <div class="profile-container">
+            <img 
+                src="~/pictures/icon/user-01.svg" 
+                class="avatar-icon"
+                alt="Avatar" id="avatar" 
+            />
+            <div class="profile-details">
+                <div class="profile-group">
+                    <label for="fullname-display">Full Name</label>
+                    <div class="input-group">
+                        <select id="header-select" class="hidden">
+                            <option value="Mr.">Mr.</option>
+                            <option value="Mrs.">Mrs.</option>
+                            <option value="Ms.">Ms.</option>
+                        </select>
+                        <input type="text" name="fullname" id="fullname" >
+                    </div>
+                </div>
+                <div class="profile-group">
+                    <label for="tel-display">Phone</label>
+                    <input type="text" name="tel" id="tel" >
+                </div>
+                <div class="profile-group">
+                    <label for="email-display">Email</label>
+                    <input type="text" name="email" id="email" >
+                </div>
             </div>
-            <button id="edit" onclick="PageUpdateProfile()">Edit</button>
-        </section>
+            <div class="profile-btn">
+                <button id="edit-btn">Edit</button>
+                <button id="save-btn" class="hidden">Save</button>
+                <button id="cancel-btn" class="hidden">Cancel</button>
+            </div>
+        </div>
 
         <div id="projects">
             <div id="showproject">
@@ -46,10 +66,11 @@
                 <button id="loadMore" onclick="SeeMore()">Show All</button>
             </div>
         </div>
-        <div id="projects-list">
 
+        <div id="projects-list">
+            @* Display projects-list *@
         </div>
-    </main>
+    </div>
 
     @* Footer Component *@
     <footer>
