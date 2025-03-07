@@ -58,7 +58,7 @@ public class TeamController : Controller
         var team = await _teamService.Get(team => team.Id == id);
         if (team.Banner == null)
         {
-            var defaultBanner = _fileService.Get("defaulf-banner.png", FileService.FolderName.Teams);
+            var defaultBanner = _fileService.Get("default-banner.png", FileService.FolderName.Teams);
             return await Task.FromResult(File(defaultBanner, "image/jpeg"));
         }
         var stream = _fileService.Get(team.Banner!, FileService.FolderName.Teams);
