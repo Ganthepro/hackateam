@@ -297,7 +297,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   const teamData = await fetchTeamData();
   const requirements = await fetchTeamRequirements();
   const teamSize = calculateTeamSize(requirements);
-  hideForm();
   displayTeamData(teamData, teamSize);
   if ((await checkUser(teamData.id, await fetchSubmissions())) !== true) {
     displayRequirements(requirements);
