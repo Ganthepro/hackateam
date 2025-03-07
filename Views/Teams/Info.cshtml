@@ -11,9 +11,13 @@
     <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/checkbox-input.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/effect-grid-background.css" asp-append-version="true" />
 </head>
 <body>
     <div id="teamId" data-id="@ViewBag.Id"></div>
+
+    @* Wave Grid Background *@
+    <div class="grid-container" id="grid-container"></div>
     
     <nav class="navbar">
         <div class="navbar-title">Hackateam</div>
@@ -28,7 +32,7 @@
 
     <div class="team-info-content">
         <div class="team-info-container">
-            <div class="team-info-detail">
+            <div class="team-info-grid">
                 <h1 id="name"></h1>
                 <div class="team-banner-container">
                     <img 
@@ -38,27 +42,27 @@
                     >
                 </div>
                 <div class="detail-group">
-                    <label for="hackathonName">Hackathon Name</label>
-                    <p id="hackathonName"></d>
+                    <label for="hackathonName" class="detail-info">Hackathon Name</label>
+                    <p id="hackathonName" class="detail-info"></d>
                 </div>
                 <div class="detail-group">
-                    <label for="hackathonDescription">Description</label>
-                    <p id="hackathonDescription"></p>
+                    <label for="hackathonDescription" class="detail-info">Description</label>
+                    <p id="hackathonDescription" class="detail-info"></p>
                 </div>
                 <div class="detail-group">
-                    <label for="leadResponse">Lead</label>
-                    <p id="leadResponse"></p>
+                    <label for="leadResponse" class="detail-info">Lead</label>
+                    <p id="leadResponse" class="detail-info"></p>
                 </div>
                 <div class="detail-group">
-                    <label for="maxSize">Max Team Size</label>
-                    <p id="maxSize"></p>
+                    <label for="maxSize" class="detail-info">Max Team Size</label>
+                    <p id="maxSize" class="detail-info"></p>
                 </div>
                 <div class="detail-group">
-                    <label for="expiredAt">Expire Date</label>
-                    <p id="expiredAt"></p>
+                    <label for="expiredAt" class="detail-info">Expire Date</label>
+                    <p id="expiredAt" class="detail-info"></p>
                 </div>
             </div>
-            <form class="submission-form" onsubmit="event.preventDefault(); joinTeam(event);">
+            <form class="team-info-grid" onsubmit="event.preventDefault(); joinTeam(event);">
                 <h2>State Of Purpose</h2>
                 <textarea 
                     id="sop"
@@ -101,5 +105,6 @@
     <script src="~/js/team-info.js" asp-append-version="true"></script>
     <script src="~/js/cookie.js" asp-append-version="true"></script>
     <script src="~/js/authentication.js" asp-append-version="true"></script>
+    <script src="~/js/effect-grid-background.js" asp-append-version="true"></script>
 </body>
 </html>

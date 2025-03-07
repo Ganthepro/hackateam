@@ -1,122 +1,223 @@
+/* Default for all pages */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", serif;
+  color: #FFFFFF;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  font-size: 1.25rem;
+}
+
+/* Default (Large screens, ≥ 1200px) */
 body {
-  background-color: #0a192f;
-  color: #eeeeee;
-  margin: 20px;
+  position: relative;
+  height: fit-content;
+  min-height: 100vh;
+  /* background-color: #050A12; */
 }
 
-#card {
-  width: 80%;
-  margin: auto;
-  background-color: #00a3ff;
-  border: #eeeeee 1px solid;
-  padding: 20px;
-  border-radius: 20px;
+.team-info-content {
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+  gap: 1.5rem;
+  padding: 2.25rem 4.5rem;
 }
 
-p {
-  margin: 10px;
-  font-size: 20px;
+.team-info-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+  height: fit-content;
+  padding: 1rem;
+  border-radius: 2rem;
+  border: 0.125rem solid #FFFFFF;
+  background-color: #050A1260;
+  box-shadow: 0 0 0.5rem rgba(0, 164, 255, 0.3);
+  -webkit-backdrop-filter: blur(1rem);
+  backdrop-filter: blur(1rem);
 }
 
-h4 {
-  font-size: 24px;
+.team-info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: #F0F0F040;
 }
 
-h2 {
-  font-size: 30px;
+.team-info-grid h1 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #00ccff;
 }
 
-#teamimage {
-  display: block;
-  margin: auto;
-  width: 50vw;
-  height: 25vw;
-  padding: 20px;
+.detail-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  gap: 0.25rem;
 }
 
-#description {
-  padding: 0px 10px;
+.detail-info {
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 
-label {
-  display: block;
-  font-size: 20px;
+.detail-group label {
+  background-color: #0077ff;
 }
 
-input {
-  display: block;
+.detail-group p {
+  background-color: #0a1525;
+}
+
+.team-banner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 12rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.team-banner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 textarea {
   width: 100%;
+  height: 6rem;
+  padding: 0.5rem;
+  outline: none;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: #0A192F;
+  font-size: 0.875rem;
+}
+
+textarea {
   resize: none;
-  padding: 20px;
-  border-radius: 25px;
-  font-size: 20px;
-  background-color: #00f5d4;
-  color: #eeeeee;
 }
 
-.skill {
+.requirements-display {
   display: flex;
-  margin: 20px;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.25rem;
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 0.125rem solid #0077ff;
 }
 
-button {
+.requirement {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr 1fr;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.requirement.title {
+  background-color: #0077ff;
+  font-weight: 600;
+  border: none;
+}
+
+input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+}
+
+.requirement div {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: auto;
-  width: 200px;
-  height: 50px;
-  text-align: center;
-  padding: 10px;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.requirement.selected {
+  background-color: #0077ff25;
+  border-color: #0077ff;
+  box-shadow: 0 0 0.25rem #0077ff25;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 0.5rem;
+  outline: none;
   border: none;
-  background-color: #6200ea;
-  color: white;
-  font-size: 20px;
-  border-radius: 5px;
+  border-radius: 0.25rem;
+  background-color: #00ccff;
+  font-size: 1rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
 }
 
-#sop {
-  font-weight: bolder;
-  margin: 15px 0px;
+.submit-btn:hover {
+  background-color: #0077ff;
 }
 
-label {
-  margin: 0px 10px;
+/* Small Laptops & Tablets (≤ 1199px) */
+@media (max-width: 1200px) {
+  * {
+      font-size: 1.25rem;
+  }
+
+  .team-info-content {
+    gap: 1.25rem;
+    padding: 2rem;
+  }
+
+  .team-info-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
 }
 
-@media screen and (max-width: 600px) {
-  p {
-    font-size: 12px;
+/* Tablets (≤ 769px) */
+@media (max-width: 769px) {
+  * {
+      font-size: 1.125rem;
   }
 
-  h4 {
-    font-size: 16px;
+  .team-info-content {
+    gap: 1.25rem;
+    padding: 1.5rem;
   }
 
-  h2 {
-    font-size: 24px;
+}
+
+/* Mobile Phones (≤ 480px) */
+@media (max-width: 480px) {
+  * {
+      font-size: 1rem;
   }
 
-  label {
-    font-size: 12px;
-  }
-
-  textarea {
-    font-size: 12px;
-  }
-
-  button {
-    font-size: 12px;
-  }
-
-  body {
-    margin: 5px;
-  }
-
-  #card {
-    width: 100%;
+  .team-info-content {
+    gap: 1rem;
+    padding: 1.25rem;
   }
 }
