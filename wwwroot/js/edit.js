@@ -1,6 +1,9 @@
 const api = "http://localhost:5234";
 const urlParams = new URLSearchParams(window.location.search);
 const teamId = urlParams.get('teamId');
+const STATUS_APPROVED = 0; 
+const STATUS_REJECTED = 1; 
+const STATUS_PENDING = 2;
 console.log(teamId);
 
 async function fetchHostedTeam() {
@@ -470,7 +473,7 @@ async function displayRoleAssignments(requirements, submissions) {
             if (this.disabled) return;
             const submissionId = this.getAttribute('data-id');
             console.log(submissionId, "pending selected");
-            selectSubmissionStatus(submissionId, "2");
+            selectSubmissionStatus(submissionId, STATUS_PENDING);
         });
     });
     
@@ -479,7 +482,7 @@ async function displayRoleAssignments(requirements, submissions) {
             if (this.disabled) return;
             const submissionId = this.getAttribute('data-id');
             console.log(submissionId, "rejected selected");
-            selectSubmissionStatus(submissionId, "1");
+            selectSubmissionStatus(submissionId, STATUS_REJECTED);
         });
     });
 }
@@ -536,18 +539,153 @@ async function selectSubmissionStatus(submissionId, selectedStatus) {
     }
 }
 
+async function sendNotification(submission, teamId) {
+  try {
+    const token = getCookie("token");
+    const response = await fetch(`${api}/notification`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        userId: submission.user.id,
+        teamId: teamId,
+        type: submission.type,
+      }),
+    });
+
+    console.log("TeamId: ", teamId);
+    console.log("User: ", submission.user.id);
+    console.log("Type: ", submission.type);
+    if (!response.ok) {
+      throw new Error(`Failed to send notification: ${response.status}`);
+    }
+
+    const result = await response.json();
+    alert("Notification sent successfully!");
+    return result;
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Failed to send notification. Please try again.");
+    throw error;
+  }
+}
+
+async function updateTeamStatus(teamId) {
+  try {
+    const token = getCookie("token");
+    const response = await fetch(`${api}/Team/${teamId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        status: 1,
+      }),
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Failed to update team status. Please try again.");
+    throw error;
+  }
+}
+
+async function updateSubmissionStatus(submission) {
+  if (submission.status !== 2) return;
+
+  try {
+    const token = getCookie("token");
+    const response = await fetch(`${api}/Submission/${submission.id}/status`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        status: 1,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to update notification status: ${response.status}`
+      );
+    }
+
+    const result = await response.json();
+    console.log("Notification status updated successfully:", result);
+    return result;
+  } catch (error) {
+    console.error("Error updating notification status:", error);
+    alert("Failed to update notification status. Please try again.");
+    throw error;
+  }
+}
+
+function validateRequirements(requirements, submissions) {
+  for (const req of requirements) {
+    const pendingCount = submissions.filter(
+      submission => submission.requirement === req.id && submission.status === STATUS_PENDING
+        ).length;
+    
+    if (pendingCount > req.maxSeat) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function updateConfirmButtonState(requirements, submissions) {
+  const confirmBtn = document.getElementById("confirm-team-btn");
+  if (!confirmBtn) return;
+  
+  const isValid = validateRequirements(requirements, submissions);
+  
+  confirmBtn.disabled = !isValid;
+  
+  if (!isValid) {
+
+    confirmBtn.style.opacity = "0.6";
+    confirmBtn.style.cursor = "not-allowed";
+    confirmBtn.title = "Some roles exceed max seats";
+  } else {
+    
+    confirmBtn.style.opacity = "1";
+    confirmBtn.style.cursor = "pointer";
+    confirmBtn.title = "Confirm team";
+  }
+}
+
 async function main() {
-    const team = await fetchHostedTeam();
-    const requirements = await fetchTeamRequirements();
-    const submissions = await fetchTeamSubmissions();
+  const team = await fetchHostedTeam();
+  const requirements = await fetchTeamRequirements();
+  const submissions = await fetchTeamSubmissions();
+  const confirmTeamBtn = document.getElementById("confirm-team-btn");
 
-    displayTeamInfomation(team);
-    setupTeamInfomationEventListeners();
+  displayTeamInfomation(team);
+  setupTeamInfomationEventListeners();
 
-    await displayTeamBanner();
-    setupBannerUpload();
+  await displayTeamBanner();
+  setupBannerUpload();
 
-    displayRoleAssignments(requirements, submissions);
+  displayRoleAssignments(requirements, submissions);
+  updateConfirmButtonState(requirements, submissions);
+  if (confirmTeamBtn) {
+    confirmTeamBtn.addEventListener("click", async function () {
+      if(team.status === 1) {
+        alert("Team already confirmed!");
+        return;
+      }
+      await updateTeamStatus(team.id);
+      for (const submission of submissions) {
+        await updateSubmissionStatus(submission);
+        await sendNotification(submission, team.id);
+      }
+    });
+  }
 }
 
 main();
