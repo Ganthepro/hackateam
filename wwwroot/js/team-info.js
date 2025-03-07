@@ -1,4 +1,4 @@
-const api = "http://localhost:5234";
+api = "http://localhost:5234";
 const teamId = document.getElementById("teamId").dataset.id;
 
 let bannerUrls = new Map();
@@ -23,9 +23,9 @@ async function fetchTeamData() {
     const base64Banner = await fetchTeamBanner(data.id);
     const teamWithBanner = {
       ...data,
-      bannerUrl: base64Banner || '/pictures/default-banner.png'
+      bannerUrl: base64Banner || "/pictures/default-banner.png",
     };
-    
+
     console.log("Team with Banner:", teamWithBanner);
     return teamWithBanner;
   } catch (error) {
@@ -36,30 +36,85 @@ async function fetchTeamData() {
 
 async function fetchTeamBanner(teamId) {
   try {
-      const response = await fetch(`${api}/Team/${teamId}/banner`, {
-          method: "GET",
-          headers: {
-              Authorization: `Bearer ${getCookie("token")}`,
-          },
-      });
+    const response = await fetch(`${api}/Team/${teamId}/banner`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${getCookie("token")}`,
+      },
+    });
 
-      if (!response.ok) {
-          throw new Error(`Fetch banner failed: ${response.status}`);
-      }
+    if (!response.ok) {
+      throw new Error(`Fetch banner failed: ${response.status}`);
+    }
 
-      const blob = await response.blob();
-      if (blob.size === 0) {
-          return null;
-      }
-
-      return new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onloadend = () => resolve(reader.result);
-          reader.readAsDataURL(blob);
-      });
-  } catch (error) {
-      console.error(`Error fetching banner for team ${teamId}:`, error);
+    const blob = await response.blob();
+    if (blob.size === 0) {
       return null;
+    }
+
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.readAsDataURL(blob);
+    });
+  } catch (error) {
+    console.error(`Error fetching banner for team ${teamId}:`, error);
+    return null;
+  }
+}
+
+async function fetchSubmissions() {
+  try {
+    const response = await fetch(`${api}/Team/${teamId}/submissions`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("token")}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Fetch Submissions Failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const userIds = data.map((item) => item.user.id);
+
+    return userIds;
+  } catch (error) {
+    console.error("Error:", error);
+    return [];
+  }
+}
+
+async function checkUser(teamLeadId, userIds) {
+  try {
+    const response = await fetch(`${api}/User/me`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("token")}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Fetch User Failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.id === teamLeadId) {
+      return true;
+    }
+
+    if (userIds.length > 0 && userIds.some((userId) => userId === data.id)) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error("Error:", error);
+    return true;
   }
 }
 
@@ -98,30 +153,30 @@ function displayTeamData(teamData, teamSize) {
   if (teamData.name) {
     name.innerText = teamData.name;
   }
-  
+
   const image = document.getElementById("teamImage");
   image.src = teamData.bannerUrl;
-  
+
   const hackathonName = document.getElementById("hackathonName");
   if (teamData.hackathonName) {
     hackathonName.innerText = teamData.hackathonName;
   }
-  
+
   const hackathonDescription = document.getElementById("hackathonDescription");
   if (teamData.hackathonDescription) {
     hackathonDescription.innerText = teamData.hackathonDescription;
   }
-  
+
   const lead = document.getElementById("leadResponse");
   if (teamData.leadResponse && teamData.leadResponse.fullName) {
     lead.innerText = teamData.leadResponse.fullName;
   }
-  
+
   const maxSize = document.getElementById("maxSize");
   if (teamSize) {
     maxSize.innerText = teamSize;
   }
-  
+
   const expiredDate = document.getElementById("expiredAt");
   if (teamData.expiredAt) {
     const date = new Date(teamData.expiredAt);
@@ -145,8 +200,7 @@ function displayRequirements(requirements) {
   `;
   requirementsBox.appendChild(title);
 
-
-  requirements.forEach(requirement => {
+  requirements.forEach((requirement) => {
     const requirementDiv = document.createElement("div");
     requirementDiv.className = "requirement";
     requirementDiv.innerHTML = `
@@ -160,21 +214,21 @@ function displayRequirements(requirements) {
 
   // Add event listeners to all checkboxes
   const checkboxes = document.querySelectorAll('input[name="requirement"]');
-  checkboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', function() {
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", function () {
       // Uncheck all other checkboxes
-      checkboxes.forEach(cb => {
+      checkboxes.forEach((cb) => {
         if (cb !== this) {
           cb.checked = false;
-          cb.closest('.requirement').classList.remove('selected');
+          cb.closest(".requirement").classList.remove("selected");
         }
       });
-      
+
       // Add selected class to parent if checked
       if (this.checked) {
-        this.closest('.requirement').classList.add('selected');
+        this.closest(".requirement").classList.add("selected");
       } else {
-        this.closest('.requirement').classList.remove('selected');
+        this.closest(".requirement").classList.remove("selected");
       }
     });
   });
@@ -182,29 +236,31 @@ function displayRequirements(requirements) {
 
 async function joinTeam(event) {
   event.preventDefault();
-  
+
   try {
     const sop = document.getElementById("sop").value.trim();
     if (!sop) {
       console.error("Statement of Purpose is required");
       return;
     }
-    
-    const selectedCheckbox = document.querySelector('input[name="requirement"]:checked');
+
+    const selectedCheckbox = document.querySelector(
+      'input[name="requirement"]:checked'
+    );
     if (!selectedCheckbox) {
       console.error("Please select a role requirement");
       return;
     }
-    
+
     const requirementId = selectedCheckbox.value;
-    
-    const data = { 
+
+    const data = {
       requirementId,
-      sop
+      sop,
     };
-    
+
     console.log("Submitting application:", data);
-    
+
     const response = await fetch(`${api}/Submission`, {
       method: "POST",
       headers: {
@@ -224,10 +280,27 @@ async function joinTeam(event) {
   }
 }
 
+function hideForm() {
+  const form = document.getElementById("form");
+
+  if (form) {
+    form.style.display = "none";
+    const teamCards = document.querySelector(".team-info-container");
+    teamCards.style.gridTemplateColumns = "1fr";
+    console.log("Form hidden!");
+  } else {
+    console.error("Form not found!");
+  }
+}
+
 document.addEventListener("DOMContentLoaded", async function () {
   const teamData = await fetchTeamData();
   const requirements = await fetchTeamRequirements();
   const teamSize = calculateTeamSize(requirements);
   displayTeamData(teamData, teamSize);
-  displayRequirements(requirements);
+  if ((await checkUser(teamData.id, await fetchSubmissions())) !== true) {
+    displayRequirements(requirements);
+  } else {
+    hideForm();
+  }
 });

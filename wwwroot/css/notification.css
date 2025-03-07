@@ -10,12 +10,14 @@ header {
   margin: 20px;
 }
 
-.message {
+.contain {
   background-color: #444f5a;
   margin: 20px;
   border: 2px black solid;
   border-radius: 10px;
   padding: 10px;
+  display: grid;
+  grid-template-columns: 95% 5%;
 }
 
 h2 {
@@ -24,6 +26,11 @@ h2 {
 
 p {
   margin: 10px;
+}
+
+.delete {
+  height: 20px;
+  background-color: red;
 }
 
 .nomessage {

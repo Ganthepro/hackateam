@@ -31,8 +31,9 @@ async function GetNotification() {
 
 function CreateMessage(data) {
   data.forEach((element) => {
+    const container = document.createElement("div");
+    container.className = "contain";
     const message = document.createElement("div");
-    message.className = "message";
     const name = document.createElement("h2");
     name.innerText = `${element.teamResponse.name} (${element.teamResponse.hackathonName})`;
     const user = document.createElement("p");
@@ -43,10 +44,26 @@ function CreateMessage(data) {
       message.onclick = () => GoToTeamInfo(element.teamResponse.id);
       message.style.cursor = "pointer";
     }
+    const button = document.createElement("button");
+    button.innerText = "X";
+    button.className = "delete";
+    button.onclick = function (event) {
+      event.stopPropagation();
+      CreateConfirm(
+        `Do you want to delete this?`,
+        async function () {
+          await DeleteNotification(element.id);
+          container.remove();
+        },
+        function () {}
+      );
+    };
     message.appendChild(name);
     message.appendChild(user);
+    container.appendChild(message);
+    container.appendChild(button);
     const messages = document.getElementById("messages");
-    messages.appendChild(message);
+    messages.appendChild(container);
   });
 }
 
@@ -62,6 +79,24 @@ function CreateNoMessage() {
   noNotification.appendChild(message);
   const messages = document.getElementById("messages");
   messages.appendChild(noNotification);
+}
+
+async function DeleteNotification(id) {
+  try {
+    const response = await fetch(`${api}/Notification/${id}`, {
+      method: "Delete",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("token")}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Delete Notification failed: ${response.status}`);
+    }
+  } catch (error) {
+    CreateErrorBlock("Delete Notification failed");
+  }
 }
 
 function GoToTeamInfo(id) {
