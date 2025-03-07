@@ -456,6 +456,10 @@ async function displayRoleAssignments(requirements, submissions) {
                                     <label>Resume</label>
                                     <p>${submission.sop}</p>
                                 </div>
+                                <div class="user-info">
+                                    <img src="${api}/User/${submission.user.id}/avatar" alt="User Avatar" />
+                                </div>
+                                
                             </div>
                         </div>
                         <div class="assignment-btn">
