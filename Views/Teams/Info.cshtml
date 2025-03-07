@@ -7,9 +7,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"] - TeamInfo</title>
-    <link rel="stylesheet" href="~/css/teamInfo.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/team-info.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/checkbox-input.css" asp-append-version="true" />
 </head>
 <body>
     <div id="teamId" data-id="@ViewBag.Id"></div>
@@ -25,29 +26,53 @@
         <img src="~/pictures/dropdown-menu-icon.svg" alt="dropdown-menu" class="dropdown-menu"/>
     </nav>
 
-    <main id="card">
-        <h2 id="name"></h2>
-        <img alt="banner" width="300px" height="200px"  id="teamimage">
-        <h4 id="hackathonteam"></h4>
-        <p>Description:</p>
-        <p id="description"></p>
-        <p id="requirement">Requirement: </p>
-        <p id="owner">Created by: </p>
-        <p id="teamsize">Teamsize: </p>
-        <p id="expireddate">Expired Date: </p>
-        <section id="join">
-            <form onsubmit="event.preventDefault(); JoinTeam();">
-                <h4>State Of Purpose</h4>
-                <textarea id="sop" name="sop" rows="8" required></textarea>
-
-                <h4>Select a Skill:</h4>
-
-                <div id="skills"></div>
-
-                <button type="submit">Join Team</button>
+    <div class="team-info-content">
+        <div class="team-info-container">
+            <div class="team-info-detail">
+                <h1 id="name"></h1>
+                <div class="team-banner-container">
+                    <img 
+                        alt="banner"
+                        class="team-banner"
+                        id="teamImage"
+                    >
+                </div>
+                <div class="detail-group">
+                    <label for="hackathonName">Hackathon Name</label>
+                    <p id="hackathonName"></d>
+                </div>
+                <div class="detail-group">
+                    <label for="hackathonDescription">Description</label>
+                    <p id="hackathonDescription"></p>
+                </div>
+                <div class="detail-group">
+                    <label for="leadResponse">Lead</label>
+                    <p id="leadResponse"></p>
+                </div>
+                <div class="detail-group">
+                    <label for="maxSize">Max Team Size</label>
+                    <p id="maxSize"></p>
+                </div>
+                <div class="detail-group">
+                    <label for="expiredAt">Expire Date</label>
+                    <p id="expiredAt"></p>
+                </div>
+            </div>
+            <form class="submission-form" onsubmit="event.preventDefault(); joinTeam(event);">
+                <h2>State Of Purpose</h2>
+                <textarea 
+                    id="sop"
+                    name="sop"
+                    required>
+                </textarea>
+                <h2>Select Your Role</h2>
+                <div class="requirements-display" id="requirements-display">
+                    @* requirements-display  *@
+                </div>
+                <button type="submit" class="submit-btn">Join Team</button>
             </form>
-        </section>
-    </main>
+        </div>
+    </div>
 
     @* Footer Component *@
     <footer>
@@ -73,7 +98,7 @@
 
     <script src="~/js/navbar.js"></script>
     <script src="~/js/alert.js" asp-append-version="true"></script>
-    <script src="~/js/teamInfo.js" asp-append-version="true"></script>
+    <script src="~/js/team-info.js" asp-append-version="true"></script>
     <script src="~/js/cookie.js" asp-append-version="true"></script>
     <script src="~/js/authentication.js" asp-append-version="true"></script>
 </body>
