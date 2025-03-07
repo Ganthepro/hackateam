@@ -42,6 +42,7 @@
         <div id="projects">
             <div id="showproject">
                 <h2>Projects </h2>
+                <input type="text" id="skill" name="skill" autocomplete="off" placeholder="Search projects..." list="skills" onkeydown="handleKeyPress(event)">
                 <button id="add" onclick="PageCreateProject()">+</button>
                 <button id="loadMore" onclick="SeeMore()">Show All</button>
             </div>
@@ -59,10 +60,7 @@
                 <img src="~/pictures/github-icon.svg" alt="github-icon" />
                 <a href="#">Hackateam repository</a>
             </div>
-            <div class="footer-link">
-                <img src="~/pictures/instagram-icon.svg" alt="instagram-icon" />
-                <a href="#">SAIG Instagram</a>
-            </div>
+
         </div>
         <div class="footer-content-02">
             <p>KMITL Computer Engineering</p>

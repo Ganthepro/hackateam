@@ -34,13 +34,13 @@ function CreateMessage(data) {
     const message = document.createElement("div");
     message.className = "message";
     const name = document.createElement("h2");
-    name.innerText = element.teamResponse.hackathonName;
+    name.innerText = `${element.teamResponse.name} (${element.teamResponse.hackathonName})`;
     const user = document.createElement("p");
-    user.innerText = `${element.userResponse.fullName} ${
-      element.type === 0 ? "Approved" : "Rejected"
-    }`;
+    user.innerText = `${element.userResponse.header} ${
+      element.userResponse.fullName
+    } ${element.type === 0 ? "Approved" : "Rejected"}`;
     if (element.type === 0) {
-      message.onclick = GoToTeamInfo(element.teamResponse.id);
+      message.onclick = () => GoToTeamInfo(element.teamResponse.id);
       message.style.cursor = "pointer";
     }
     message.appendChild(name);

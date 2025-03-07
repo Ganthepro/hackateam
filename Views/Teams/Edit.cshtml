@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/additional-tool.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/file-input.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/effect-grid-background.css" asp-append-version="true" />
 </head>
 <body>
@@ -71,12 +72,18 @@
                     </div>
                     <div class="hosted-team-detail">
                         <label for="banner">Team Banner</label>
-                        <input 
-                            type="file" 
-                            id="banner" 
-                            name="banner" 
-                            placeholder="Banner"
-                        >
+                        <div class="file-input-space">
+                            <input 
+                                type="file" 
+                                class="file-input" 
+                                id="fileInput" 
+                                aria-label="File upload"
+                            >
+                            <button class="file-input-btn" aria-describedby="fileInputDesc">
+                                <span class="file-btn">Choose file</span>
+                                <span class="file-name" id="fileInputDesc">No file chosen</span>
+                            </button>
+                        </div>
                         <div class="hosted-team-banner" id="hosted-team-banner"></div>
                     </div>
                 </div>
@@ -111,12 +118,7 @@
                 </div>
             </form>
             <div class="hosted-team-assignments" id="hosted-team-assignments">
-                @* <div class="hosted-team-assignments-header"> *@
-                    <h2>Role Assigments</h2>
-                    @* <button>
-                        Add Requirement
-                    </button> *@
-                @* </div> *@
+                <h2>Role Assigments</h2>
                 @* Display Assignments form Requirements and Submissions *@
             </div>
             <button class="confirm-team-btn" id="confirm-team-btn">
@@ -133,10 +135,7 @@
                 <img src="~/pictures/github-icon.svg" alt="github-icon" />
                 <a href="#">Hackateam repository</a>
             </div>
-            <div class="footer-link">
-                <img src="~/pictures/instagram-icon.svg" alt="instagram-icon" />
-                <a href="#">SAIG Instagram</a>
-            </div>
+
         </div>
         <div class="footer-content-02">
             <p>KMITL Computer Engineering</p>
@@ -147,10 +146,12 @@
         </div>
     </footer>
 
+    <script src="~/js/goToProfile.js" asp-append-version="true"></script>
     <script type="module" src="~/js/alert.js" asp-append-version="true"></script>
     <script src="~/js/navbar.js"></script>
     <script src="~/js/additional-tool.js"></script>
     <script type="module" src="~/js/edit.js"></script>
+    <script src="~/js/file-input.js" asp-append-version="true"></script>
     <script src="~/js/cookie.js" asp-append-version="true"></script>
     <script src="~/js/authentication.js" asp-append-version="true"></script>
     <script src="~/js/effect-grid-background.js" asp-append-version="true"></script>

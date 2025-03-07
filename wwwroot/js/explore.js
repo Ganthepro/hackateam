@@ -259,6 +259,85 @@ function updatePagination(teams, paginationId, currentPage, containerIdToUpdate,
     });
 }
 
+async function SearchHackathon() {
+    const hackathon = document.getElementById("search-bar").value;
+    if (hackathon.length < 1) return;
+
+    try {
+        const response = await fetch(`${api}/Team/other?HackathonName=${hackathon}&Limit=1000`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getCookie("token")}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Search Hackathon failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+        CreateOption(data);
+    } catch (error) {
+        CreateErrorBlock("Error SearchHackathon");
+    }
+}
+
+function CreateOption(information) {
+    const hackathons = document.getElementById("hackathons");
+    hackathons.innerHTML = "";
+
+    const uniqueHackathons = new Set();
+    let count = 0;
+
+    for (const data of information) {
+        if (!uniqueHackathons.has(data.hackathonName)) {
+            uniqueHackathons.add(data.hackathonName);
+            const value = document.createElement("option");
+            value.value = data.hackathonName;
+            value.dataset.id = data.id;
+            hackathons.appendChild(value);
+            
+            count++;
+            if (count === 2) break;
+        }
+    }
+}
+
+async function fetchOtherTeamsByHackathonName() {
+    try {
+        const hackathon = document.getElementById("search-bar").value;
+        const response = await fetch(`${api}/Team/other?Limit=1000&HackathonName=${hackathon}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getCookie("token")}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Fetch Team Failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const TeamBanners = await Promise.all(
+            data.map(async (team) => {   
+                const base64Banner = await fetchTeamBanner(team.id);
+                return { 
+                    ...team, 
+                    bannerUrl: base64Banner || '/pictures/default-banner.png'
+                };
+            })      
+        );  
+
+        return TeamBanners;
+    } catch (error) {
+        console.error('Error:', error);
+        return [];
+    }
+}
+
+
 async function main() {
     try {
         const recommendedTeams = await fetchRecommendTeams();
@@ -302,6 +381,38 @@ async function main() {
         console.error('Error in main:', error);
     }
 }
+document.addEventListener("DOMContentLoaded", function () {
+    const searchBar = document.getElementById("search-bar");
+    const searchButton = document.getElementById("search-button");
+
+    async function handleSearch(event) {
+        event.preventDefault();
+
+        try {
+            const allTeams = await fetchOtherTeamsByHackathonName();
+            const allTeamsCards = document.getElementById("all-cards");
+            const allTeamsPagination = document.getElementById("all-pagination");
+            allTeamsCards.innerHTML = "";
+            allTeamsPagination.innerHTML = "";
+
+            if (allTeams.length > 0) {
+                displayTeams(allTeams, "all-cards", currentPageAll);
+                updatePagination(allTeams, "all-pagination", currentPageAll, "all-cards", false);
+            } else {
+                allTeamsCards.innerHTML = `<p class="no-teams">No All Projects</p>`;
+            }
+        } catch (error) {
+            console.error("Error fetching teams:", error);
+        }
+    }
+
+    searchButton.addEventListener("click", handleSearch);
+    searchBar.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            handleSearch(event);
+        }
+    });
+});
 
 window.addEventListener('resize', () => {
     if (resizeTimeout) {

@@ -18,11 +18,6 @@ public class ProjectService
         var client = new MongoClient(settings.Value.ConnectionString);
         var database = client.GetDatabase(settings.Value.DatabaseName);
         _projects = database.GetCollection<Project>("Projects");
-
-        var indexKeys = Builders<Project>.IndexKeys.Ascending(p => p.Title);
-        var indexOptions = new CreateIndexOptions { Unique = true };
-        var indexModel = new CreateIndexModel<Project>(indexKeys, indexOptions);
-        _projects.Indexes.CreateOne(indexModel);
     }
 
     public async Task<List<Project>> GetPaginate(ProjectQueryDto projectQueryDto)

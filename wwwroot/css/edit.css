@@ -142,7 +142,6 @@ body {
 input[type="text"],
 input[type="datetime-local"],
 input[type="number"],
-input[type="file"],
 textarea {
     width: 100%;
     padding: 0.5rem;

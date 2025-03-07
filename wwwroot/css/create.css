@@ -110,8 +110,32 @@ input[type="file"]:focus {
     box-shadow: 0 0 0 0.125rem #00ccff;
 }
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
 ::-webkit-calendar-picker-indicator {
     filter: invert(1);
+}
+
+.create-team-banner {
+    width: 100%;
+    height: 160px; /* Adjust height based on your design requirements */
+    border-radius: 0.25rem;
+    overflow: hidden;
+    background-color: #0a1525; /* Dark background to match your theme */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.create-team-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
 .requirements {
