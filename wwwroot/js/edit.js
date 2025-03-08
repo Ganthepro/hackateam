@@ -426,9 +426,13 @@ async function displayRoleAssignments(requirements, submissions) {
     if (roleSubmissions.length > 0) {
       roleSubmissions.forEach((submission) => {
         const isApproveDisabled =
-          submission.status === "Pending" || submission.status === "Approved" ? "disabled" : "";
+          submission.status === "Pending" || submission.status === "Approved"
+            ? "disabled"
+            : "";
         const isRejectDisabled =
-          submission.status === "Rejected" || submission.status === "Approved" ? "disabled" : "";
+          submission.status === "Rejected" || submission.status === "Approved"
+            ? "disabled"
+            : "";
 
         roleHTML += `
                     <div class="assignment" data-submission-id="${submission.id}">
@@ -570,13 +574,13 @@ async function sendNotification(submission, teamId) {
 
     let notificationType;
     if (submission.status === "Approved") {
-      notificationType = 0; 
+      notificationType = 0;
     } else if (submission.status === "Rejected") {
-      notificationType = 1; 
+      notificationType = 1;
     } else {
       notificationType = 0;
     }
-    
+
     const response = await fetch(`${api}/notification`, {
       method: "POST",
       headers: {
@@ -589,11 +593,11 @@ async function sendNotification(submission, teamId) {
         type: notificationType,
       }),
     });
-    
+
     console.log("Notification payload:", {
       userId: submission.user.id,
       teamId: teamId,
-      type: notificationType
+      type: notificationType,
     });
 
     if (!response.ok) {
@@ -603,7 +607,6 @@ async function sendNotification(submission, teamId) {
     const result = await response.json();
     return result;
   } catch (error) {
-
     throw error;
   }
 }
@@ -630,7 +633,7 @@ async function updateTeamStatus(teamId) {
 
 async function updateSubmissionStatus(submission) {
   console.log(submission.status);
-  if (submission.status === "Rejected"){
+  if (submission.status === "Rejected") {
     return;
   }
 
@@ -666,9 +669,10 @@ async function updateSubmissionStatus(submission) {
 function validateRequirements(requirements, submissions) {
   for (const req of requirements) {
     const pendingCount = submissions.filter(
-      submission => submission.requirement === req.id && submission.status === "Pending"
-        ).length;
-    
+      (submission) =>
+        submission.requirement === req.id && submission.status === "Pending"
+    ).length;
+
     if (pendingCount > req.maxSeat) {
       return false;
     }
@@ -680,18 +684,16 @@ function validateRequirements(requirements, submissions) {
 function updateConfirmButtonState(requirements, submissions) {
   const confirmBtn = document.getElementById("confirm-team-btn");
   if (!confirmBtn) return;
-  
-  const isValid = validateRequirements(requirements, submissions);
-  
-  confirmBtn.disabled = !isValid;
-  
-  if (!isValid) {
 
+  const isValid = validateRequirements(requirements, submissions);
+
+  confirmBtn.disabled = !isValid;
+
+  if (!isValid) {
     confirmBtn.style.opacity = "0.6";
     confirmBtn.style.cursor = "not-allowed";
     confirmBtn.title = "Some roles exceed max seats";
   } else {
-    
     confirmBtn.style.opacity = "1";
     confirmBtn.style.cursor = "pointer";
     confirmBtn.title = "Confirm team";
@@ -714,7 +716,7 @@ async function main() {
   updateConfirmButtonState(requirements, submissions);
   if (confirmTeamBtn) {
     confirmTeamBtn.addEventListener("click", async function () {
-      if(team.status !== "Opened") {
+      if (team.status !== "Opened") {
         alert("Team already confirmed!");
         return;
       }
@@ -722,6 +724,7 @@ async function main() {
       for (const submission of submissions) {
         await updateSubmissionStatus(submission);
         await sendNotification(submission, team.id);
+        window.location.href = `${api}/Teams`;
       }
     });
   }
