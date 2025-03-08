@@ -8,6 +8,7 @@ let userData = null;
 var showMore = false;
 var projects = [];
 var allSkills = [];
+let skillMappings = {};
 
 async function fetchUserMe() {
   try {
@@ -56,8 +57,8 @@ async function fetchUserProject() {
     console.log("user projects:", userProjects);
     projects = userProjects;
     
-    // Create a datalist for skills
-    await createSkillDatalist(data);
+    // Create a skill mapping and datalist
+    await fetchAndMapSkills(data);
     
     return userProjects;
   } catch (error) {
@@ -65,6 +66,96 @@ async function fetchUserProject() {
     CreateErrorBlock("Failed to get projects");
     return [];
   }
+}
+
+async function fetchAndMapSkills(projectsData) {
+  try {
+    // First, get all skills from the API
+    const response = await fetch(`${api}/Skill`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("token")}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Get Skills failed: ${response.status}`);
+    }
+
+    const allSkillsData = await response.json();
+    console.log("all skills:", allSkillsData);
+    
+    // Extract unique skills from projects and create mapping
+    skillMappings = {};
+    
+    // Map all skills from API
+    allSkillsData.forEach(skill => {
+      if (skill.title) {
+        skillMappings[skill.title.toLowerCase()] = skill.id;
+      }
+    });
+    
+    // Also extract skills from projects in case API doesn't return all
+    projectsData.forEach(project => {
+      if (project.skillResponse && project.skillResponse.title && project.skillResponse.id) {
+        skillMappings[project.skillResponse.title.toLowerCase()] = project.skillResponse.id;
+      }
+    });
+    
+    allSkills = Object.keys(skillMappings).map(title => 
+      title.charAt(0).toUpperCase() + title.slice(1)
+    );
+    
+    // Create or update the datalist element
+    createSkillDatalist();
+    
+    return allSkills;
+  } catch (error) {
+    console.error("Error fetching skills:", error);
+    
+    // Fallback to project data if API call fails
+    const uniqueSkills = new Set();
+    skillMappings = {};
+    
+    projectsData.forEach(project => {
+      if (project.skillResponse && project.skillResponse.title) {
+        uniqueSkills.add(project.skillResponse.title.toLowerCase());
+        
+        if (project.skillResponse.id) {
+          skillMappings[project.skillResponse.title.toLowerCase()] = project.skillResponse.id;
+        }
+      }
+    });
+    
+    allSkills = Array.from(uniqueSkills).map(title => 
+      title.charAt(0).toUpperCase() + title.slice(1)
+    );
+    
+    // Create or update the datalist element
+    createSkillDatalist();
+    
+    return allSkills;
+  }
+}
+
+function createSkillDatalist() {
+  // Create or update the datalist element
+  let datalist = document.getElementById("skills");
+  if (!datalist) {
+    datalist = document.createElement("datalist");
+    datalist.id = "skills";
+    document.body.appendChild(datalist);
+  } else {
+    datalist.innerHTML = "";
+  }
+  
+  // Add options to datalist
+  allSkills.forEach(skill => {
+    const option = document.createElement("option");
+    option.value = skill;
+    datalist.appendChild(option);
+  });
 }
 
 function displayUserProfile(data) {
@@ -209,36 +300,6 @@ function previewAvatar(event) {
   }
 }
 
-async function createSkillDatalist(projectsData) {
-  // Extract unique skills from projects
-  const uniqueSkills = new Set();
-  
-  projectsData.forEach(project => {
-    if (project.skillResponse && project.skillResponse.title) {
-      uniqueSkills.add(project.skillResponse.title);
-    }
-  });
-  
-  allSkills = Array.from(uniqueSkills);
-  
-  // Create or update the datalist element
-  let datalist = document.getElementById("skills");
-  if (!datalist) {
-    datalist = document.createElement("datalist");
-    datalist.id = "skills";
-    document.body.appendChild(datalist);
-  } else {
-    datalist.innerHTML = "";
-  }
-  
-  // Add options to datalist
-  allSkills.forEach(skill => {
-    const option = document.createElement("option");
-    option.value = skill;
-    datalist.appendChild(option);
-  });
-}
-
 function displayProjects(projectsDisplay) {
   const projectsList = document.getElementById("projects-list");
   projectsList.innerHTML = "";
@@ -322,11 +383,6 @@ function displayProjects(projectsDisplay) {
       openEditProjectModal(project);
     });
     
-    // Add click event to project card for details view
-    // projectCard.addEventListener("click", function() {
-    //   openProjectDetails(project);
-    // });
-    
     // Add to projects list
     projectsList.appendChild(projectCard);
   });
@@ -386,9 +442,61 @@ async function deleteProject(projectId) {
   }
 }
 
-// New function to handle project creation
+async function findOrCreateSkill(skillTitle) {
+  if (!skillTitle) return null;
+  
+  // Normalize skill title (lowercase for case-insensitive comparison)
+  const normalizedTitle = skillTitle.trim().toLowerCase();
+  
+  // Check if skill already exists in our mappings
+  if (skillMappings[normalizedTitle]) {
+    return skillMappings[normalizedTitle];
+  }
+  
+  // If not, we need to create a new skill
+  try {
+    const response = await fetch(`${api}/Skill`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${getCookie("token")}`,
+      },
+      body: JSON.stringify({ title: skillTitle.trim() }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Create Skill failed: ${response.status}`);
+    }
+    
+    const newSkill = await response.json();
+    console.log("Created new skill:", newSkill);
+    
+    // Update our mapping with the new skill
+    skillMappings[normalizedTitle] = newSkill.id;
+    
+    // Update allSkills array and datalist
+    if (!allSkills.includes(skillTitle.trim())) {
+      allSkills.push(skillTitle.trim());
+      createSkillDatalist();
+    }
+    
+    return newSkill.id;
+  } catch (error) {
+    console.error("Error creating skill:", error);
+    throw error;
+  }
+}
+
 async function createProject(projectData) {
   try {
+    // First, handle the skill
+    if (projectData.skillId) {
+      const skillId = await findOrCreateSkill(projectData.skillId);
+      projectData.skillId = skillId;
+    }
+    
+    console.log("Creating project with data:", projectData);
+    
     const response = await fetch(`${api}/Project`, {
       method: "POST",
       headers: {
@@ -416,9 +524,16 @@ async function createProject(projectData) {
   }
 }
 
-// New function to handle project updating
 async function updateProject(projectId, projectData) {
   try {
+    // First, handle the skill
+    if (projectData.skillId) {
+      const skillId = await findOrCreateSkill(projectData.skillId);
+      projectData.skillId = skillId;
+    }
+    
+    console.log("Updating project with data:", projectData);
+    
     const response = await fetch(`${api}/Project/${projectId}`, {
       method: "PATCH",
       headers: {
@@ -432,13 +547,9 @@ async function updateProject(projectId, projectData) {
       throw new Error(`Update Project failed: ${response.status}`);
     }
     
-    const result = await response.json();
-    
     // Refresh projects after update
     const projectsData = await fetchUserProject();
     displayProjects(projectsData);
-    
-    return result;
   } catch (error) {
     console.error("Error updating project:", error);
     CreateErrorBlock("Failed to update project");
@@ -446,8 +557,7 @@ async function updateProject(projectId, projectData) {
   }
 }
 
-// Create project modal functions
-function openCreateProjectModal() {
+async function openCreateProjectModal() {
   // Create modal container
   const modalContainer = document.createElement("div");
   modalContainer.className = "modal-container";
@@ -479,13 +589,11 @@ function openCreateProjectModal() {
       </div>
     </div>
   `;
-  
-  // Add to body
   document.body.appendChild(modalContainer);
   
   // Add event listeners
-  const cancelBtn = modalContainer.getElementById("cancel-btn");
-  const submitBtn = modalContainer.getElementById("submit-btn");
+  const cancelBtn = document.getElementById("cancel-btn");
+  const submitBtn = document.getElementById("submit-btn");
   
   cancelBtn.addEventListener("click", () => {
     closeModal();
@@ -518,6 +626,8 @@ function openCreateProjectModal() {
 }
 
 function openEditProjectModal(project) {
+  console.log("Editing project:", project);
+
   const modalContainer = document.createElement("div");
   modalContainer.className = "modal-container";
   modalContainer.id = "project-modal";
@@ -549,13 +659,13 @@ function openEditProjectModal(project) {
   `;
   document.body.appendChild(modalContainer);
   
-  const cancelBtn = modalContainer.getElementById("cancel-btn");
-  const submitBtn = modalContainer.getElementById("submit-btn");
+  const cancelBtn = document.getElementById("cancel-btn");
+  const submitBtn = document.getElementById("submit-btn");
   
   cancelBtn.addEventListener("click", () => {
     closeModal();
   });
-  
+
   submitBtn.addEventListener("click", async () => {
     const titleInput = document.getElementById("project-title");
     const descriptionInput = document.getElementById("project-description");
@@ -589,61 +699,6 @@ function closeModal() {
   }
 }
 
-function openProjectDetails(project) {
-  // Create modal container for project details
-  const modalContainer = document.createElement("div");
-  modalContainer.className = "modal-container";
-  modalContainer.id = "project-detail-modal";
-  
-  // Create modal content
-  modalContainer.innerHTML = `
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>${project.title || "Untitled Project"}</h2>
-      </div>
-      <div class="modal-body">
-        <div class="project-detail-section">
-          <h3>Description</h3>
-          <div class="project-detail-content">${project.description || "No description provided."}</div>
-        </div>
-        <div class="project-detail-section">
-          <h3>Skill</h3>
-          <div class="project-detail-content">${project.skillResponse?.title || "No skill specified."}</div>
-        </div>
-        <div class="project-detail-section">
-          <h3>Created</h3>
-          <div class="project-detail-content">${new Date(project.createdAt).toLocaleString()}</div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="edit-project-btn">Edit Project</button>
-        <button class="close-btn">Close</button>
-      </div>
-    </div>
-  `;
-  
-  // Add to body
-  document.body.appendChild(modalContainer);
-  
-  // Add event listeners
-  const closeButtons = modalContainer.querySelectorAll(".close-modal, .close-btn");
-  closeButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      document.body.removeChild(modalContainer);
-    });
-  });
-  
-  const editButton = modalContainer.querySelector(".edit-project-btn");
-  editButton.addEventListener("click", () => {
-    document.body.removeChild(modalContainer);
-    openEditProjectModal(project);
-  });
-}
-
-function navigateToCreateProject() {
-  openCreateProjectModal();
-}
-
 function Logout() {
   CreateConfirm(
     "Do you want to logout?",
@@ -660,12 +715,10 @@ async function searchProjects() {
   const searchTerm = searchInput.value.trim().toLowerCase();
   
   if (searchTerm === "") {
-    // If search is empty, show all projects
     displayProjects(projects);
     return;
   }
-  
-  // Filter projects by skill title or project title
+
   const filteredProjects = projects.filter(project => {
     const skillTitle = project.skillResponse?.title?.toLowerCase() || "";
     const projectTitle = project.title?.toLowerCase() || "";
@@ -676,18 +729,15 @@ async function searchProjects() {
            projectDesc.includes(searchTerm);
   });
   
-  // Display filtered projects
   displayProjects(filteredProjects);
 }
 
 function handleKeyPress(event) {
-  // If Enter key is pressed, perform search
   if (event.key === "Enter") {
     searchProjects();
     return;
   }
   
-  // Debounce search for other keys
   clearTimeout(window.searchTimeout);
   window.searchTimeout = setTimeout(searchProjects, 300);
 }
@@ -709,8 +759,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     searchInput.addEventListener("input", handleKeyPress);
   }
   
-  const addButton = document.getElementById("add-project");
-  if (addButton) {
-    addButton.addEventListener("click", navigateToCreateProject);
-  }
 });
+
+const addButton = document.getElementById("add-project");
+if (addButton) {
+  addButton.addEventListener("click", openCreateProjectModal);
+}

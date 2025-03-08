@@ -307,7 +307,7 @@ input[type="text"], textarea {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100;
+  z-index: 1000;
 }
 
 .modal-content {
@@ -397,31 +397,13 @@ input[type="text"], textarea {
 }
 
 .success-btn {
-  background-color: #0077ff;
+  background-color: #00ccff;
   color: #FFFFFF;
   border: none;
 }
 
 .success-btn:hover {
   background-color: #0055ff;
-}
-
-/* Project Detail Modal Styles */
-.project-detail-section {
-  margin-bottom: 16px;
-}
-
-.project-detail-section h3 {
-  font-size: 16px;
-  color: #555;
-  margin-bottom: 6px;
-}
-
-.project-detail-content {
-  background-color: #f9f9f9;
-  border-radius: 4px;
-  padding: 10px 12px;
-  line-height: 1.5;
 }
 
 /* Search and Filter */
