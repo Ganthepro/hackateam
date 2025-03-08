@@ -19,8 +19,34 @@ public class RequirementService
         _requirement = database.GetCollection<Requirement>("Requirements");
     }
 
-    public async Task<List<Requirement>> GetAll() =>
-        await _requirement.Find(requirement => true).ToListAsync();
+    public async Task<List<Requirement>> GetAll()
+    {
+        return await _requirement.Find(_ => true).ToListAsync();
+    }
+
+    public async Task<List<Requirement>> GetPaginated(RequirementQueryDto requirementQueryDto)
+    {
+        var filters = new List<FilterDefinition<Requirement>>();
+        if (!string.IsNullOrEmpty(requirementQueryDto.TeamId))
+            filters.Add(Builders<Requirement>.Filter.Eq(requirement => requirement.TeamId, requirementQueryDto.TeamId)); 
+
+        var filter = filters.Any() ? Builders<Requirement>.Filter.And(filters) : Builders<Requirement>.Filter.Empty;
+
+        return await _requirement.Find(filter)
+            .Skip((requirementQueryDto.Page - 1) * requirementQueryDto.Limit)
+            .Limit(requirementQueryDto.Limit)
+            .ToListAsync();
+    }
+
+    public async Task<List<Requirement>> GetAllByTeamId(string teamId)
+    {
+        if (string.IsNullOrEmpty(teamId))
+        {
+            throw new HttpResponseException((int)HttpStatusCode.BadRequest, "TeamId cannot be null or empty.");
+        }
+
+        return await _requirement.Find(r => r.TeamId == teamId).ToListAsync();
+    }
 
     public async Task<Requirement> Get(Expression<Func<Requirement, bool>> filter)
     {
@@ -36,8 +62,6 @@ public class RequirementService
     {
         try
         {
-
-            // Validate if role name is unique for this team
             var existingRole = await _requirement.Find(t => 
                 t.RoleName == createRequirementDto.RoleName && 
                 t.TeamId == createRequirementDto.TeamId
@@ -93,5 +117,10 @@ public class RequirementService
         return await _requirement.FindOneAndDeleteAsync(
             Builders<Requirement>.Filter.Eq(h => h.Id, id)
         );
+    }
+
+    public async Task RemoveAll(Expression<Func<Requirement, bool>> filter)
+    {
+        await _requirement.DeleteManyAsync(filter);
     }
 }

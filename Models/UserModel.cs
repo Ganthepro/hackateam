@@ -28,8 +28,10 @@ public class User
 
     [BsonElement("Role")]
     [BsonRequired]
-    public Role? UserRole { get; set; }
+    public Role? UserRole { get; set; } = Role.User;
 
     [BsonRequired]
     public string? Tel { get; set; }
+
+    public string? Avatar { get; set; } = null;
 }

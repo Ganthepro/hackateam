@@ -24,8 +24,24 @@ public class UserService
         _users.Indexes.CreateOne(indexModel);
     }
 
-    public async Task<List<User>> GetAll() =>
-        await _users.Find(user => true).ToListAsync();
+    public async Task<List<User>> GetAll(UserQueryDto userQueryDto)
+    {
+        var filters = new List<FilterDefinition<User>>();
+
+        if (!string.IsNullOrEmpty(userQueryDto.Email))
+            filters.Add(Builders<User>.Filter.Eq(user => user.Email, userQueryDto.Email));
+        if (!string.IsNullOrEmpty(userQueryDto.FullName))
+            filters.Add(Builders<User>.Filter.Eq(user => user.FullName, userQueryDto.FullName));
+        if (!string.IsNullOrEmpty(userQueryDto.Tel))
+            filters.Add(Builders<User>.Filter.Eq(user => user.Tel, userQueryDto.Tel));
+    
+        var filter = filters.Any() ? Builders<User>.Filter.Or(filters) : Builders<User>.Filter.Empty;
+
+        return await _users.Find(filter)
+            .Skip((userQueryDto.Page - 1) * userQueryDto.Limit)
+            .Limit(userQueryDto.Limit)
+            .ToListAsync();
+    }
 
     public async Task<User> Get(Expression<Func<User, bool>> filter)
     {
@@ -60,6 +76,13 @@ public class UserService
         {
             throw new HttpResponseException((int)HttpStatusCode.Conflict, "User already exists");
         }
+    }
+
+    public async void UpdateAvatar(string id, string fileName)
+    {
+        var user = await Get(user => user.Id == id);
+        user.Avatar = fileName;
+        await _users.ReplaceOneAsync(user => user.Id == id, user);
     }
 
     public async Task<User> Update(Expression<Func<User, bool>> filter, UpdateUserDto updateUserDto)

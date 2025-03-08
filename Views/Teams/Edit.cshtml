@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - HostedTeamManagement</title>
+    @* Page Style *@
+    <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
+    @* Components Style *@
+    <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/additional-tool.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/file-input.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/effect-grid-background.css" asp-append-version="true" />
+</head>
+<body>
+    @* Wave Grid Background *@
+    <div class="grid-container" id="grid-container"></div>
+
+    @* Navbar Component *@
+    <nav class="navbar">
+        <div class="navbar-title">Hackateam</div>
+        <div class="navbar-links">
+            <a asp-controller="Explore" asp-action="Index">Explore</a>
+            <a asp-controller="Teams" asp-action="Index">Team</a>
+            <a asp-controller="Notifications" asp-action="Index">Notification</a>
+            <a asp-controller="Profile" asp-action="Index">Profile</a>
+        </div>
+        <img src="~/pictures/dropdown-menu-icon.svg" alt="dropdown-menu" class="dropdown-menu"/>
+    </nav>
+
+    @* Content Page *@
+    <div class="hosted-team-content">
+        <div class="hosted-team-container">
+            <div class="hosted-team-header">
+                <h2>Hosted Team Management</h2>
+                <div class="hosted-team-button">
+                    <button id="edit-btn">Edit</button>
+                    <button id="save-btn">Save</button>
+                    <button id="cancel-btn">Cancel</button>
+                </div>
+            </div>
+            <form action="" class="hosted-team-infomation">
+                <div class="hosted-team-detail-container">
+                    <h3>Team Infomation</h3>
+                    <div class="hosted-team-detail">
+                        <label for="name">Team Name</label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            placeholder="Team Name"
+                        >
+                    </div>
+                    <div class="hosted-team-detail">
+                        <label for="hackathonName">Team Name</label>
+                        <input 
+                            type="text" 
+                            id="hackathonName" 
+                            name="name" 
+                            placeholder="Hackathon Name"
+                        >
+                    </div>
+                    <div class="hosted-team-detail">
+                        <label for="description">Description</label>
+                        <textarea 
+                            id="description" 
+                            name="description" 
+                            placeholder="Hackathon Description"
+                        >
+                        </textarea>
+                    </div>
+                    <div class="hosted-team-detail">
+                        <label for="banner">Team Banner</label>
+                        <div class="file-input-space">
+                            <input 
+                                type="file" 
+                                class="file-input" 
+                                id="fileInput" 
+                                aria-label="File upload"
+                            >
+                            <button class="file-input-btn" aria-describedby="fileInputDesc">
+                                <span class="file-btn">Choose file</span>
+                                <span class="file-name" id="fileInputDesc">No file chosen</span>
+                            </button>
+                        </div>
+                        <div class="hosted-team-banner" id="hosted-team-banner"></div>
+                    </div>
+                </div>
+                <div class="hosted-team-detail-container">
+                    <h3>Date Infomation</h3>
+                    <div class="hosted-team-detail">
+                        <label for="createdAt">Created Date</label>
+                        <input 
+                            type="datetime-local" 
+                            id="createdAt" 
+                            name="createdAt"
+                            readonly
+                        >
+                    </div>
+                    <div class="hosted-team-detail">
+                        <label for="updatedAt">Updated Date</label>
+                        <input 
+                            type="datetime-local" 
+                            id="updatedAt" 
+                            name="updatedAt"
+                            readonly
+                        >
+                    </div>
+                    <div class="hosted-team-detail">
+                        <label for="expiredAt">Expired Date</label>
+                        <input 
+                            type="datetime-local" 
+                            id="expiredAt" 
+                            name="expiredAt"
+                        >
+                    </div>
+                </div>
+            </form>
+            <div class="hosted-team-assignments" id="hosted-team-assignments">
+                <h2>Role Assigments</h2>
+                @* Display Assignments form Requirements and Submissions *@
+            </div>
+            <button class="confirm-team-btn" id="confirm-team-btn">
+                Confirm Team
+            </button>
+        </div>
+    </div>
+
+    @* Footer Component *@
+    <footer>
+        <div class="footer-content-01">
+            <p>© 2025 Hackateam</p>
+            <div class="footer-link">
+                <img src="~/pictures/github-icon.svg" alt="github-icon" />
+                <a href="#">Hackateam repository</a>
+            </div>
+
+        </div>
+        <div class="footer-content-02">
+            <p>KMITL Computer Engineering</p>
+            <div class="footer-logo">
+                <img src="~/pictures/KMITL-logo.svg" alt="KMITL-logo">
+                <img src="~/pictures/CE-logo.svg" alt="KMITL-logo">
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/js/goToProfile.js" asp-append-version="true"></script>
+    <script type="module" src="~/js/alert.js" asp-append-version="true"></script>
+    <script src="~/js/navbar.js"></script>
+    <script src="~/js/additional-tool.js"></script>
+    <script type="module" src="~/js/edit.js"></script>
+    <script src="~/js/file-input.js" asp-append-version="true"></script>
+    <script src="~/js/cookie.js" asp-append-version="true"></script>
+    <script src="~/js/authentication.js" asp-append-version="true"></script>
+    <script src="~/js/effect-grid-background.js" asp-append-version="true"></script>
+</body>
+</html>

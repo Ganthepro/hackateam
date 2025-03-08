@@ -3,6 +3,8 @@ using hackateam.Models;
 using hackateam.Shared;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MongoDB.Bson;
+using MongoDB.Bson.IO;
 using System.Linq.Expressions;
 using hackateam.Dtos.Team;
 namespace hackateam.Services;
@@ -17,9 +19,29 @@ public class TeamService
         var database = client.GetDatabase(settings.Value.DatabaseName);
         _teams = database.GetCollection<Team>("Teams");
     }
+    public async Task<List<Team>> GetAll(TeamQueryDto teamQueryDto)
+    {
+        var filters = new List<FilterDefinition<Team>>();
 
-    public async Task<List<Team>> GetAll() =>
-        await _teams.Find(team => true).ToListAsync();
+        if (!string.IsNullOrEmpty(teamQueryDto.Name))
+            filters.Add(Builders<Team>.Filter.Regex(team => team.Name, new BsonRegularExpression(teamQueryDto.Name, "i")));
+
+        if (!string.IsNullOrEmpty(teamQueryDto.LeadId))
+            filters.Add(Builders<Team>.Filter.Eq(team => team.LeadId, teamQueryDto.LeadId)); // Exact match
+
+        if (!string.IsNullOrEmpty(teamQueryDto.HackathonName))
+            filters.Add(Builders<Team>.Filter.Regex(team => team.HackathonName, new BsonRegularExpression(teamQueryDto.HackathonName, "i")));
+
+        if (teamQueryDto.Status.HasValue)
+            filters.Add(Builders<Team>.Filter.Eq("Status", teamQueryDto.Status.Value.ToString())); // Enum stored as string
+
+        var filter = filters.Any() ? Builders<Team>.Filter.And(filters) : Builders<Team>.Filter.Empty;
+
+        return await _teams.Find(filter)
+            .Skip((teamQueryDto.Page - 1) * teamQueryDto.Limit)
+            .Limit(teamQueryDto.Limit)
+            .ToListAsync();
+    }
 
     public async Task<Team> Get(Expression<Func<Team, bool>> filter)
     {
@@ -31,30 +53,25 @@ public class TeamService
         return team;
     }
 
-    public async Task<Team> Create(CreateTeamDto createTeamDto)
+    public async Task<Team> Create(string id, CreateTeamDto createTeamDto)
     {
         try
         {
-            // Validate if team name is unique for this hackathon
-            var existingTeam = await _teams.Find(t => 
-                t.Name == createTeamDto.Name && 
-                t.HackathonId == createTeamDto.HackathonId
-            ).AnyAsync();
 
-            if (existingTeam)
+            if (createTeamDto.ExpiredAt <= DateTime.UtcNow)
             {
-                throw new HttpResponseException((int)HttpStatusCode.Conflict, 
-                    Constants.TeamMessage.ALREADY_EXISTS);
+                throw new HttpResponseException((int)HttpStatusCode.BadRequest,
+                    Constants.TeamMessage.EXPIRE_DATE_CONFLICT);
             }
 
             var team = new Team
             {
                 Name = createTeamDto.Name,
-                LeadId = createTeamDto.LeadId,
-                CrewId = new List<string>(), // Initialize empty crew
+                LeadId = id,
                 Status = TeamStatus.Opened,
-                HackathonId = createTeamDto.HackathonId,
-                ExpiredAt = createTeamDto.ExpiredAt // Ensure value is provided
+                HackathonName = createTeamDto.HackathonName,
+                HackathonDescription = createTeamDto.HackathonDescription,
+                ExpiredAt = createTeamDto.ExpiredAt
             };
 
             await _teams.InsertOneAsync(team);
@@ -62,17 +79,30 @@ public class TeamService
         }
         catch (MongoWriteException ex) when (ex.WriteError.Category == ServerErrorCategory.DuplicateKey)
         {
-            throw new HttpResponseException((int)HttpStatusCode.Conflict, 
+            throw new HttpResponseException((int)HttpStatusCode.Conflict,
                 Constants.TeamMessage.ALREADY_EXISTS);
         }
     }
 
+    public async void UpdateBanner(string id, string fileName)
+    {
+        var team = await Get(team => team.Id == id);
+        team.Banner = fileName;
+        await _teams.ReplaceOneAsync(team => team.Id == id, team);
+    }
 
     public async Task<Team> Update(Expression<Func<Team, bool>> filter, UpdateTeamDto updateTeamDto)
     {
+
+        if (updateTeamDto.ExpiredAt <= DateTime.UtcNow)
+        {
+            throw new HttpResponseException((int)HttpStatusCode.BadRequest,
+                Constants.TeamMessage.EXPIRE_DATE_CONFLICT);
+        }
+
         var updateDefinitionBuilder = Builders<Team>.Update;
         var updateDefinitions = new List<UpdateDefinition<Team>>();
-        foreach(var property in updateTeamDto.GetType().GetProperties())
+        foreach (var property in updateTeamDto.GetType().GetProperties())
         {
             if (property.GetValue(updateTeamDto) != null)
             {
@@ -83,8 +113,9 @@ public class TeamService
         updateDefinitions.Add(updateDefinitionBuilder.Set(t => t.UpdatedAt, DateTime.UtcNow));
 
         var update = updateDefinitionBuilder.Combine(updateDefinitions);
-        
-        var team = await _teams.FindOneAndUpdateAsync<Team>(filter, update, new FindOneAndUpdateOptions<Team>{
+
+        var team = await _teams.FindOneAndUpdateAsync<Team>(filter, update, new FindOneAndUpdateOptions<Team>
+        {
             ReturnDocument = ReturnDocument.After
         });
         if (team == null)

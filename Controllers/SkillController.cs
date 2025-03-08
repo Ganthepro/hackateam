@@ -11,16 +11,18 @@ namespace hackateam.Controllers;
 public class SkillController : Controller
 {
     private readonly SkillService _skillService;
+    private readonly ProjectService _projectService;
 
-    public SkillController(SkillService skillService)
+    public SkillController(SkillService skillService, ProjectService projectService)
     {
         _skillService = skillService;
+        _projectService = projectService; 
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<SkillResponseDto>>> Get()
+    public async Task<ActionResult<List<SkillResponseDto>>> Get(SkillQueryDto skillQueryDto)
     {
-        var skills = await _skillService.GetAll();
+        var skills = await _skillService.GetPaginate(skillQueryDto);
         return await Task.FromResult(skills.Select(skill => new SkillResponseDto(skill)).ToList());
     }
 
@@ -51,6 +53,7 @@ public class SkillController : Controller
     {
         var skill = await _skillService.Get(skill => skill.Id == id);
         await _skillService.Remove(skill => skill.Id == id);
+        await _projectService.RemoveAll(project => project.SkillId == id);
         return await Task.FromResult(Ok(new SkillResponseDto(skill)));
     }
 }

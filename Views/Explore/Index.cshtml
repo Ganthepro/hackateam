@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Explore</title>
+    @* Page Style *@
+    <link rel="stylesheet" href="~/css/explore.css" asp-append-version="true" />
+    @* Components Style *@
+    <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/additional-tool.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/effect-grid-background.css" asp-append-version="true" />
+</head>
+<body>
+    @* Wave Grid Background *@
+    <div class="grid-container" id="grid-container"></div>
+
+    @* Navbar Component *@
+    <nav class="navbar">
+        <div class="navbar-title">Hackateam</div>
+        <div class="navbar-links">
+            <a asp-controller="Explore" class="navbar-title">Explore</a>
+            <a asp-controller="Teams">Team</a>
+            <a asp-controller="Notifications">Notification</a>
+            <a asp-controller="Profile">Profile</a>
+        </div>
+        <img src="~/pictures/dropdown-menu-icon.svg" alt="dropdown-menu" class="dropdown-menu"/>
+    </nav>
+
+    @* Content Page *@
+    <div class="explore-content">
+        <h1 class="explore-header">
+            Explore and find your team!!
+        </h1>
+        <div class="additional-container">
+            <form action="search-card" method="get" class="search-form">
+                <div class="search-space">
+                    <input type="text" placeholder="Search" class="search-bar" list="hackathons" id="search-bar" autocomplete="off" onkeydown="SearchHackathon()">
+                    <img src="~/pictures/search-box/search-cancel.svg" alt="search-cancel" class="search-cancel">
+                </div>
+                <button type="button" class="search-button" id="search-button">Search</button>
+                <datalist id="hackathons"></datalist>
+            </form>
+            <button class="create-team-button" id="create-team-button">
+                <a asp-controller="Teams" asp-action="Create">Create Team</a>
+            </button>
+        </div>
+        <div class="team-card-content" id="recommended-projects">
+            <h2>Recommended Projects</h2>
+            <div class="team-cards" id="recommended-cards">
+                @* create cards *@
+            </div>
+            <div class="pagination-container" id="recommended-pagination"></div>
+        </div>
+        <div class="team-card-content" id="all-projects">
+            <h2>All Projects</h2>
+            <div class="team-cards" id="all-cards">
+                @* create cards *@
+            </div>
+            <div class="pagination-container" id="all-pagination"></div>
+        </div>
+    </div>
+
+    @* Footer Component *@
+    <footer>
+        <div class="footer-content-01">
+            <p>© 2025 Hackateam</p>
+            <div class="footer-link">
+                <img src="~/pictures/github-icon.svg" alt="github-icon" />
+                <a href="#">Hackateam repository</a>
+            </div>
+
+        </div>
+        <div class="footer-content-02">
+            <p>KMITL Computer Engineering</p>
+            <div class="footer-logo">
+                <img src="~/pictures/KMITL-logo.svg" alt="KMITL-logo">
+                <img src="~/pictures/CE-logo.svg" alt="KMITL-logo">
+            </div>
+        </div>
+    </footer>
+    
+    <script src="~/js/navbar.js"></script>
+    <script src="~/js/additional-tool.js"></script>
+    <script src="~/js/explore.js" asp-append-version="true"></script>
+    <script src="~/js/alert.js" asp-append-version="true"></script>
+    <script src="~/js/cookie.js" asp-append-version="true"></script>
+    <script src="~/js/authentication.js" asp-append-version="true"></script>
+    <script src="~/js/effect-grid-background.js" asp-append-version="true"></script>
+</body>
+</html>

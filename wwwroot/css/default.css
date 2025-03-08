@@ -1,0 +1,39 @@
+/* Default for all pages */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", serif;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 1.25rem;
+}
+
+/* Default (Large screens, ≥ 1200px) */
+body {
+    position: relative;
+    height: fit-content;
+    min-height: 100vh;
+    background-color: #050A12;
+}
+
+/* Small Laptops & Tablets (≤ 1199px) */
+@media (max-width: 1200px) {
+    * {
+        font-size: 1.25rem;
+    }
+}
+
+/* Tablets (≤ 769px) */
+@media (max-width: 769px) {
+    * {
+        font-size: 1.125rem;
+    }
+}
+
+/* Mobile Phones (≤ 480px) */
+@media (max-width: 480px) {
+    * {
+        font-size: 1rem;
+    }
+}

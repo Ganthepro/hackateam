@@ -1,50 +1,80 @@
 ﻿@{
     ViewData["Title"] = "Profile";
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
+    <title>@ViewData["Title"] - Profile</title>
+    <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-title">Hackateam</div>
+        <div class="navbar-links">
+            <a asp-controller="Explore" asp-action="Index">Explore</a>
+            <a asp-controller="Teams" asp-action="Index">Team</a>
+            <a asp-controller="Notifications" asp-action="Index">Notification</a>
+            <a onclick="Logout()" class="logout">Logout</a>
+        </div>
+        <img src="~/pictures/dropdown-menu-icon.svg" alt="dropdown-menu" class="dropdown-menu"/>
+    </nav>
 
-<section>
-    <h1>My Profile</h1>
+    <header>
+        <h1>My Profile</h1>
+        
+    </header>
 
-    <h2>Full Name</h2>
-    <p>John Doe</p>
+    <main>
+        <section id="profile">
+            <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="Avatar" id="avatar" />
+            <div id="profile-details">
+                <p id="fullname" class="p"><strong>Fullname:</strong></p>
+                <p id="tel" class="p"><strong>Tel:</strong></p>
+                <p id="email" class="p"><strong>Email:</strong></p>
+            </div>
+            <button id="edit" onclick="PageUpdateProfile()">Edit</button>
+        </section>
 
-    <h2>Education</h2>
-    <p>Bachelor's Degree in Computer Engineering</p>
+        <div id="projects">
+            <div id="showproject">
+                <h2>Projects </h2>
+                <input type="text" id="skill" name="skill" autocomplete="off" placeholder="Search projects..." list="skills" onkeydown="handleKeyPress(event)">
+                <button id="add" onclick="PageCreateProject()">+</button>
+                <button id="loadMore" onclick="SeeMore()">Show All</button>
+            </div>
+        </div>
+        <div id="projects-list">
 
-    <h2>Header</h2>
-    <p>Software Engineer</p>
+        </div>
+    </main>
 
-    <h2>Tel</h2>
-    <p>+123 456 7890</p>
+    @* Footer Component *@
+    <footer>
+        <div class="footer-content-01">
+            <p>© 2025 Hackateam</p>
+            <div class="footer-link">
+                <img src="~/pictures/github-icon.svg" alt="github-icon" />
+                <a href="#">Hackateam repository</a>
+            </div>
 
-    <h2>Email</h2>
-    <p>johndoe@example.com</p>
+        </div>
+        <div class="footer-content-02">
+            <p>KMITL Computer Engineering</p>
+            <div class="footer-logo">
+                <img src="~/pictures/KMITL-logo.svg" alt="KMITL-logo">
+                <img src="~/pictures/CE-logo.svg" alt="KMITL-logo">
+            </div>
+        </div>
+    </footer>
 
-    <h2>Projects</h2>
-    <ol>
-        <li>
-            <h3>Title</h3>
-            <p>Mobile App Development</p>
-
-            <h3>Description</h3>
-            <p>Develop Mobile App</p>
-
-            <h3>Skill</h3>
-            <p>Dart</p>
-        </li>
-        <li>
-            <h3>Title</h3>
-            <p>Web Development</p>
-
-            <h3>Description</h3>
-            <p>Develop Website</p>
-
-            <h3>Skill</h3>
-            <p>HTML, CSS, Javascript</p>
-        </li>
-    </ol>
-</section>
-<footer>
-    <a asp-controller="Profile" asp-action="EditProfile">Go To Edit Profile</a>
-    <a asp-controller="Profile" asp-action="EditProject">Go To Edit Project</a>
-</footer>
+    <script src="~/js/navbar.js"></script>
+    <script src="~/js/cookie.js" asp-append-version="true"></script>
+    <script src="~/js/authentication.js" asp-append-version="true"></script>
+    <script src="~/js/alert.js" asp-append-version="true"></script>
+    <script src="~/js/profile.js" asp-append-version="true"></script>
+</body>
+</html>

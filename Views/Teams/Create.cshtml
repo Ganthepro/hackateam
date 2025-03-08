@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - CreateTeam</title>
+    @* Page Style *@
+    <link rel="stylesheet" href="~/css/create.css" asp-append-version="true" />
+    @* Components Style *@
+    <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/file-input.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/effect-grid-background.css" asp-append-version="true" />
+</head>
+<body>
+    @* Wave Grid Background *@
+    <div class="grid-container" id="grid-container"></div>
+    
+    @* Navbar Component *@
+    <nav class="navbar">
+        <div class="navbar-title">Hackateam</div>
+        <div class="navbar-links">
+            <a asp-controller="Explore" asp-action="Index">Explore</a>
+            <a asp-controller="Teams" asp-action="Index">Team</a>
+            <a asp-controller="Notifications" asp-action="Index">Notification</a>
+            <a asp-controller="Profile" asp-action="Index">Profile</a>
+        </div>
+        <img src="~/pictures/dropdown-menu-icon.svg" alt="dropdown-menu" class="dropdown-menu"/>
+    </nav>
+
+    @* Content Page *@
+    <div class="create-team-content">
+        <form 
+            action=""
+            class="create-team-form"
+            id="create-team-form"
+        >
+            <div class="create-team-form-header">
+                CREATE TEAM
+            </div>
+            <div class="create-team-form-body">
+                <div class="grid-group">
+                    <div class="create-team-form-group">
+                        <label for="team-name">Team Name</label>
+                        <input 
+                            type="text" 
+                            id="team-name" 
+                            name="team-name" 
+                            placeholder="Enter team name"
+                        >
+                    </div>
+                    <div class="create-team-form-group">
+                        <label for="team-description">Description</label>
+                        <input 
+                            type="text" 
+                            id="team-description" 
+                            name="team-description" 
+                            placeholder="Enter team description"
+                        >
+                    </div>
+                    <div class="create-team-form-group">
+                        <label for="team-image">Team Image</label>
+                        <div class="file-input-space">
+                            <input type="file" class="file-input" id="fileInput" aria-label="File upload">
+                            <button class="file-input-btn" aria-describedby="fileInputDesc">
+                                <span class="file-btn">Choose file</span>
+                                <span class="file-name" id="fileInputDesc">No file chosen</span>
+                            </button>
+                        </div>
+                        <div class="create-team-banner" id="create-team-banner"></div>
+                    </div>
+                    <div class="create-team-form-group">
+                        <label for="hackathon-name">Hackathon Name</label>
+                        <input 
+                            type="text" 
+                            id="hackathon-name" 
+                            name="hackathon-name" 
+                            placeholder="Enter hackathon name"
+                        >
+                    </div>
+                    <div class="create-team-form-group">
+                        <label for="hackathon-description">Hackathon Description</label>
+                        <input 
+                            type="text" 
+                            id="hackathon-description" 
+                            name="hackathon-description" 
+                            placeholder="Enter hackathon description"
+                        >
+                    </div>
+                    <div class="create-team-form-group">
+                        <label for="hackathon-date">Hackathon End Date</label>
+                        <input 
+                            type="datetime-local" 
+                            id="hackathon-date" 
+                            name="hackathon-date"
+                        >
+                    </div>
+                </div>
+                <div class="grid-group">
+                    <div class="create-team-form-group">
+                        <label for="member-requirement">Member Requirements</label>
+                        <div class="requirements" id="requirements">
+                            @* Member Requirements Manage from create-team.js*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="create-team-form-button">
+                <button type="submit">Create</button>
+            </div>
+        </form>
+    </div>
+
+    @* Footer Component *@
+    <footer>
+        <div class="footer-content-01">
+            <p>© 2025 Hackateam</p>
+            <div class="footer-link">
+                <img src="~/pictures/github-icon.svg" alt="github-icon" />
+                <a href="#">Hackateam repository</a>
+            </div>
+
+        </div>
+        <div class="footer-content-02">
+            <p>KMITL Computer Engineering</p>
+            <div class="footer-logo">
+                <img src="~/pictures/KMITL-logo.svg" alt="KMITL-logo">
+                <img src="~/pictures/CE-logo.svg" alt="KMITL-logo">
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="~/js/create.js"></script>
+    <script src="~/js/cookie.js" asp-append-version="true"></script>
+    <script src="~/js/authentication.js" asp-append-version="true"></script>
+    <script src="~/js/file-input.js" asp-append-version="true"></script>
+    <script src="~/js/effect-grid-background.js" asp-append-version="true"></script>
+</body>
+</html>

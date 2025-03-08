@@ -23,13 +23,34 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Register()
+    public IActionResult Explore()
     {
         return View();
     }
 
-    public IActionResult Login()
+        public IActionResult Team()
     {
+        return View();
+    }
+
+    public IActionResult CreateTeam()
+    {
+        return View();
+    }
+
+    public IActionResult HostedTeamManagement()
+    {
+        return View();
+    }
+
+    public IActionResult Notification()
+    {
+        return View();
+    }
+
+    public ActionResult TeamInfo(string id)
+    {
+        ViewBag.Id = id; 
         return View();
     }
 

@@ -5,6 +5,7 @@ using hackateam.Shared;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System.Linq.Expressions;
+using MongoDB.Bson;
 
 namespace hackateam.Services;
 
@@ -17,15 +18,33 @@ public class ProjectService
         var client = new MongoClient(settings.Value.ConnectionString);
         var database = client.GetDatabase(settings.Value.DatabaseName);
         _projects = database.GetCollection<Project>("Projects");
-
-        var indexKeys = Builders<Project>.IndexKeys.Ascending(p => p.Title);
-        var indexOptions = new CreateIndexOptions { Unique = true };
-        var indexModel = new CreateIndexModel<Project>(indexKeys, indexOptions);
-        _projects.Indexes.CreateOne(indexModel);
     }
 
-    public async Task<List<Project>> GetAll() =>
-        await _projects.Find(project => true).ToListAsync();
+    public async Task<List<Project>> GetPaginate(ProjectQueryDto projectQueryDto)
+    {
+        var filters = new List<FilterDefinition<Project>>();
+
+        if (!string.IsNullOrEmpty(projectQueryDto.Title))
+            filters.Add(Builders<Project>.Filter.Regex(project => project.Title, new BsonRegularExpression(projectQueryDto.Title, "i")));
+
+        if (!string.IsNullOrEmpty(projectQueryDto.UserId))
+            filters.Add(Builders<Project>.Filter.Eq(project => project.UserId, projectQueryDto.UserId));
+
+        if (!string.IsNullOrEmpty(projectQueryDto.SkillId))
+            filters.Add(Builders<Project>.Filter.Eq(project => project.SkillId, projectQueryDto.SkillId));
+
+        var filter = filters.Any() ? Builders<Project>.Filter.And(filters) : Builders<Project>.Filter.Empty;
+
+        return await _projects.Find(filter)
+            .Skip((projectQueryDto.Page - 1) * projectQueryDto.Limit)
+            .Limit(projectQueryDto.Limit)
+            .ToListAsync();
+    }
+
+    public async Task<List<Project>> GetAll(Expression<Func<Project, bool>> filter)
+    {
+        return await _projects.Find(filter).ToListAsync();
+    }
 
     public async Task<Project> Get(Expression<Func<Project, bool>> filter)
     {
@@ -37,7 +56,7 @@ public class ProjectService
         return project;
     }
 
-    public async Task<Project> Create(string userId,CreateProjectDto createProjectDto)
+    public async Task<Project> Create(string userId, CreateProjectDto createProjectDto)
     {
         try
         {
@@ -61,7 +80,7 @@ public class ProjectService
     {
         var updateDefinitionBuilder = Builders<Project>.Update;
         var updateDefinitions = new List<UpdateDefinition<Project>>();
-        foreach(var property in updateProjectDto.GetType().GetProperties())
+        foreach (var property in updateProjectDto.GetType().GetProperties())
         {
             if (property.GetValue(updateProjectDto) != null)
             {
@@ -85,5 +104,9 @@ public class ProjectService
             throw new HttpResponseException((int)HttpStatusCode.NotFound, Constants.ProjectMessage.NOT_FOUND);
         }
         await _projects.DeleteOneAsync(filter);
+    }
+    public async Task RemoveAll(Expression<Func<Project, bool>> filter)
+    {
+        await _projects.DeleteManyAsync(filter);
     }
 }

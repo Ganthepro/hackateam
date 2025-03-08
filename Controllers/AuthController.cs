@@ -15,7 +15,6 @@ public class AuthController : Controller
         _authService = authService;
     }
 
-    // 🔹 GET: Auth/login (Get All Hackathons)
     [HttpPost("login")]
     public async Task<ActionResult<AuthResponseDto>> Login(LoginDto loginDto)
     {
@@ -26,5 +25,17 @@ public class AuthController : Controller
     public async Task<ActionResult<AuthResponseDto>> Register(RegisterDto registerDto)
     {
         return await Task.FromResult(Ok(await _authService.Register(registerDto)));
+    }
+
+    [HttpGet("Login")]
+    public IActionResult Login()
+    {
+        return View();
+    }
+
+    [HttpGet("Register")]
+    public IActionResult Register()
+    {
+        return View();
     }
 }

@@ -1,0 +1,107 @@
+@{
+    ViewData["Title"] = "TeamInfo";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - TeamInfo</title>
+    <link rel="stylesheet" href="~/css/team-info.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/checkbox-input.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/effect-grid-background.css" asp-append-version="true" />
+</head>
+<body>
+    <div id="teamId" data-id="@ViewBag.Id"></div>
+
+    @* Wave Grid Background *@
+    <div class="grid-container" id="grid-container"></div>
+    
+    <nav class="navbar">
+        <div class="navbar-title">Hackateam</div>
+        <div class="navbar-links">
+            <a asp-controller="Explore" asp-action="Index">Explore</a>
+            <a asp-controller="Teams" asp-action="Index">Team</a>
+            <a asp-controller="Notifications" asp-action="Index">Notification</a>
+            <a asp-controller="Profile" asp-action="Index">Profile</a>
+        </div>
+        <img src="~/pictures/dropdown-menu-icon.svg" alt="dropdown-menu" class="dropdown-menu"/>
+    </nav>
+
+    <div class="team-info-content">
+        <div class="team-info-container">
+            <div class="team-info-grid">
+                <h1 id="name"></h1>
+                <div class="team-banner-container">
+                    <img 
+                        alt="banner"
+                        class="team-banner"
+                        id="teamImage"
+                    >
+                </div>
+                <div class="detail-group">
+                    <label for="hackathonName" class="detail-info">Hackathon Name</label>
+                    <p id="hackathonName" class="detail-info"></d>
+                </div>
+                <div class="detail-group">
+                    <label for="hackathonDescription" class="detail-info">Description</label>
+                    <p id="hackathonDescription" class="detail-info"></p>
+                </div>
+                <div class="detail-group">
+                    <label for="leadResponse" class="detail-info">Lead</label>
+                    <p id="leadResponse" class="detail-info"></p>
+                </div>
+                <div class="detail-group">
+                    <label for="maxSize" class="detail-info">Max Team Size</label>
+                    <p id="maxSize" class="detail-info"></p>
+                </div>
+                <div class="detail-group">
+                    <label for="expiredAt" class="detail-info">Expire Date</label>
+                    <p id="expiredAt" class="detail-info"></p>
+                </div>
+            </div>
+            <form class="team-info-grid" onsubmit="event.preventDefault(); joinTeam(event);" id="form">
+                <h2>State Of Purpose</h2>
+                <textarea 
+                    id="sop"
+                    name="sop"
+                    required>
+                </textarea>
+                <h2>Select Your Role</h2>
+                <div class="requirements-display" id="requirements-display">
+                    @* requirements-display  *@
+                </div>
+                <button type="submit" class="submit-btn">Join Team</button>
+            </form>
+        </div>
+    </div>
+
+    @* Footer Component *@
+    <footer>
+        <div class="footer-content-01">
+            <p>© 2025 Hackateam</p>
+            <div class="footer-link">
+                <img src="~/pictures/github-icon.svg" alt="github-icon" />
+                <a href="#">Hackateam repository</a>
+            </div>
+
+        </div>
+        <div class="footer-content-02">
+            <p>KMITL Computer Engineering</p>
+            <div class="footer-logo">
+                <img src="~/pictures/KMITL-logo.svg" alt="KMITL-logo">
+                <img src="~/pictures/CE-logo.svg" alt="KMITL-logo">
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/js/navbar.js"></script>
+    <script src="~/js/alert.js" asp-append-version="true"></script>
+    <script src="~/js/team-info.js" asp-append-version="true"></script>
+    <script src="~/js/cookie.js" asp-append-version="true"></script>
+    <script src="~/js/authentication.js" asp-append-version="true"></script>
+    <script src="~/js/effect-grid-background.js" asp-append-version="true"></script>
+</body>
+</html>

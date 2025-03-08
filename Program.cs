@@ -15,10 +15,10 @@ builder.Services.AddSingleton<AuthService>();
 builder.Services.AddSingleton<SkillService>();
 builder.Services.AddSingleton<ProjectService>();
 builder.Services.AddSingleton<NotificationService>();
-builder.Services.AddSingleton<HackathonService>();
 builder.Services.AddSingleton<SubmissionService>();
 builder.Services.AddSingleton<TeamService>();
 builder.Services.AddSingleton<RequirementService>();
+builder.Services.AddSingleton<FileService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddControllers(options =>
@@ -127,7 +127,8 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+    )
     .WithStaticAssets();
 
 

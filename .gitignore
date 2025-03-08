@@ -407,6 +407,10 @@ FodyWeavers.xsd
 ##
 ## Visual studio for Mac
 ##
+Avatar/
+
+hackateam-api.AssemblyInfo.cs
+hackateam-api.AssemblyInfoInputs.cache
 
 
 # globs
