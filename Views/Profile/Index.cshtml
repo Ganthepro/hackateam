@@ -76,7 +76,7 @@
             </div>
         </section>
 
-        <div id="projects">
+        @* <div id="projects">
             <div id="showproject">
                 <h2>Projects </h2>
                 <input type="text" id="skill" name="skill" autocomplete="off" placeholder="Search projects..." list="skills" onkeydown="handleKeyPress(event)">
@@ -84,7 +84,33 @@
                 <button id="loadMore" onclick="SeeMore()">Show All</button>
             </div>
         </div>
-        <div id="projects-list"></div>
+        <div id="projects-list"></div> *@
+
+        <div class="project-content">
+            <div class="project-wrapper">
+                <h2>My Projects</h2>
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        id="skill" 
+                        name="skill" 
+                        autocomplete="off" 
+                        placeholder="Search by skill or title..." 
+                        list="skills" 
+                        onkeydown="handleKeyPress(event)"
+                    >
+                    <datalist id="skills">
+                        <!-- Skill options will be populated dynamically -->
+                    </datalist>
+                </div>
+                <button class="add-btn" id="add-project" title="Create new project" onclick="navigateToCreateProject()">Add Project</button>
+                <button class="display-btn" id="loadMore" onclick="toggleShowMore()">Show All</button>
+            </div>
+            <div class="projects-list" id="projects-list">
+                <!-- Projects will be rendered here -->
+            </div>
+        </div>
+
     </div>
 
     @* Footer Component *@
