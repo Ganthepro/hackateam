@@ -1,4 +1,6 @@
-api = "http://localhost:5234";
+
+const api = "http://localhost:5234";
+
 const teamId = document.getElementById("teamId").dataset.id;
 
 let bannerUrls = new Map();
@@ -23,7 +25,7 @@ async function fetchTeamData() {
     const base64Banner = await fetchTeamBanner(data.id);
     const teamWithBanner = {
       ...data,
-      bannerUrl: base64Banner || "/pictures/default-banner.png",
+      bannerUrl: base64Banner || '/pictures/default-banner.png'
     };
 
     console.log("Team with Banner:", teamWithBanner);
@@ -161,22 +163,18 @@ function displayTeamData(teamData, teamSize) {
   if (teamData.hackathonName) {
     hackathonName.innerText = teamData.hackathonName;
   }
-
   const hackathonDescription = document.getElementById("hackathonDescription");
   if (teamData.hackathonDescription) {
     hackathonDescription.innerText = teamData.hackathonDescription;
   }
-
   const lead = document.getElementById("leadResponse");
   if (teamData.leadResponse && teamData.leadResponse.fullName) {
     lead.innerText = teamData.leadResponse.fullName;
   }
-
   const maxSize = document.getElementById("maxSize");
   if (teamSize) {
     maxSize.innerText = teamSize;
   }
-
   const expiredDate = document.getElementById("expiredAt");
   if (teamData.expiredAt) {
     const date = new Date(teamData.expiredAt);
@@ -236,7 +234,6 @@ function displayRequirements(requirements) {
 
 async function joinTeam(event) {
   event.preventDefault();
-
   try {
     const sop = document.getElementById("sop").value.trim();
     if (!sop) {
