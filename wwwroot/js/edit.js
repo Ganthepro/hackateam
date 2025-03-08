@@ -431,8 +431,8 @@ async function displayRoleAssignments(requirements, submissions) {
           submission.status === "Rejected" ? "disabled" : "";
 
         roleHTML += `
-                    <div class="assignment" data-submission-id="${submission.id}" onclick="GoToProfile('${submission.user.id}')" style="cursor: pointer;">
-                        <div class="assignment-info-container">
+                    <div class="assignment" data-submission-id="${submission.id}">
+                        <div class="assignment-info-container" onclick="GoToProfile('${submission.user.id}')" style="cursor: pointer;">
                             <div class="assignment-info">
                                 <div class="user-info">
                                     <label>Full Name</label>
@@ -456,6 +456,10 @@ async function displayRoleAssignments(requirements, submissions) {
                                     <label>Resume</label>
                                     <p>${submission.sop}</p>
                                 </div>
+                                <div class="user-info">
+                                    <img src="${api}/User/${submission.user.id}/avatar" alt="User Avatar" />
+                                </div>
+                                
                             </div>
                         </div>
                         <div class="assignment-btn">
@@ -480,20 +484,20 @@ async function displayRoleAssignments(requirements, submissions) {
   });
 
   document.querySelectorAll(".approve-btn").forEach((button) => {
-    button.addEventListener("click", function () {
+    button.addEventListener("click", async function () {
       if (this.disabled) return;
       const submissionId = this.getAttribute("data-id");
       console.log(submissionId, "pending selected");
-      selectSubmissionStatus(submissionId, "2");
+      await selectSubmissionStatus(submissionId, "2");
     });
   });
 
   document.querySelectorAll(".reject-btn").forEach((button) => {
-    button.addEventListener("click", function () {
+    button.addEventListener("click", async function () {
       if (this.disabled) return;
       const submissionId = this.getAttribute("data-id");
       console.log(submissionId, "rejected selected");
-      selectSubmissionStatus(submissionId, "1");
+      await selectSubmissionStatus(submissionId, "1");
     });
   });
 }
@@ -529,6 +533,8 @@ async function selectSubmissionStatus(submissionId, selectedStatus) {
         status: statusValue,
       }),
     });
+
+    console.log(response);
 
     if (!response.ok) {
       throw new Error(`Update Submission Status Failed: ${response.status}`);

@@ -78,7 +78,7 @@ public class UserController : Controller
         var user = await _userService.Get(user => user.Id == id);
         if (user.Avatar == null)
         {
-            var defaultAvatar = _fileService.Get("defaulf-profile.png", FileService.FolderName.Avatar);
+            var defaultAvatar = _fileService.Get("default-profile.png", FileService.FolderName.Avatar);
             return await Task.FromResult(File(defaultAvatar, "image/jpeg"));
         }
         var stream = _fileService.Get(user.Avatar!, FileService.FolderName.Avatar);
