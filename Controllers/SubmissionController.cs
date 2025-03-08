@@ -83,6 +83,10 @@ public class SubmissionController : Controller
     {
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var submission = await _submissionService.Get(submission => submission.Id == id);
+        if (submission.SubmissionStatus == Submission.Status.Approved)
+        {
+            throw new HttpResponseException((int)HttpStatusCode.Forbidden, "Submission is already approved");
+        }
         var requirement = await _requirementService.Get(requirement => requirement.Id == submission.RequirementId);
         var team = await _teamService.Get(team => team.Id == requirement.TeamId);
         if (team.LeadId != userId)
