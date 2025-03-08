@@ -724,8 +724,8 @@ async function main() {
       for (const submission of submissions) {
         await updateSubmissionStatus(submission);
         await sendNotification(submission, team.id);
-        window.location.href = `${api}/Teams`;
       }
+      window.location.href = `${api}/Teams`;
     });
   }
 }
