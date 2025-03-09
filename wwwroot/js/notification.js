@@ -31,39 +31,56 @@ async function GetNotification() {
 
 function CreateMessage(data) {
   data.forEach((element) => {
-    const container = document.createElement("div");
-    container.className = "contain";
     const message = document.createElement("div");
-    const name = document.createElement("h2");
-    name.innerText = `${element.teamResponse.name} (${element.teamResponse.hackathonName})`;
-    const user = document.createElement("p");
-    user.innerText = `${element.userResponse.header} ${
-      element.userResponse.fullName
-    } ${element.type === 0 ? "Approved" : "Rejected"}`;
+    message.className = "message";
+
+    const messageContent = `
+      <div class="notification-detail box-01">
+        <label>Team Name</label>
+        <p>${element.teamResponse.name}</p>
+      </div>
+      <div class="notification-detail box-02">
+        <label>Hackathon Name</label>
+        <p>${element.teamResponse.hackathonName}</p>
+      </div>
+      <div class="notification-detail box-03">
+        <label>Message</label>
+        <p>${element.userResponse.header} ${element.userResponse.fullName} ${element.type === 0 ? 
+          '<span class="display-noti approved">Approved</span>' : 
+          '<span class="display-noti rejected">Rejected</span>'}
+        </p>
+      </div>
+    `;
+    message.innerHTML = messageContent;
+
     if (element.type === 0) {
       message.onclick = () => GoToTeamInfo(element.teamResponse.id);
       message.style.cursor = "pointer";
     }
-    const button = document.createElement("button");
-    button.innerText = "X";
-    button.className = "delete";
-    button.onclick = function (event) {
+
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.className = "delete-btn";
+    const deleteButtonContent = `
+      <img src="../pictures/delete-icon.svg" alt="delete icon">
+    `;
+    deleteButton.innerHTML = deleteButtonContent;
+    deleteButton.onclick = function (event) {
       event.stopPropagation();
       CreateConfirm(
         `Do you want to delete this?`,
         async function () {
           await DeleteNotification(element.id);
-          container.remove();
+          message.remove();
         },
         function () {}
       );
     };
-    message.appendChild(name);
-    message.appendChild(user);
+
+    message.appendChild(deleteButton);
+
+    const container = document.getElementById("messagesContainer");
     container.appendChild(message);
-    container.appendChild(button);
-    const messages = document.getElementById("messages");
-    messages.appendChild(container);
   });
 }
 
