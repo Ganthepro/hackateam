@@ -35,7 +35,7 @@ async function fetchUserMe() {
 
 async function fetchUserProject() {
   try {
-    const response = await fetch(`${api}/Project`, {
+    const response = await fetch(`${api}/Project?Limit=10000`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -71,7 +71,7 @@ async function fetchUserProject() {
 async function fetchAndMapSkills(projectsData) {
   try {
     // First, get all skills from the API
-    const response = await fetch(`${api}/Skill`, {
+    const response = await fetch(`${api}/Skill?Limit=10000`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -455,7 +455,9 @@ async function findOrCreateSkill(skillTitle) {
   
   // If not, we need to create a new skill
   try {
-    const response = await fetch(`${api}/Skill`, {
+    console.log("Creating new skill:", skillTitle);
+
+    const response = await fetch(`${api}/Skill?Limit=1000000`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -498,7 +500,7 @@ async function createProject(projectData) {
     console.log("Creating project with data:", projectData);
     
     const response = await fetch(`${api}/Project`, {
-      method: "POST",
+      method: "Post",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getCookie("token")}`,
@@ -516,7 +518,7 @@ async function createProject(projectData) {
     const projectsData = await fetchUserProject();
     displayProjects(projectsData);
     
-    return result;
+    // return result;
   } catch (error) {
     console.error("Error creating project:", error);
     CreateErrorBlock("Failed to create project");
@@ -603,7 +605,7 @@ async function openCreateProjectModal() {
     const titleInput = document.getElementById("project-title");
     const descriptionInput = document.getElementById("project-description");
     const skillInput = document.getElementById("project-skill");
-    
+
     if (!titleInput.value.trim()) {
       CreateErrorBlock("Project title is required");
       return;
@@ -614,6 +616,7 @@ async function openCreateProjectModal() {
       description: descriptionInput.value.trim(),
       skillId: skillInput.value.trim()
     };
+    console.log("Creating project with data:", projectData);
     
     try {
       await createProject(projectData);

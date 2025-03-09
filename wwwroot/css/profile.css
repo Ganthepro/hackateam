@@ -15,7 +15,7 @@ body {
   position: relative;
   height: fit-content;
   min-height: 100vh;
-  /* background-color: #050A12; */
+  background-color: #050A12;
 }
 
 .profile-content {
@@ -28,6 +28,37 @@ body {
   height: fit-content;
   gap: 1.5rem;
   padding: 2.25rem 4.5rem;
+}
+
+.profile-content h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #00ccff;
+  animation: navbar-title 2s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes navbar-title {
+  0% {
+    text-shadow: 0 0 12px #00f5d4;
+  }
+  50% {
+    text-shadow: 0 0 12px #0077ff;
+  }
+  100% {
+    text-shadow: 0 0 12px #00f5d4;
+  }
+}
+
+@keyframes navbar-title {
+  0% {
+    text-shadow: 0 0 12px #00f5d4;
+  }
+  50% {
+    text-shadow: 0 0 12px #0077ff;
+  }
+  100% {
+    text-shadow: 0 0 12px #00f5d4;
+  }
 }
 
 .profile-container {
@@ -63,7 +94,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 40%;
-  height: fit-content;
+  aspect-ratio: 1 / 1;
   border-radius: 100%;
   border: 0.125rem solid #00ccff;
 }
@@ -507,6 +538,10 @@ input[type="text"], textarea {
     width: 50%;
   }
 
+  .profile-group {
+    width: 100%;
+  }
+
 }
 
 /* Mobile Phones (≤ 480px) */
@@ -533,6 +568,10 @@ input[type="text"], textarea {
 
   .avatar-upload-container {
     width: 65%;
+  }
+
+  .profile-group {
+    width: 100%;
   }
 
 }

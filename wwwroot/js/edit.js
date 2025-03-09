@@ -434,8 +434,12 @@ async function displayRoleAssignments(requirements, submissions) {
             ? "disabled"
             : "";
 
+        // <img src="${api}/User/${submission.user.id}/avatar" alt="User Avatar" />
         roleHTML += `
                     <div class="assignment" data-submission-id="${submission.id}">
+                        <div class="assignment-icon" onclick="GoToProfile('${submission.user.id}')" style="cursor: pointer;">
+                          <img src="${api}/User/${submission.user.id}/avatar" alt="User Avatar" />
+                        </div>
                         <div class="assignment-info-container" onclick="GoToProfile('${submission.user.id}')" style="cursor: pointer;">
                             <div class="assignment-info">
                                 <div class="user-info">
@@ -445,10 +449,6 @@ async function displayRoleAssignments(requirements, submissions) {
                                 <div class="user-info">
                                     <label>Email</label>
                                     <p>${submission.user.email}</p>
-                                </div>
-                                <div class="user-info">
-                                    <label>Phone</label>
-                                    <p>${submission.user.tel}</p>
                                 </div>
                             </div>
                             <div class="assignment-info">
@@ -460,10 +460,6 @@ async function displayRoleAssignments(requirements, submissions) {
                                     <label>Resume</label>
                                     <p>${submission.sop}</p>
                                 </div>
-                                <div class="user-info">
-                                    <img src="${api}/User/${submission.user.id}/avatar" alt="User Avatar" />
-                                </div>
-                                
                             </div>
                         </div>
                         <div class="assignment-btn">
