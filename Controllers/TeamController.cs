@@ -153,6 +153,7 @@ public class TeamController : Controller
     public async Task<ActionResult<List<TeamResponseDto>>> GetRecommend(TeamQueryDto teamQueryDto)
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        await _teamService.Update(team => team.ExpiredAt < DateTime.UtcNow, new UpdateTeamDto { Status = Models.TeamStatus.Cancelled });
         if (string.IsNullOrEmpty(userId))
         {
             return Unauthorized();
@@ -230,6 +231,8 @@ public class TeamController : Controller
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var teams = await _teamService.GetAll(teamQueryDto);
         var teamDtos = new List<TeamResponseDto>();
+        
+        await _teamService.Update(team => team.ExpiredAt < DateTime.UtcNow, new UpdateTeamDto { Status = Models.TeamStatus.Cancelled });
 
         foreach (var team in teams)
         {

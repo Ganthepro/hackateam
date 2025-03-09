@@ -239,9 +239,14 @@ async function PendingTeams() {
 function createRequirementCard(team, type) {
   const card = document.createElement("div");
   card.classList.add("card");
+  console.log(team.status);
   card.addEventListener("click", () => {
     if (type === "hosted") {
-      window.location.href = `Teams/Edit?teamId=${team.id}`;
+      if (team.status === 1) {
+        window.location.href = `Teams/Info?Id=${team.id}`;
+      } else {
+        window.location.href = `Teams/Edit?teamId=${team.id}`;
+      }
     } else {
       window.location.href = `Teams/Info?Id=${team.id}`;
     }
