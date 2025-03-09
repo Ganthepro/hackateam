@@ -117,10 +117,6 @@ public class TeamService
         {
             ReturnDocument = ReturnDocument.After
         });
-        if (team == null)
-        {
-            throw new HttpResponseException((int)HttpStatusCode.NotFound, Constants.TeamMessage.NOT_FOUND);
-        }
         return team;
     }
 
