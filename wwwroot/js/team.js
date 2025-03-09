@@ -250,10 +250,28 @@ function createRequirementCard(team, type) {
   const createdDate = new Date(team.createdAt).toLocaleDateString();
   const updatedDate = new Date(team.updatedAt).toLocaleDateString();
   const expiredDate = new Date(team.expiredAt).toLocaleDateString();
-  const statusText = team.status === 0 ? "Open" : "Closed";
+
+  let statusText, statusColor;
+  switch (team.status) {
+    case 0:
+      statusText = "Open";
+      statusColor = "green";
+      break;
+    case 1:
+      statusText = "Closed";
+      statusColor = "red";
+      break;
+    case 2:
+      statusText = "Waiting";
+      statusColor = "blue";
+      break;
+    default:
+      statusText = "Unknown";
+      statusColor = "gray";
+  }
 
   card.innerHTML = `
-            <div class="card-status ${statusText.toLowerCase()}">
+            <div class="card-status" style="background-color: ${statusColor};">
                 ${statusText}
             </div>
             <div class="card-image">
