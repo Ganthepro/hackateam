@@ -70,7 +70,6 @@ async function fetchUserProject() {
 
 async function fetchAndMapSkills(projectsData) {
   try {
-    // First, get all skills from the API
     const response = await fetch(`${api}/Skill?Limit=10000`, {
       method: "GET",
       headers: {
@@ -86,17 +85,14 @@ async function fetchAndMapSkills(projectsData) {
     const allSkillsData = await response.json();
     console.log("all skills:", allSkillsData);
     
-    // Extract unique skills from projects and create mapping
     skillMappings = {};
     
-    // Map all skills from API
     allSkillsData.forEach(skill => {
       if (skill.title) {
         skillMappings[skill.title.toLowerCase()] = skill.id;
       }
     });
     
-    // Also extract skills from projects in case API doesn't return all
     projectsData.forEach(project => {
       if (project.skillResponse && project.skillResponse.title && project.skillResponse.id) {
         skillMappings[project.skillResponse.title.toLowerCase()] = project.skillResponse.id;
@@ -107,14 +103,12 @@ async function fetchAndMapSkills(projectsData) {
       title.charAt(0).toUpperCase() + title.slice(1)
     );
     
-    // Create or update the datalist element
     createSkillDatalist();
     
     return allSkills;
   } catch (error) {
     console.error("Error fetching skills:", error);
-    
-    // Fallback to project data if API call fails
+
     const uniqueSkills = new Set();
     skillMappings = {};
     
@@ -132,7 +126,6 @@ async function fetchAndMapSkills(projectsData) {
       title.charAt(0).toUpperCase() + title.slice(1)
     );
     
-    // Create or update the datalist element
     createSkillDatalist();
     
     return allSkills;
@@ -140,7 +133,6 @@ async function fetchAndMapSkills(projectsData) {
 }
 
 function createSkillDatalist() {
-  // Create or update the datalist element
   let datalist = document.getElementById("skills");
   if (!datalist) {
     datalist = document.createElement("datalist");
@@ -150,7 +142,6 @@ function createSkillDatalist() {
     datalist.innerHTML = "";
   }
   
-  // Add options to datalist
   allSkills.forEach(skill => {
     const option = document.createElement("option");
     option.value = skill;
@@ -161,6 +152,12 @@ function createSkillDatalist() {
 function displayUserProfile(data) {
   const avatar = document.getElementById("avatar");
   avatar.src = `${api}/User/${data.id}/avatar`;
+  avatar.alt = "Profile Picture";
+
+  avatar.onerror = function () {
+      this.onerror = null;
+      this.src = "../pictures/profile-default.svg";
+  };
 
   const fullNameInput = document.getElementById("fullName");
   fullNameInput.value = data.fullName || "";

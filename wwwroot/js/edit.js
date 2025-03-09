@@ -434,11 +434,12 @@ async function displayRoleAssignments(requirements, submissions) {
             ? "disabled"
             : "";
 
-        // <img src="${api}/User/${submission.user.id}/avatar" alt="User Avatar" />
         roleHTML += `
                     <div class="assignment" data-submission-id="${submission.id}">
                         <div class="assignment-icon" onclick="GoToProfile('${submission.user.id}')" style="cursor: pointer;">
-                          <img src="${api}/User/${submission.user.id}/avatar" alt="User Avatar" />
+                            <img src="${api}/User/${submission.user.id}/avatar" 
+                                 alt="Profile Picture"
+                                 onerror="this.onerror=null; this.src='/pictures/profile-default.svg';">
                         </div>
                         <div class="assignment-info-container" onclick="GoToProfile('${submission.user.id}')" style="cursor: pointer;">
                             <div class="assignment-info">
@@ -471,8 +472,10 @@ async function displayRoleAssignments(requirements, submissions) {
                             </button>
                         </div>
                     </div>
-                `;
+        `;
+        
       });
+
     } else {
       roleHTML += `<p>No submissions for this role yet.</p>`;
     }

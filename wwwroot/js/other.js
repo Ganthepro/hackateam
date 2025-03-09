@@ -163,6 +163,12 @@ function createSkillDatalist() {
 function displayUserProfile(data) {
   const avatar = document.getElementById("avatar");
   avatar.src = `${api}/User/${data.id}/avatar`;
+  avatar.alt = "Profile Picture";
+
+  avatar.onerror = function () {
+      this.onerror = null;
+      this.src = "../pictures/profile-default.svg";
+  };
 
   const fullNameInput = document.getElementById("fullName");
   fullNameInput.value = data.fullName || "";
