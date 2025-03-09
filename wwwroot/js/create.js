@@ -284,7 +284,7 @@ async function createTeam() {
     await createRequirements(teamId, token);
 
     alert("Team and requirements created successfully!");
-    window.location.href = `${api}/Team`;
+    window.location.href = `${api}/Explore`;
   } catch (error) {
     console.error("Error creating team:", error);
     alert("Failed to create team. Please try again.");
