@@ -243,7 +243,7 @@ function createRequirementCard(team, type) {
         if (type === "hosted") {
             window.location.href = `Teams/Edit?teamId=${team.id}`;
         } else {
-            window.location.href = `Teams/Info?teamId=${team.id}`;
+            window.location.href = `Teams/Info?Id=${team.id}`;
         }
     });
 
