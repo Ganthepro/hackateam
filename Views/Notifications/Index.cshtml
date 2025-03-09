@@ -6,9 +6,13 @@
     <link rel="stylesheet" href="~/css/notification.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/effect-grid-background.css" asp-append-version="true" />
     <title>@ViewData["Title"] - Notification</title>
 </head>
 <body>
+    @* Wave Grid Background *@
+    <div class="grid-container" id="grid-container"></div>
+
     @* Navbar Component *@
     <nav class="navbar">
         <div class="navbar-title">Hackateam</div>
@@ -21,11 +25,12 @@
         <img src="~/pictures/dropdown-menu-icon.svg" alt="dropdown-menu" class="dropdown-menu"/>
     </nav>
 
-    <header>Notification</header>
-    <main>
-        <section id="messages">
-        </section>
-    </main>
+    <div class="notification-content">
+        <h1>Notification</h1>
+        <div class="messages-container" id="messagesContainer">
+            @* Display Messages *@
+        </div>
+    </div>
 
     @* Footer Component *@
     <footer>
@@ -51,5 +56,6 @@
     <script src="~/js/alert.js" asp-append-version="true"></script>
     <script src="~/js/notification.js" asp-append-version="true"></script>
     <script src="~/js/authentication.js" asp-append-version="true"></script>
+    <script src="~/js/effect-grid-background.js" asp-append-version="true"></script>
 </body>
 </html>
