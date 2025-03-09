@@ -103,22 +103,22 @@ function createRequirementGroup() {
         </button>
     `;
 
-    const skillInput = requirementContainer.querySelector(
-      'input[name="member-skill"]'
-    );
-    skillInput.addEventListener("input", function () {
-      SearchSkill(this, `skills-${uniqueId}`);
-    });
+  const skillInput = requirementContainer.querySelector(
+    'input[name="member-skill"]'
+  );
+  skillInput.addEventListener("input", function () {
+    SearchSkill(this, `skills-${uniqueId}`);
+  });
 
-    const deleteButton = requirementContainer.querySelector(
-      ".delete-requirement-btn"
-    );
-    deleteButton.addEventListener("click", () => {
-      requirementContainer.remove();
-      updateDeleteButtons();
-    });
+  const deleteButton = requirementContainer.querySelector(
+    ".delete-requirement-btn"
+  );
+  deleteButton.addEventListener("click", () => {
+    requirementContainer.remove();
+    updateDeleteButtons();
+  });
 
-    return requirementContainer;
+  return requirementContainer;
 }
 
 const addButton = document.createElement("button");
@@ -146,10 +146,10 @@ function handleFileInput() {
   const fileInput = document.getElementById("fileInput");
   const bannerContainer = document.getElementById("create-team-banner");
 
-  fileInput.addEventListener("change", function() {
+  fileInput.addEventListener("change", function () {
     const file = this.files[0];
     bannerContainer.innerHTML = "";
-    
+
     if (file) {
       if (file.type.startsWith("image/")) {
         const imageUrl = URL.createObjectURL(file);
@@ -158,77 +158,93 @@ function handleFileInput() {
         bannerImg.alt = "Team Banner";
         bannerImg.classList.add("banner-image");
         bannerContainer.appendChild(bannerImg);
-        
+
         const fileNameElement = document.getElementById("fileInputDesc");
         if (fileNameElement) {
           fileNameElement.textContent = file.name;
         }
       } else {
-        bannerContainer.innerHTML = '<div class="no-banner">Please select an image file</div>';
+        bannerContainer.innerHTML =
+          '<div class="no-banner">Please select an image file</div>';
       }
     } else {
-      bannerContainer.innerHTML = '<div class="no-banner">No banner uploaded</div>';
+      bannerContainer.innerHTML =
+        '<div class="no-banner">No banner uploaded</div>';
     }
   });
 }
 
 function validateRequirements() {
-  const requirementContainers = document.querySelectorAll(".member-requirement-container");
+  const requirementContainers = document.querySelectorAll(
+    ".member-requirement-container"
+  );
 
   if (requirementContainers.length === 0) {
-    alert("Please add at least one team member requirement.");
+    CreateErrorBlock("Please add at least one team member requirement.");
     return false;
   }
-  
+
   for (let i = 0; i < requirementContainers.length; i++) {
     const container = requirementContainers[i];
-    const roleName = container.querySelector('input[name="member-role"]').value.trim();
-    const quantity = container.querySelector('input[name="member-quantity"]').value.trim();
-    const skill = container.querySelector('input[name="member-skill"]').value.trim();
-    
+    const roleName = container
+      .querySelector('input[name="member-role"]')
+      .value.trim();
+    const quantity = container
+      .querySelector('input[name="member-quantity"]')
+      .value.trim();
+    const skill = container
+      .querySelector('input[name="member-skill"]')
+      .value.trim();
+
     if (!roleName || !quantity || !skill) {
-      alert(`Please fill all fields in requirement #${i + 1}.`);
+      CreateErrorBlock(`Please fill all fields in requirement #${i + 1}.`);
       return false;
     }
 
     if (isNaN(quantity) || parseInt(quantity) <= 0) {
-      alert(`Quantity in requirement #${i + 1} must be a positive number.`);
+      CreateErrorBlock(
+        `Quantity in requirement #${i + 1} must be a positive number.`
+      );
       return false;
     }
   }
-  
+
   return true;
 }
 
 function validateForm() {
   const teamName = document.getElementById("team-name").value.trim();
-  const teamDescription = document.getElementById("team-description").value.trim();
+  const teamDescription = document
+    .getElementById("team-description")
+    .value.trim();
   const hackathonName = document.getElementById("hackathon-name").value.trim();
-  const hackathonDescription = document.getElementById("hackathon-description").value.trim();
+  const hackathonDescription = document
+    .getElementById("hackathon-description")
+    .value.trim();
   const hackathonDate = document.getElementById("hackathon-date").value;
-  
+
   if (!teamName) {
-    alert("Please enter a team name.");
+    CreateErrorBlock("Please enter a team name.");
     return false;
   }
-  
+
   if (!teamDescription) {
-    alert("Please enter a team description.");
+    CreateErrorBlock("Please enter a team description.");
     return false;
   }
-  
+
   if (!hackathonName) {
-    alert("Please enter a hackathon name.");
+    CreateErrorBlock("Please enter a hackathon name.");
     return false;
   }
-  
+
   if (!hackathonDescription) {
-    alert("Please enter a hackathon description.");
+    CreateErrorBlock("Please enter a hackathon description.");
     return false;
   }
-  
+
   if (!hackathonDate) {
-    alert("Please select a hackathon end date.");
+    CreateErrorBlock("Please select a hackathon end date.");
     return false;
   }
 
@@ -237,7 +253,7 @@ function validateForm() {
 
 async function createTeam() {
   if (!validateForm()) {
-    return; 
+    return;
   }
 
   const teamName = document.getElementById("team-name").value;
@@ -283,11 +299,11 @@ async function createTeam() {
 
     await createRequirements(teamId, token);
 
-    alert("Team and requirements created successfully!");
+    CreateSuccessBlock("Team and requirements created successfully!");
     window.location.href = `${api}/Explore`;
   } catch (error) {
     console.error("Error creating team:", error);
-    alert("Failed to create team. Please try again.");
+    CreateErrorBlock("Failed to create team. Please try again.");
   }
 }
 
@@ -311,7 +327,7 @@ async function uploadTeamBanner(teamId, file, token) {
     console.log("Banner uploaded successfully.");
   } catch (error) {
     console.error("Error uploading banner:", error);
-    alert("Failed to upload team banner.");
+    CreateErrorBlock("Failed to upload team banner.");
   }
 }
 
@@ -382,10 +398,10 @@ async function createRequirements(teamId, token) {
 document.addEventListener("DOMContentLoaded", () => {
   const initialGroup = createRequirementGroup();
   requirementsContainer.appendChild(initialGroup);
-  
+
   updateDeleteButtons();
   handleFileInput();
-  
+
   const bannerContainer = document.getElementById("create-team-banner");
   bannerContainer.innerHTML = '<div class="no-banner">No banner uploaded</div>';
 });

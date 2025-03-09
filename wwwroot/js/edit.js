@@ -154,7 +154,7 @@ async function uploadTeamBanner(teamId, file) {
     console.log("Banner uploaded successfully.");
   } catch (error) {
     console.error("Error uploading banner:", error);
-    alert("Failed to upload team banner.");
+    CreateErrorBlock("Failed to upload team banner.");
   }
 }
 
@@ -223,9 +223,9 @@ async function handleFormSubmit() {
   if (updatedTeam !== null) {
     // Update displayed team info with the response from server
     displayTeamInfomation(updatedTeam);
-    alert("Team information updated successfully!");
+    CreateSuccessBlock("Team information updated successfully!");
   } else {
-    alert("Failed to update team information. Please try again.");
+    CreateErrorBlock("Failed to update team information. Please try again.");
   }
 }
 
@@ -300,14 +300,16 @@ function setupBannerUpload() {
       "image/webp",
     ];
     if (!validImageTypes.includes(file.type)) {
-      alert("Please upload a valid image file (JPEG, PNG, GIF, or WEBP)");
+      CreateErrorBlock(
+        "Please upload a valid image file (JPEG, PNG, GIF, or WEBP)"
+      );
       bannerInput.value = "";
       return;
     }
 
     const maxSize = 5 * 1024 * 1024;
     if (file.size > maxSize) {
-      alert("File size exceeds the 5MB limit");
+      CreateErrorBlock("File size exceeds the 5MB limit");
       bannerInput.value = "";
       return;
     }
@@ -330,7 +332,7 @@ function setupBannerUpload() {
         selectedBannerFile = null;
       } catch (error) {
         console.error("Error uploading banner:", error);
-        alert(
+        CreateErrorBlock(
           "Failed to upload banner. The team information will still be saved."
         );
       }
@@ -473,9 +475,7 @@ async function displayRoleAssignments(requirements, submissions) {
                         </div>
                     </div>
         `;
-        
       });
-
     } else {
       roleHTML += `<p>No submissions for this role yet.</p>`;
     }
@@ -546,7 +546,7 @@ async function selectSubmissionStatus(submissionId, selectedStatus) {
     const data = await response.json();
     console.log("Submission status updated successfully:", data);
 
-    alert(
+    CreateSuccessBlock(
       selectedStatus === "2"
         ? "Application approved successfully!"
         : "Application rejected successfully!"
@@ -556,7 +556,7 @@ async function selectSubmissionStatus(submissionId, selectedStatus) {
     return data;
   } catch (error) {
     console.error("Error updating submission status:", error);
-    alert("Failed to update submission status. Please try again.");
+    CreateErrorBlock("Failed to update submission status. Please try again.");
 
     approveBtn.disabled = wasApproveDisabled;
     rejectBtn.disabled = wasRejectDisabled;
@@ -625,7 +625,7 @@ async function updateTeamStatus(teamId) {
     });
   } catch (error) {
     console.error("Error:", error);
-    alert("Failed to update team status. Please try again.");
+    CreateErrorBlock("Failed to update team status. Please try again.");
     throw error;
   }
 }
@@ -660,7 +660,7 @@ async function updateSubmissionStatus(submission) {
     return result;
   } catch (error) {
     console.error("Error updating notification status:", error);
-    alert("Failed to update notification status. Please try again.");
+    CreateErrorBlock("Failed to update notification status. Please try again.");
     throw error;
   }
 }
@@ -716,7 +716,7 @@ async function main() {
   if (confirmTeamBtn) {
     confirmTeamBtn.addEventListener("click", async function () {
       if (team.status !== 0) {
-        alert("Team already confirmed!");
+        CreateErrorBlock("Team already confirmed!");
         return;
       }
       await updateTeamStatus(team.id);
