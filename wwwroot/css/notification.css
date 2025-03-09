@@ -30,6 +30,31 @@ body {
 .notification-content h1 {
   font-size: 2rem;
   color: #00CCFF;
+  animation: navbar-title 2s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes navbar-title {
+  0% {
+    text-shadow: 0 0 12px #00f5d4;
+  }
+  50% {
+    text-shadow: 0 0 12px #0077ff;
+  }
+  100% {
+    text-shadow: 0 0 12px #00f5d4;
+  }
+}
+
+@keyframes navbar-title {
+  0% {
+    text-shadow: 0 0 12px #00f5d4;
+  }
+  50% {
+    text-shadow: 0 0 12px #0077ff;
+  }
+  100% {
+    text-shadow: 0 0 12px #00f5d4;
+  }
 }
 
 .messages-container {
