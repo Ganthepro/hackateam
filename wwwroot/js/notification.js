@@ -88,13 +88,18 @@ function CreateNoMessage() {
   const noNotification = document.createElement("div");
   noNotification.className = "nomessage";
   const image = document.createElement("img");
-  image.src = "../pictures/notification/nomessage.jpg";
+  image.src = "../pictures/notification/nomessage.png";
   image.alt = "No Notification";
   const message = document.createElement("h4");
   message.innerText = "No Notification";
+  image.style.width = "25%";
   noNotification.appendChild(image);
   noNotification.appendChild(message);
-  const messages = document.getElementById("messages");
+  const messages = document.getElementById("messagesContainer");
+  noNotification.style.display = "flex"
+  noNotification.style.flexDirection = "column"
+  noNotification.style.justifyContent = "center"
+    noNotification.style.alignItems = "center"
   messages.appendChild(noNotification);
 }
 
