@@ -137,7 +137,8 @@ public class TeamController : Controller
         var teamDtos = new List<TeamResponseDto>();
         foreach (var team in teams)
         {
-            await _teamService.Update(team => team.Id == team.Id && team.ExpiredAt < DateTime.UtcNow, new UpdateTeamDto { Status = Models.TeamStatus.Closed });
+            var teamTemp = team;
+            await _teamService.Update(team => team.Id == teamTemp.Id && team.ExpiredAt < DateTime.UtcNow, new UpdateTeamDto { Status = Models.TeamStatus.Closed });
             var user = await _userService.Get(user => user.Id == team.LeadId);
             teamDtos.Add(new TeamResponseDto(team, user));
         }
