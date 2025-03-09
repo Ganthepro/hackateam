@@ -6,12 +6,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
     <title>@ViewData["Title"] - Profile</title>
+    <link rel="stylesheet" href="~/css/profile.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/navbar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/footer.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/file-input.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/effect-grid-background.css" asp-append-version="true" />
 </head>
 <body>
+    @* Wave Grid Background *@
+    <div class="grid-container" id="grid-container"></div>
+
     <nav class="navbar">
         <div class="navbar-title">Hackateam</div>
         <div class="navbar-links">
@@ -23,23 +28,55 @@
         <img src="~/pictures/dropdown-menu-icon.svg" alt="dropdown-menu" class="dropdown-menu"/>
     </nav>
 
-    <header>
+    <div class="profile-content">
         <h1>My Profile</h1>
-        
-    </header>
-
-    <main>
-        <section id="profile">
-            <img src="https://e7.pngegg.com/pngimages/84/165/png-clipart-united-states-avatar-organization-information-user-avatar-service-computer-wallpaper-thumbnail.png" alt="Avatar" id="avatar" />
-            <div id="profile-details">
-                <p id="fullname" class="p"><strong>Fullname:</strong></p>
-                <p id="tel" class="p"><strong>Tel:</strong></p>
-                <p id="email" class="p"><strong>Email:</strong></p>
+        <section class="profile-container">
+            <div class="profile-avatar-container">
+                <img class="avatar-icon" alt="Avatar" id="avatar" />
+                <div class="avatar-upload-container" id="avatar-upload-container" style="display: none;">
+                    <div for="avatar-upload" class="file-input-space">
+                        <div class="file-input-btn" aria-describedby="fileInputDesc">
+                            <span class="file-btn">Choose file</span>
+                            <span class="file-name" id="fileInputDesc">No file chosen</span>
+                        </div>
+                        <input 
+                            type="file" class="file-input" 
+                            id="avatar-upload" name="avatar"
+                            accept="image/*" onchange="previewAvatar(event)"
+                            aria-label="File upload"
+                        >
+                    </div>
+                </div>
             </div>
-            <button id="edit" onclick="PageUpdateProfile()">Edit</button>
+            <div class="profile-details">
+                <div class="profile-group">
+                    <label for="fullName">Full Name</label>
+                    <div class="profile-name">
+                        <select name="header" id="headerSelect" disabled>
+                            <option value="Mr.">Mr.</option>
+                            <option value="Ms.">Ms.</option>
+                            <option value="Mrs.">Mrs.</option>
+                        </select>
+                        <input type="text" id="fullName" name="fullName" disabled>
+                    </div>
+                </div>
+                <div class="profile-group">
+                    <label for="tel">Phone</label>
+                    <input type="text" id="tel" name="tel" disabled>
+                </div>
+                <div class="profile-group">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email" disabled>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="edit-btn" id="editButton" onclick="startEditing()">Edit</button>
+                <button class="save-btn" id="saveButton" onclick="saveProfile()" style="display: none;">Save</button>
+                <button class="cancel-btn" id="cancelButton" onclick="cancelEditing()" style="display: none;">Cancel</button>
+            </div>
         </section>
 
-        <div id="projects">
+        @* <div id="projects">
             <div id="showproject">
                 <h2>Projects </h2>
                 <input type="text" id="skill" name="skill" autocomplete="off" placeholder="Search projects..." list="skills" onkeydown="handleKeyPress(event)">
@@ -47,10 +84,34 @@
                 <button id="loadMore" onclick="SeeMore()">Show All</button>
             </div>
         </div>
-        <div id="projects-list">
+        <div id="projects-list"></div> *@
 
+        <div class="project-content">
+            <div class="project-wrapper">
+                <h2>My Projects</h2>
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        id="skill" 
+                        name="skill" 
+                        autocomplete="off" 
+                        placeholder="Search by skill or title..." 
+                        list="skills" 
+                        onkeydown="handleKeyPress(event)"
+                    >
+                    <datalist id="skills">
+                        <!-- Skill options will be populated dynamically -->
+                    </datalist>
+                </div>
+                <button class="add-btn" id="add-project" title="Create new project">Add Project</button>
+                <button class="display-btn" id="loadMore" onclick="toggleShowMore()">Show All</button>
+            </div>
+            <div class="projects-list" id="projects-list">
+                <!-- Projects will be rendered here -->
+            </div>
         </div>
-    </main>
+
+    </div>
 
     @* Footer Component *@
     <footer>
@@ -76,5 +137,7 @@
     <script src="~/js/authentication.js" asp-append-version="true"></script>
     <script src="~/js/alert.js" asp-append-version="true"></script>
     <script src="~/js/profile.js" asp-append-version="true"></script>
+    <script src="~/js/file-input.js" asp-append-version="true"></script>
+    <script src="~/js/effect-grid-background.js" asp-append-version="true"></script>
 </body>
 </html>

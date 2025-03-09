@@ -51,3 +51,32 @@
     text-overflow: ellipsis;
     font-size: 0.875rem;
 }
+
+/* Small Laptops & Tablets (≤ 1199px) */
+@media (max-width: 1200px) {
+    .file-btn {
+        font-size: 0.75rem;
+    }
+    
+    .file-name {
+        font-size: 0.75rem;
+    }
+
+  }
+  
+  /* Tablets (≤ 769px) */
+  @media (max-width: 769px) {
+    .file-btn {
+        font-size: 0.625rem;
+    }
+    
+    .file-name {
+        font-size: 0.625rem;
+    }
+  
+  }
+  
+  /* Mobile Phones (≤ 480px) */
+  @media (max-width: 480px) {
+  
+  }
