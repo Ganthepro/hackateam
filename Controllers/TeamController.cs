@@ -135,10 +135,10 @@ public class TeamController : Controller
     {
         var teams = await _teamService.GetAll(teamQueryDto);
         var teamDtos = new List<TeamResponseDto>();
+        await _teamService.Update(team => team.ExpiredAt < DateTime.UtcNow, new UpdateTeamDto { Status = Models.TeamStatus.Closed });
         foreach (var team in teams)
         {
             var teamTemp = team;
-            await _teamService.Update(team => team.Id == teamTemp.Id && team.ExpiredAt < DateTime.UtcNow, new UpdateTeamDto { Status = Models.TeamStatus.Closed });
             var user = await _userService.Get(user => user.Id == team.LeadId);
             teamDtos.Add(new TeamResponseDto(team, user));
         }
