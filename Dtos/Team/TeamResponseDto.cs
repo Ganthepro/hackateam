@@ -5,6 +5,7 @@ namespace hackateam.Dtos.Team
 {
     public class TeamResponseDto
     {
+        private static readonly TimeZoneInfo BangkokTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Bangkok");
         public TeamResponseDto(hackateam.Models.Team team, hackateam.Models.User user = null!)
         {
             Id = team.Id;
@@ -13,9 +14,9 @@ namespace hackateam.Dtos.Team
             Status = team.Status;
             HackathonName = team.HackathonName;
             HackathonDescription = team.HackathonDescription;
-            CreatedAt = team.CreatedAt;
-            UpdatedAt = team.UpdatedAt;
-            ExpiredAt = team.ExpiredAt;
+            CreatedAt = TimeZoneInfo.ConvertTimeFromUtc(team.CreatedAt, BangkokTimeZone);
+            UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(team.UpdatedAt, BangkokTimeZone);
+            ExpiredAt = TimeZoneInfo.ConvertTimeFromUtc(team.ExpiredAt, BangkokTimeZone);;
         }
 
         public string? Id { get; set; }
