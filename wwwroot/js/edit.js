@@ -716,7 +716,7 @@ async function main() {
   updateConfirmButtonState(requirements, submissions);
   if (confirmTeamBtn) {
     confirmTeamBtn.addEventListener("click", async function () {
-      if (team.status !== "Opened") {
+      if (team.status !== 0) {
         alert("Team already confirmed!");
         return;
       }
