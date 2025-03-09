@@ -12,10 +12,13 @@ namespace hackateam.Models
 
     public class Team
     {
+        private static readonly TimeZoneInfo BangkokTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Bangkok");
+
         public Team()
         {
-            CreatedAt = DateTime.UtcNow;
-            UpdatedAt = DateTime.UtcNow;
+            var bangkokNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, BangkokTimeZone);
+            CreatedAt = bangkokNow; 
+            UpdatedAt = bangkokNow;
             Status = TeamStatus.Opened;
         }
         
@@ -41,13 +44,14 @@ namespace hackateam.Models
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime CreatedAt { get; private set; }
-
+        
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime UpdatedAt { get; set; }
 
         [BsonRequired]
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime ExpiredAt { get; set; }
+
         public string? Banner { get; set; } = null;
     }
 }

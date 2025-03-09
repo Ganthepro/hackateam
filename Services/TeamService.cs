@@ -57,8 +57,9 @@ public class TeamService
     {
         try
         {
-
-            if (createTeamDto.ExpiredAt <= DateTime.UtcNow)
+            var bangkokTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Bangkok");
+            var currentBangkokTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, bangkokTimeZone);
+            if (createTeamDto.ExpiredAt <= currentBangkokTime)
             {
                 throw new HttpResponseException((int)HttpStatusCode.BadRequest,
                     Constants.TeamMessage.EXPIRE_DATE_CONFLICT);

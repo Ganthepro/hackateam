@@ -1,4 +1,3 @@
-
 const api = "http://localhost:5234";
 
 const teamId = document.getElementById("teamId").dataset.id;
@@ -25,7 +24,7 @@ async function fetchTeamData() {
     const base64Banner = await fetchTeamBanner(data.id);
     const teamWithBanner = {
       ...data,
-      bannerUrl: base64Banner || '/pictures/default-banner.png'
+      bannerUrl: base64Banner || "/pictures/default-banner.png",
     };
 
     console.log("Team with Banner:", teamWithBanner);
@@ -295,7 +294,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   const requirements = await fetchTeamRequirements();
   const teamSize = calculateTeamSize(requirements);
   displayTeamData(teamData, teamSize);
-  if ((await checkUser(teamData.id, await fetchSubmissions())) !== true) {
+  if (
+    (await checkUser(teamData.leadResponse.id, await fetchSubmissions())) !==
+    true
+  ) {
     displayRequirements(requirements);
   } else {
     hideForm();
