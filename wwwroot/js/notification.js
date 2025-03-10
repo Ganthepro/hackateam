@@ -1,40 +1,38 @@
-api = "http://localhost:5234";
+var api = "http://localhost:5234";
 
 document.addEventListener("DOMContentLoaded", async function () {
-  await GetNotification();
+    await GetNotification();
 });
 
 async function GetNotification() {
-  try {
-    const response = await fetch(`${api}/Notification`, {
-      method: "Get",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookie("token")}`,
-      },
-    });
+    try {
 
-    if (!response.ok) {
-      throw new Error(`Get Notification failed: ${response.status}`);
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", `${api}/Notification`, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("Authorization", `Bearer ${getCookie("token")}`);
+        xhr.send();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const result = JSON.parse(xhr.responseText);
+                if (result.length === 0) {
+                    CreateNoMessage();
+                } else {
+                    CreateMessage(result);
+                }
+            } 
+        };
+    } catch (error) {
+        CreateErrorBlock(error);
     }
-
-    const result = await response.json();
-    if (result.length === 0) {
-      CreateNoMessage();
-    } else {
-      CreateMessage(result);
-    }
-  } catch (error) {
-    CreateErrorBlock(error);
-  }
 }
 
 function CreateMessage(data) {
-  data.forEach((element) => {
-    const message = document.createElement("div");
-    message.className = "message";
+    data.forEach((element) => {
+        const message = document.createElement("div");
+        message.className = "message";
 
-    const messageContent = `
+        const messageContent = `
       <div class="notification-detail box-01">
         <label>Team Name</label>
         <p>${element.teamResponse.name}</p>
@@ -53,37 +51,37 @@ function CreateMessage(data) {
         </p>
       </div>
     `;
-    message.innerHTML = messageContent;
+        message.innerHTML = messageContent;
 
-    if (element.type === 0) {
-      message.onclick = () => GoToTeamInfo(element.teamResponse.id);
-      message.style.cursor = "pointer";
-    }
+        if (element.type === 0) {
+            message.onclick = () => GoToTeamInfo(element.teamResponse.id);
+            message.style.cursor = "pointer";
+        }
 
-    const deleteButton = document.createElement("button");
-    deleteButton.type = "button";
-    deleteButton.className = "delete-btn";
-    const deleteButtonContent = `
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "delete-btn";
+        const deleteButtonContent = `
       <img src="../pictures/delete-icon.svg" alt="delete icon">
     `;
-    deleteButton.innerHTML = deleteButtonContent;
-    deleteButton.onclick = function (event) {
-      event.stopPropagation();
-      CreateConfirm(
-        `Do you want to delete this?`,
-        async function () {
-          await DeleteNotification(element.id);
-          message.remove();
-        },
-        function () {}
-      );
-    };
+        deleteButton.innerHTML = deleteButtonContent;
+        deleteButton.onclick = function (event) {
+            event.stopPropagation();
+            CreateConfirm(
+                `Do you want to delete this?`,
+                async function () {
+                    await DeleteNotification(element.id);
+                    message.remove();
+                },
+                function () { }
+            );
+        };
 
-    message.appendChild(deleteButton);
+        message.appendChild(deleteButton);
 
-    const container = document.getElementById("messagesContainer");
-    container.appendChild(message);
-  });
+        const container = document.getElementById("messagesContainer");
+        container.appendChild(message);
+    });
 }
 
 function CreateNoMessage() {
@@ -106,23 +104,23 @@ function CreateNoMessage() {
 }
 
 async function DeleteNotification(id) {
-  try {
-    const response = await fetch(`${api}/Notification/${id}`, {
-      method: "Delete",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookie("token")}`,
-      },
-    });
+    try {
+        const response = await fetch(`${api}/Notification/${id}`, {
+            method: "Delete",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getCookie("token")}`,
+            },
+        });
 
-    if (!response.ok) {
-      throw new Error(`Delete Notification failed: ${response.status}`);
+        if (!response.ok) {
+            throw new Error(`Delete Notification failed: ${response.status}`);
+        }
+    } catch (error) {
+        CreateErrorBlock("Delete Notification failed");
     }
-  } catch (error) {
-    CreateErrorBlock("Delete Notification failed");
-  }
 }
 
 function GoToTeamInfo(id) {
-  window.location.href = `${api}/Teams/Info?id=${id}`;
+    window.location.href = `${api}/Teams/Info?id=${id}`;
 }
