@@ -282,7 +282,7 @@ async function SearchHackathon() {
     if (hackathon.length < 1) return;
 
     try {
-        const response = await fetch(`${api}/Team/other?HackathonName=${hackathon}&Limit=1000`, {
+        const response = await fetch(`${api}/Team/other?HackathonName=${hackathon}&Limit=1000&Status=0`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -325,7 +325,7 @@ function CreateOption(information) {
 async function fetchOtherTeamsByHackathonName() {
     try {
         const hackathon = document.getElementById("search-bar").value;
-        const response = await fetch(`${api}/Team/other?Limit=1000&HackathonName=${hackathon}`, {
+        const response = await fetch(`${api}/Team/other?Limit=1000&HackathonName=${hackathon}&Status=0`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

@@ -92,8 +92,10 @@ async function updateTeam(teamData) {
 
     const data = await response.json();
     console.log("Team updated successfully:", data);
+    CreateSuccessBlock("Team updated successfully");
   } catch (error) {
     console.error("Error updating team:", error);
+    CreateErrorBlock(`Error updating team: ${error}`);
     return null;
   }
 }
@@ -152,6 +154,7 @@ async function uploadTeamBanner(teamId, file) {
     }
 
     console.log("Banner uploaded successfully.");
+    CreateSuccessBlock("Banner uploaded successfully.");
   } catch (error) {
     console.error("Error uploading banner:", error);
     CreateErrorBlock("Failed to upload team banner.");

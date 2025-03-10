@@ -59,6 +59,7 @@ async function SearchSkill(inputElement, datalistId) {
     });
   } catch (error) {
     console.error("Error searching for skills:", error);
+    CreateErrorBlock(`Error searching for skills: ${error}`);
   }
 }
 
@@ -325,6 +326,7 @@ async function uploadTeamBanner(teamId, file, token) {
     }
 
     console.log("Banner uploaded successfully.");
+    CreateSuccessBlock("Banner uploaded successfully.");
   } catch (error) {
     console.error("Error uploading banner:", error);
     CreateErrorBlock("Failed to upload team banner.");
@@ -391,6 +393,7 @@ async function createRequirements(teamId, token) {
       }
     } catch (error) {
       console.error("Error creating requirement:", error);
+      CreateErrorBlock(`Error creating requirement: ${error}`);
     }
   }
 }
