@@ -46,8 +46,8 @@ function CreateMessage(data) {
         <p>${element.teamResponse.hackathonName}</p>
       </div>
       <div class="notification-detail box-03">
-        <label>Message</label>
-        <p>Status ${
+        <label>Status</label>
+        <p>${
           element.type === 0
             ? '<span class="display-noti approved">Approved</span>'
             : '<span class="display-noti rejected">Rejected</span>'
