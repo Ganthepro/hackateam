@@ -34,8 +34,6 @@ function CreateMessage(data) {
     const message = document.createElement("div");
     message.className = "message";
 
-    console.log(element);
-
     const messageContent = `
       <div class="notification-detail box-01">
         <label>Team Name</label>
