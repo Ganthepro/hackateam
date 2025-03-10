@@ -370,11 +370,11 @@ async function main() {
             recommendedTeamsContainer.innerHTML = '';
 
             const recommendedTeamsHeader = document.createElement('h2');
-            recommendedTeamsHeader.textContent = 'Recommended Projects';
+            recommendedTeamsHeader.textContent = 'Recommended Teams';
             recommendedTeamsContainer.appendChild(recommendedTeamsHeader);
 
             text.classList.add('no-teams');
-            text.textContent = 'No Recommended Projects';
+            text.textContent = 'No Recommended Teams';
             recommendedTeamsContainer.appendChild(text);
         }
 
