@@ -216,7 +216,7 @@ async function PendingTeams() {
   );
 
   const pendingTeams = requirements
-    .filter((req) => req && req.team)
+    .filter((req) => req && req.team && req.team.status != 1)
     .map((requirement) => requirement.team);
 
   const pendingTeamBanners = await Promise.all(

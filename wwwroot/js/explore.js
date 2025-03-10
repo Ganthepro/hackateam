@@ -282,7 +282,7 @@ async function SearchHackathon() {
     if (hackathon.length < 1) return;
 
     try {
-        const response = await fetch(`${api}/Team/other?HackathonName=${hackathon}&Limit=1000`, {
+        const response = await fetch(`${api}/Team/other?HackathonName=${hackathon}&Limit=1000&Status=0`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
