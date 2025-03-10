@@ -133,9 +133,12 @@ public class TeamController : Controller
     [Authorize]
     public async Task<ActionResult<List<TeamResponseDto>>> Get(TeamQueryDto teamQueryDto)
     {
+        await _teamService.Update(
+            team => team.ExpiredAt < DateTime.UtcNow && team.Status == Models.TeamStatus.Opened, 
+            new UpdateTeamDto { Status = Models.TeamStatus.Cancelled }
+        );
         var teams = await _teamService.GetAll(teamQueryDto);
         var teamDtos = new List<TeamResponseDto>();
-        await _teamService.Update(team => team.ExpiredAt < DateTime.UtcNow, new UpdateTeamDto { Status = Models.TeamStatus.Cancelled });
         foreach (var team in teams)
         {
             var teamTemp = team;
@@ -150,11 +153,15 @@ public class TeamController : Controller
     public async Task<ActionResult<List<TeamResponseDto>>> GetRecommend(TeamQueryDto teamQueryDto)
     {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        await _teamService.Update(team => team.ExpiredAt < DateTime.UtcNow, new UpdateTeamDto { Status = Models.TeamStatus.Cancelled });
         if (string.IsNullOrEmpty(userId))
         {
             return Unauthorized();
         }
+
+        await _teamService.Update(
+            team => team.ExpiredAt < DateTime.UtcNow && team.Status == Models.TeamStatus.Opened, 
+            new UpdateTeamDto { Status = Models.TeamStatus.Cancelled }
+        );
 
         var user = await _userService.Get(user => user.Id == userId);
         var projects = await _projectService.GetAll(project => project.UserId == userId);
@@ -215,12 +222,15 @@ public class TeamController : Controller
     [Authorize]
     public async Task<ActionResult<List<TeamResponseDto>>> GetOtherTeam(TeamQueryDto teamQueryDto)
     {
+        await _teamService.Update(
+            team => team.ExpiredAt < DateTime.UtcNow && team.Status == Models.TeamStatus.Opened, 
+            new UpdateTeamDto { Status = Models.TeamStatus.Cancelled }
+        );
+
         var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var teams = await _teamService.GetAll(teamQueryDto);
         var teamDtos = new List<TeamResponseDto>();
         
-        await _teamService.Update(team => team.ExpiredAt < DateTime.UtcNow, new UpdateTeamDto { Status = Models.TeamStatus.Cancelled });
-
         foreach (var team in teams)
         {
             if (team.LeadId != userId)

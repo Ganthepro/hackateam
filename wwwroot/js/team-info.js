@@ -237,6 +237,7 @@ async function joinTeam(event) {
     const sop = document.getElementById("sop").value.trim();
     if (!sop) {
       console.error("Statement of Purpose is required");
+      CreateErrorBlock("Statement of Purpose is required");
       return;
     }
 
@@ -245,6 +246,7 @@ async function joinTeam(event) {
     );
     if (!selectedCheckbox) {
       console.error("Please select a role requirement");
+      CreateErrorBlock("Please select a role requirement");
       return;
     }
 

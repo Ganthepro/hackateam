@@ -57,9 +57,7 @@ public class TeamService
     {
         try
         {
-            var bangkokTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Bangkok");
-            var currentBangkokTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, bangkokTimeZone);
-            if (createTeamDto.ExpiredAt <= currentBangkokTime)
+            if (createTeamDto.ExpiredAt <= DateTime.UtcNow)
             {
                 throw new HttpResponseException((int)HttpStatusCode.BadRequest,
                     Constants.TeamMessage.EXPIRE_DATE_CONFLICT);
@@ -94,8 +92,9 @@ public class TeamService
 
     public async Task<Team> Update(Expression<Func<Team, bool>> filter, UpdateTeamDto updateTeamDto)
     {
-
-        if (updateTeamDto.ExpiredAt <= DateTime.UtcNow)
+        var bangkokTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Bangkok");
+        var bangkokNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, bangkokTimeZone);
+        if (updateTeamDto.ExpiredAt <= bangkokNow)
         {
             throw new HttpResponseException((int)HttpStatusCode.BadRequest,
                 Constants.TeamMessage.EXPIRE_DATE_CONFLICT);
@@ -113,16 +112,17 @@ public class TeamService
         }
         updateDefinitions.Add(updateDefinitionBuilder.Set(t => t.UpdatedAt, DateTime.UtcNow));
 
+        if (updateTeamDto.ExpiredAt > DateTime.UtcNow)
+        {
+            updateDefinitions.Add(updateDefinitionBuilder.Set(t => t.Status, Models.TeamStatus.Opened));
+        }
+
         var update = updateDefinitionBuilder.Combine(updateDefinitions);
 
         var team = await _teams.FindOneAndUpdateAsync<Team>(filter, update, new FindOneAndUpdateOptions<Team>
         {
             ReturnDocument = ReturnDocument.After
         });
-        if (team == null)
-        {
-            throw new HttpResponseException((int)HttpStatusCode.NotFound, Constants.TeamMessage.NOT_FOUND);
-        }
         return team;
     }
 

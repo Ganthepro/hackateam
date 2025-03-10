@@ -55,10 +55,12 @@ function CreateMessage(data) {
         <p>${element.teamResponse.hackathonName}</p>
       </div>
       <div class="notification-detail box-03">
-        <label>Message</label>
-        <p>${element.userResponse.header} ${element.userResponse.fullName} ${element.type === 0 ?
-                '<span class="display-noti approved">Approved</span>' :
-                '<span class="display-noti rejected">Rejected</span>'}
+        <label>Status</label>
+        <p>${
+          element.type === 0
+            ? '<span class="display-noti approved">Approved</span>'
+            : '<span class="display-noti rejected">Rejected</span>'
+        }
         </p>
       </div>
     `;
@@ -96,22 +98,22 @@ function CreateMessage(data) {
 }
 
 function CreateNoMessage() {
-    const noNotification = document.createElement("div");
-    noNotification.className = "nomessage";
-    const image = document.createElement("img");
-    image.src = "../pictures/notification/nomessage.png";
-    image.alt = "No Notification";
-    const message = document.createElement("h4");
-    message.innerText = "No Notification";
-    image.style.width = "25%";
-    noNotification.appendChild(image);
-    noNotification.appendChild(message);
-    const messages = document.getElementById("messagesContainer");
-    noNotification.style.display = "flex"
-    noNotification.style.flexDirection = "column"
-    noNotification.style.justifyContent = "center"
-    noNotification.style.alignItems = "center"
-    messages.appendChild(noNotification);
+  const noNotification = document.createElement("div");
+  noNotification.className = "nomessage";
+  const image = document.createElement("img");
+  image.src = "../pictures/notification/nomessage.png";
+  image.alt = "No Notification";
+  const message = document.createElement("h4");
+  message.innerText = "No Notification";
+  image.style.width = "25%";
+  noNotification.appendChild(image);
+  noNotification.appendChild(message);
+  const messages = document.getElementById("messagesContainer");
+  noNotification.style.display = "flex";
+  noNotification.style.flexDirection = "column";
+  noNotification.style.justifyContent = "center";
+  noNotification.style.alignItems = "center";
+  messages.appendChild(noNotification);
 }
 
 async function DeleteNotification(id) {

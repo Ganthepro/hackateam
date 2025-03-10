@@ -92,8 +92,10 @@ async function updateTeam(teamData) {
 
     const data = await response.json();
     console.log("Team updated successfully:", data);
+    CreateSuccessBlock("Team updated successfully");
   } catch (error) {
     console.error("Error updating team:", error);
+    CreateErrorBlock(`Error updating team: ${error}`);
     return null;
   }
 }
@@ -152,6 +154,7 @@ async function uploadTeamBanner(teamId, file) {
     }
 
     console.log("Banner uploaded successfully.");
+    CreateSuccessBlock("Banner uploaded successfully.");
   } catch (error) {
     console.error("Error uploading banner:", error);
     CreateErrorBlock("Failed to upload team banner.");
@@ -190,6 +193,7 @@ async function displayTeamInfomation(team) {
 
 function formatDateForInput(dateString) {
   const date = new Date(dateString);
+  date.setHours(date.getHours() + 7);
   return date.toISOString().slice(0, 16);
 }
 
@@ -715,7 +719,7 @@ async function main() {
   updateConfirmButtonState(requirements, submissions);
   if (confirmTeamBtn) {
     confirmTeamBtn.addEventListener("click", async function () {
-      if (team.status !== 0) {
+      if (team.status == 1) {
         CreateErrorBlock("Team already confirmed!");
         return;
       }
