@@ -34,6 +34,8 @@ function CreateMessage(data) {
     const message = document.createElement("div");
     message.className = "message";
 
+    console.log(element);
+
     const messageContent = `
       <div class="notification-detail box-01">
         <label>Team Name</label>
@@ -45,9 +47,11 @@ function CreateMessage(data) {
       </div>
       <div class="notification-detail box-03">
         <label>Message</label>
-        <p>${element.userResponse.header} ${element.userResponse.fullName} ${element.type === 0 ? 
-          '<span class="display-noti approved">Approved</span>' : 
-          '<span class="display-noti rejected">Rejected</span>'}
+        <p>Status ${
+          element.type === 0
+            ? '<span class="display-noti approved">Approved</span>'
+            : '<span class="display-noti rejected">Rejected</span>'
+        }
         </p>
       </div>
     `;
@@ -96,10 +100,10 @@ function CreateNoMessage() {
   noNotification.appendChild(image);
   noNotification.appendChild(message);
   const messages = document.getElementById("messagesContainer");
-  noNotification.style.display = "flex"
-  noNotification.style.flexDirection = "column"
-  noNotification.style.justifyContent = "center"
-    noNotification.style.alignItems = "center"
+  noNotification.style.display = "flex";
+  noNotification.style.flexDirection = "column";
+  noNotification.style.justifyContent = "center";
+  noNotification.style.alignItems = "center";
   messages.appendChild(noNotification);
 }
 
