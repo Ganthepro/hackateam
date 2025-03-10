@@ -6,17 +6,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 async function GetNotification() {
     try {
-        // const response = await fetch(`${api}/Notification`, {
-        //   method: "Get",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //     Authorization: `Bearer ${getCookie("token")}`,
-        //   },
-        // });
-
-        // if (!response.ok) {
-        //   throw new Error(`Get Notification failed: ${response.status}`);
-        // }
 
         const xhr = new XMLHttpRequest();
         xhr.open("GET", `${api}/Notification`, true);
@@ -31,9 +20,7 @@ async function GetNotification() {
                 } else {
                     CreateMessage(result);
                 }
-            } else {
-                CreateErrorBlock("Get Notification failed");
-            }
+            } 
         };
     } catch (error) {
         CreateErrorBlock(error);
