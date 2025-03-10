@@ -16,9 +16,8 @@ namespace hackateam.Models
 
         public Team()
         {
-            var bangkokNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, BangkokTimeZone);
-            CreatedAt = bangkokNow; 
-            UpdatedAt = bangkokNow;
+            CreatedAt = DateTime.UtcNow; 
+            UpdatedAt = DateTime.UtcNow;
             Status = TeamStatus.Opened;
         }
         

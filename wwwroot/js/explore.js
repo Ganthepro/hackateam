@@ -27,7 +27,7 @@ function updateItemsPerPage() {
 
 async function fetchRecommendTeams() {
     try {
-        const response = await fetch(`${api}/Team/recommend?Limit=1000`, {
+        const response = await fetch(`${api}/Team/recommend?Limit=1000&Status=0`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -60,7 +60,7 @@ async function fetchRecommendTeams() {
 
 async function fetchOtherTeams() {
     try {
-        const response = await fetch(`${api}/Team/other?Limit=1000`, {
+        const response = await fetch(`${api}/Team/other?Limit=1000&Status=0`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -128,35 +128,53 @@ function createRequirementCard(team) {
     const createdDate = new Date(team.createdAt).toLocaleDateString();
     const updatedDate = new Date(team.updatedAt).toLocaleDateString();
     const expiredDate = new Date(team.expiredAt).toLocaleDateString();
-    const statusText = team.status === 0 ? 'Open' : 'Closed';
-    
+    let statusText, statusColor;
+    switch (team.status) {
+      case 0:
+        statusText = "Open";
+        statusColor = "green";
+        break;
+      case 1:
+        statusText = "Closed";
+        statusColor = "red";
+        break;
+      case 2:
+        statusText = "Waiting";
+        statusColor = "blue";
+        break;
+      default:
+        statusText = "Unknown";
+        statusColor = "gray";
+    }
+  
     card.innerHTML = `
-        <a href="/Teams/Info?id=${team.id}">
-            <div class="card-status ${statusText.toLowerCase()}">
-                ${statusText}
-            </div>
-            <div class="card-image">
-                <img 
-                    src="${team.bannerUrl}" 
-                    alt="Team Banner" 
-                    onerror="this.src='/pictures/default-banner.png'"
-                    loading="lazy"
-                >
-            </div>
-            <div class="card-detail">
-                <h2>${team.name || 'Unnamed Team'}</h2>
-                <p>Hackathon : ${team.hackathonName}</p>
-                <p class="hackathon-desc line-clamp-2">${team.hackathonDescription}</p>
-                <p>Team Lead : ${team.leadResponse.fullName}</p>
-                <div class="date-info">
-                    <p>Created : ${createdDate}</p>
-                    <p>Updated : ${updatedDate}</p>
-                    <p>Expires : ${expiredDate}</p>
-                </div>
-            </div>
-        </a>
-    `;
-    
+            <a href="/Teams/Info?id=${team.id}">
+              <div class="card-status" style="background-color: ${statusColor};">
+                  ${statusText}
+              </div>
+              <div class="card-image">
+                  <img 
+                      src="${team.bannerUrl}" 
+                      alt="Team Banner" 
+                      onerror="this.src='~/pictures/default-banner.png'"
+                      loading="lazy"
+                  >
+              </div>
+              <div class="card-detail">
+                  <h2>${team.name || "Unnamed Team"}</h2>
+                  <p>Hackathon : ${team.hackathonName}</p>
+                  <p class="hackathon-desc line-clamp-2">${
+                    team.hackathonDescription
+                  }</p>
+                  <p>Team Lead : ${team.leadResponse.fullName}</p>
+                  <div class="date-info">
+                      <p>Created : ${createdDate}</p>
+                      <p>Updated : ${updatedDate}</p>
+                      <p>Expires : ${expiredDate}</p>
+                  </div>
+              </div>
+            </a>
+      `;
     return card;
 }
 
